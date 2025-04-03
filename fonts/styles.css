@@ -1,4 +1,6 @@
 body {
+  font-family: 'Poppins', sans-serif;
+  font-weight: 400;
   display: flex;
   justify-content: center;
   align-items: center;
@@ -7,5 +9,9 @@ body {
 
 canvas {
   background-color: #000000;
-  border-radius: 12px;
+}
+
+h1 {
+  font-family: 'Poppins', sans-serif;
+  font-weight: 900;
 }

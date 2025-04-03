@@ -2,7 +2,7 @@ class MovableObjects {
   x = 200;
   y = 350;
   img;
-  heihgt = 100;
+  height = 100;
   width = 150;
 
   loadImage(path) {
