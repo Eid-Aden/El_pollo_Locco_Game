@@ -8,6 +8,8 @@ body {
   background-image: url('../img/coverImg/africa.jpg');
   background-repeat: no-repeat;
   background-size: cover;
+  margin: 0;
+  padding: 0;
 }
 
 canvas {
@@ -18,10 +20,15 @@ canvas {
 h1 {
   font-family: 'Poppins', sans-serif;
   font-weight: 900;
+  font-size: 80px;
+  color: rgba(253, 239, 45, 0.597);
+  margin: 0;
 }
 
 header {
   width: 100%;
+  margin: 0;
+  padding: 0;
 }
 h3 {
   width: auto;

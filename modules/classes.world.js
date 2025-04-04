@@ -1,8 +1,13 @@
 class World {
   character = new Character();
   enamies = [new Chicken(), new Chicken(), new Chicken(), new Chicken()];
-  clouds = [new Cloud()];
-  backgrounds = [new Background('img/5_background/layers/3_third_layer/1.png', 0, 180)];
+  clouds = [new Cloud(), new Cloud()];
+  backgrounds = [
+    new Background('/img/5_background/layers/air.png', 0),
+    new Background('img/5_background/layers/3_third_layer/1.png', 0),
+    new Background('img/5_background/layers/2_second_layer/1.png', 0),
+    new Background('/img/5_background/layers/1_first_layer/1.png', 0),
+  ];
   ctx;
   canvas;
 
@@ -11,11 +16,13 @@ class World {
     this.draw();
   }
   draw() {
-    this.ctx.clearRect(0, 0, canvas.width, canvas.height); // waan Masaxay Sawir kadib
+    this.ctx.clearRect(0, 0, canvas.width, canvas.height); // waan Masaxay
+    // Sawir kadib
+
+    this.addObjectsToMap(this.backgrounds);
     this.addToMap(this.character);
     this.addObjectsToMap(this.clouds);
     this.addObjectsToMap(this.enamies);
-    this.addObjectsToMap(this.backgrounds);
 
     let self = this; //waxay markasta   Sawiraysaa Draw
     requestAnimationFrame(() => {
