@@ -5,6 +5,9 @@ class MovableObjects {
   height = 100;
   width = 150;
   imageCache = {};
+  currentImage = 0;
+  speed = 0.15;
+  otherDirection = false;
 
   loadImage(path) {
     this.img = new Image();
@@ -18,8 +21,9 @@ class MovableObjects {
   loadImages(arr) {
     arr.forEach((path) => {
       this.img = new Image();
+      this.img.src = path;
 
-      this.imageCache[path] = path;
+      this.imageCache[path] = this.img;
     });
   }
 
@@ -27,5 +31,9 @@ class MovableObjects {
     console.log('Hello Test Ini Zelations');
   }
 
-  movLeft() {}
+  movLeft() {
+    setInterval(() => {
+      this.x -= this.speed;
+    }, 1000 / 60);
+  }
 }
