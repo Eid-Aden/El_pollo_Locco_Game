@@ -1,28 +1,9 @@
 class World {
   character = new Character();
-  enamies = [new Chicken(), new Chicken(), new Chicken(), new Chicken()];
-  clouds = [new Cloud(), new Cloud()];
-  backgrounds = [
-    new Background('/img/5_background/layers/air.png', -719),
-    new Background('img/5_background/layers/3_third_layer/2.png', -719),
-    new Background('img/5_background/layers/2_second_layer/2.png', -719),
-    new Background('/img/5_background/layers/1_first_layer/2.png', -719),
-
-    new Background('/img/5_background/layers/air.png', 0),
-    new Background('img/5_background/layers/3_third_layer/1.png', 0),
-    new Background('img/5_background/layers/2_second_layer/1.png', 0),
-    new Background('/img/5_background/layers/1_first_layer/1.png', 0),
-
-    new Background('/img/5_background/layers/air.png', 719.5),
-    new Background('img/5_background/layers/3_third_layer/2.png', 719.5),
-    new Background('img/5_background/layers/2_second_layer/2.png', 719.5),
-    new Background('/img/5_background/layers/1_first_layer/2.png', 719.5),
-
-    new Background('/img/5_background/layers/air.png', 719 * 4),
-    new Background('img/5_background/layers/3_third_layer/2.png', 719 * 4),
-    new Background('img/5_background/layers/2_second_layer/2.png', 719 * 4),
-    new Background('/img/5_background/layers/1_first_layer/2.png', 719 * 4),
-  ];
+  level = level1;
+  /* enamies = level1.enamies;
+  clouds = level1.clouds;
+  backgrounds = level1.backgrounds; */
 
   ctx;
   canvas;
@@ -43,10 +24,10 @@ class World {
     this.ctx.clearRect(0, 0, canvas.width, canvas.height); // waan Masaxay
     // Sawir kadib
     this.ctx.translate(this.camara_x, 0);
-    this.addObjectsToMap(this.backgrounds);
+    this.addObjectsToMap(this.level.backgrounds);
     this.addToMap(this.character);
-    this.addObjectsToMap(this.clouds);
-    this.addObjectsToMap(this.enamies);
+    this.addObjectsToMap(this.level.clouds);
+    this.addObjectsToMap(this.level.enamies);
 
     this.ctx.translate(-this.camara_x, 0);
 
