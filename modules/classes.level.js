@@ -6,6 +6,7 @@ class Level {
   constructor(enamies, clouds, backgrounds) {
     this.enamies = enamies;
     this.clouds = clouds;
+
     this.backgrounds = backgrounds;
   }
 }

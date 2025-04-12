@@ -30,9 +30,13 @@ header {
   margin: 0;
   padding: 0;
 }
-h3 {
-  width: auto;
+button {
+  width: 100%;
   font-family: 'Poppins', sans-serif;
   font-weight: 800;
   text-align: end;
+  color: white;
+  border: none;
+  background: transparent;
+  font-size: 64px;
 }
