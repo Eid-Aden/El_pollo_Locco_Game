@@ -1,6 +1,6 @@
 class MovableObjects {
   x = 200;
-  y = 280;
+  y = 60;
   img;
   height = 100;
   width = 150;
@@ -8,6 +8,21 @@ class MovableObjects {
   currentImage = 0;
   speed = 0.15;
   otherDirection = false;
+  speedY = 0;
+  accelaration = 2.5;
+
+  aplyGravity() {
+    setInterval(() => {
+      if (this.isAboveGround() || this.speedY > 0) {
+        this.y -= this.speedY;
+        this.speedY -= this.accelaration;
+      }
+    }, 1000 / 25);
+  }
+
+  isAboveGround() {
+    return this.y < 150;
+  }
 
   loadImage(path) {
     this.img = new Image();
@@ -28,7 +43,7 @@ class MovableObjects {
   }
 
   playAnimation(images) {
-    let i = this.currentImage % this.walkingCharacter.length;
+    let i = this.currentImage % this.walkingImage.length;
     let path = images[i];
     this.img = this.imageCache[path];
     this.currentImage++;
