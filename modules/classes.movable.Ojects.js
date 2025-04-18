@@ -29,9 +29,22 @@ class MovableObjects {
     this.img.src = path;
   }
 
+  draw(ctx) {
+    ctx.drawImage(this.img, this.x, this.y, this.width, this.height);
+  }
+
+  drawFrame(ctx) {
+    if (this instanceof Character || this instanceof Chicken) {
+      ctx.beginPath();
+      ctx.lineWidth = '4';
+      ctx.strokeStyle = 'blue';
+      ctx.rect(this.x, this.y, +this.width, this.height);
+      ctx.stroke();
+    }
+  }
   /**
    *
-   * @param {Array} arr   with  fulle  Imaages
+   * @param {Array} arr   with  fue  Imaages
    */
   loadImages(arr) {
     arr.forEach((path) => {
@@ -50,12 +63,13 @@ class MovableObjects {
   }
 
   moveRight() {
-    console.log('Hello Test Ini Zelations');
+    this.x += this.speed;
   }
 
   movLeft() {
-    setInterval(() => {
-      this.x -= this.speed;
-    }, 1000 / 60);
+    this.x -= this.speed;
+  }
+  jump() {
+    this.speedY = 35;
   }
 }
