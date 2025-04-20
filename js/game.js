@@ -1,5 +1,6 @@
 let canvas;
 let world;
+let isMuted = false;
 let keyboard = new Keyboard();
 
 function init() {
@@ -43,3 +44,11 @@ window.addEventListener('keyup', (e) => {
     keyboard.SPACE = false;
   }
 });
+
+function toggleMute() {
+  isMuted = !isMuted;
+
+  walkingSound.muted = isMuted;
+  hurtSound.muted = isMuted;
+  deadSound.muted = isMuted;
+}

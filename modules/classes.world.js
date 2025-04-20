@@ -1,5 +1,6 @@
 class World {
   character = new Character();
+  statusbar = new Statusbar();
   level = level1;
   /* enamies = level1.enamies;
   clouds = level1.clouds;
@@ -27,7 +28,6 @@ class World {
       this.level.enamies.forEach((enemy) => {
         if (this.character.isColliding(enemy)) {
           this.character.hit();
-          console.log('collision  leading with  Energy', this.character.energy);
         }
       });
     }, 1000);

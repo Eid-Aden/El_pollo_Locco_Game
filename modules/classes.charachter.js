@@ -31,15 +31,21 @@ class Character extends MovableObjects {
     '/img/2_character_pepe/5_dead/D-56.png',
     '/img/2_character_pepe/5_dead/D-57.png',
   ];
+
+  walkingHurt = ['img/2_character_pepe/4_hurt/H-41.png', 'img/2_character_pepe/4_hurt/H-42.png', 'img/2_character_pepe/4_hurt/H-43.png'];
+
   speed = 5;
   world;
   walkingSound = new Audio('audio/running.mp3');
+  /*  hurtSound = new Audio('audio/hurt.mp3');
+  deadSound = new Audio('audio/Dead.mp3'); */
+
   constructor() {
     super();
     this.loadImage('img/2_character_pepe/2_walk/W-21.png');
-
-    this.loadImages(this.walkingJumping);
+    this.loadImages(this.walkingHurt);
     this.loadImages(this.walkingDead);
+    this.loadImages(this.walkingJumping);
     this.loadImages(this.walkingImage);
 
     this.aplyGravity();
@@ -69,6 +75,11 @@ class Character extends MovableObjects {
     setInterval(() => {
       if (this.isDead()) {
         this.playAnimation(this.walkingDead);
+
+        document.getElementById('dead').innerHTML = ' You Lost !!';
+      } else if (this.isHurt()) {
+        this.playAnimation(this.walkingHurt);
+        document.getElementById('hurt').innerHTML = 'You Hurt  Me';
       } else if (this.isAboveGround()) {
         this.playAnimation(this.walkingJumping);
       } else {
