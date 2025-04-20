@@ -16,9 +16,21 @@ class World {
     this.keyboard = keyboard;
     this.draw();
     this.setWorld();
+    this.checkCollision();
   }
   setWorld() {
     this.character.world = this;
+  }
+  //  cheking  if there  is  a colision
+  checkCollision() {
+    setInterval(() => {
+      this.level.enamies.forEach((enemy) => {
+        if (this.character.isColliding(enemy)) {
+          this.character.hit();
+          console.log('collision  leading with  Energy', this.character.energy);
+        }
+      });
+    }, 1000);
   }
   draw() {
     this.ctx.clearRect(0, 0, canvas.width, canvas.height); // waan Masaxay

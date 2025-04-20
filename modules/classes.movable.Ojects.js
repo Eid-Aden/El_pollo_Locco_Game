@@ -10,6 +10,7 @@ class MovableObjects {
   otherDirection = false;
   speedY = 0;
   accelaration = 2.5;
+  energy = 100;
 
   aplyGravity() {
     setInterval(() => {
@@ -41,6 +42,21 @@ class MovableObjects {
       ctx.rect(this.x, this.y, +this.width, this.height);
       ctx.stroke();
     }
+  }
+
+  // character isColiding  Chicken//
+  isColliding(mo) {
+    return this.x + this.width > mo.x && this.y + this.height > mo.y && this.x < mo.x && this.y < mo.y + mo.height;
+  }
+
+  hit() {
+    this.energy -= 5;
+    if (this.energy < 0) {
+      this.energy = 0;
+    }
+  }
+  isDead() {
+    return this.energy === 0;
   }
   /**
    *
