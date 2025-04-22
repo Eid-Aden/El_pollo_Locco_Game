@@ -28,6 +28,7 @@ class World {
       this.level.enamies.forEach((enemy) => {
         if (this.character.isColliding(enemy)) {
           this.character.hit();
+          this.statusbar.setPercentage(this.character.energy);
         }
       });
     }, 1000);
@@ -35,13 +36,15 @@ class World {
   draw() {
     this.ctx.clearRect(0, 0, canvas.width, canvas.height); // waan Masaxay
     // Sawir kadib
-    this.ctx.translate(this.camara_x, 0);
+    this.ctx.translate(this.camara_x, 0); //Back
     this.addObjectsToMap(this.level.backgrounds);
+
     this.addToMap(this.character);
+
     this.addObjectsToMap(this.level.clouds);
     this.addObjectsToMap(this.level.enamies);
-
     this.ctx.translate(-this.camara_x, 0);
+    this.addToMap(this.statusbar);
 
     let self = this; //waxay markasta   Sawiraysaa Draw
     requestAnimationFrame(() => {

@@ -1,22 +1,37 @@
 class Statusbar extends DrawableObj {
-  images = [
-    'img/7_statusbars/1_statusbar/1_statusbar_coin/green/0.png',
-    'img/7_statusbars/1_statusbar/1_statusbar_coin/green/20.png',
-    'img/7_statusbars/1_statusbar/1_statusbar_coin/green/40.png',
-    'img/7_statusbars/1_statusbar/1_statusbar_coin/green/60.png',
-    'img/7_statusbars/1_statusbar/1_statusbar_coin/green/80.png',
-    'img/7_statusbars/1_statusbar/1_statusbar_coin/green/100.png',
+  /*  IMAGES = [
+    'img/7_statusbars/1_statusbar/2_statusbar_health/blue/100.png',
+    'img/7_statusbars/1_statusbar/2_statusbar_health/blue/80.png',
+    'img/7_statusbars/1_statusbar/2_statusbar_health/blue/60.png',
+    'img/7_statusbars/1_statusbar/2_statusbar_health/blue/40.png',
+    'img/7_statusbars/1_statusbar/2_statusbar_health/blue/20.png',
+    'img/7_statusbars/1_statusbar/2_statusbar_health/blue/0.png',
+  ]; */
+
+  IMAGES = [
+    'img/7_statusbars/1_statusbar/2_statusbar_health/blue/0.png', // Index 0
+    'img/7_statusbars/1_statusbar/2_statusbar_health/blue/20.png', // Index 1
+    'img/7_statusbars/1_statusbar/2_statusbar_health/blue/40.png', // Index 2
+    'img/7_statusbars/1_statusbar/2_statusbar_health/blue/60.png', // Index 3
+    'img/7_statusbars/1_statusbar/2_statusbar_health/blue/80.png', // Index 4
+    'img/7_statusbars/1_statusbar/2_statusbar_health/blue/100.png', // Index 5
   ];
   percentages = 100;
 
   constructor() {
-    this.loadImages(this.images);
+    super();
+    this.loadImages(this.IMAGES);
+    this.x = 50;
+    this.y = 0;
+    this.height = 50;
+    this.width = 250;
+    this.setPercentage(100);
   }
 
   setPercentage(percentages) {
-    this.setPercentage = percentages;
-    let imagePath = this.images(this.resolveImageIndex());
-    this.imageCache[path] = this.img;
+    this.percentages = percentages;
+    let path = this.IMAGES[this.resolveImageIndex()];
+    this.img = this.imageCache[path];
   }
 
   resolveImageIndex() {
