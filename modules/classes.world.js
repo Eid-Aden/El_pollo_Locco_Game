@@ -1,6 +1,7 @@
 class World {
   character = new Character();
   statusbar = new Statusbar();
+  throwableObjects = [new ThrowableObjects()];
   level = level1;
   /* enamies = level1.enamies;
   clouds = level1.clouds;
@@ -38,12 +39,13 @@ class World {
     // Sawir kadib
     this.ctx.translate(this.camara_x, 0); //Back
     this.addObjectsToMap(this.level.backgrounds);
-
     this.addToMap(this.character);
-
     this.addObjectsToMap(this.level.clouds);
     this.addObjectsToMap(this.level.enamies);
+    this.addObjectsToMap(this.throwableObjects); // <<<< Hier KORRIGIERT
+
     this.ctx.translate(-this.camara_x, 0);
+
     this.addToMap(this.statusbar);
 
     let self = this; //waxay markasta   Sawiraysaa Draw
