@@ -1,7 +1,9 @@
 class World {
   character = new Character();
   statusbar = new Statusbar();
-  throwableObjects = [new ThrowableObjects()];
+  bottle = new Bottles();
+  coin = new Coins();
+  throwableObjects = [];
   level = level1;
   /* enamies = level1.enamies;
   clouds = level1.clouds;
@@ -18,35 +20,49 @@ class World {
     this.keyboard = keyboard;
     this.draw();
     this.setWorld();
-    this.checkCollision();
+    this.run();
   }
   setWorld() {
     this.character.world = this;
   }
   //  cheking  if there  is  a colision
-  checkCollision() {
+  run() {
     setInterval(() => {
-      this.level.enamies.forEach((enemy) => {
-        if (this.character.isColliding(enemy)) {
-          this.character.hit();
-          this.statusbar.setPercentage(this.character.energy);
-        }
-      });
-    }, 1000);
+      this.checkThrowableObjects();
+      this.checkCollisions();
+    }, 200);
+  }
+  checkThrowableObjects() {
+    if (this.keyboard.D) {
+      let bottle = new ThrowableObjects(this.character.x + 100, this.character.y + 100);
+      this.throwableObjects.push(bottle);
+    }
+  }
+
+  checkCollisions() {
+    this.level.enamies.forEach((enemy) => {
+      if (this.character.isColliding(enemy)) {
+        this.character.hit();
+        this.statusbar.setPercentage(this.character.energy);
+      }
+    });
   }
   draw() {
     this.ctx.clearRect(0, 0, canvas.width, canvas.height); // waan Masaxay
     // Sawir kadib
     this.ctx.translate(this.camara_x, 0); //Back
     this.addObjectsToMap(this.level.backgrounds);
+
     this.addToMap(this.character);
     this.addObjectsToMap(this.level.clouds);
     this.addObjectsToMap(this.level.enamies);
-    this.addObjectsToMap(this.throwableObjects); // <<<< Hier KORRIGIERT
+    this.addObjectsToMap(this.throwableObjects);
 
     this.ctx.translate(-this.camara_x, 0);
 
     this.addToMap(this.statusbar);
+    this.addToMap(this.bottle);
+    this.addToMap(this.coin);
 
     let self = this; //waxay markasta   Sawiraysaa Draw
     requestAnimationFrame(() => {

@@ -1,8 +1,18 @@
 class ThrowableObjects extends MovableObjects {
-  constructor() {
+  constructor(x, y) {
     super();
     this.loadImage('img/6_salsa_bottle/bottle_rotation/1_bottle_rotation.png');
-    this.x = 100;
-    this.y = 60;
+    this.x = x;
+    this.y = y;
+    this.height = 100;
+    this.width = 100;
+    this.throw();
+  }
+  throw() {
+    this.speedY = 30;
+    this.aplyGravity();
+    setInterval(() => {
+      this.x += 10;
+    }, 15);
   }
 }
