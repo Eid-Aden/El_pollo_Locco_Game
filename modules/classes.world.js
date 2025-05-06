@@ -2,12 +2,16 @@ class World {
   character = new Character();
   statusbar = new Statusbar();
   bottle = new Bottles();
-  coin = new Coins();
+  bottlebar = [new BottleBar(), new BottleBar(), new BottleBar()];
+  coin = new Coinbar();
   throwableObjects = [];
   level = level1;
-  /* enamies = level1.enamies;
-  clouds = level1.clouds;
-  backgrounds = level1.backgrounds; */
+  coins = [];
+  bottles = [];
+  collectedCoin = 0;
+  totalCoins = 5;
+  collectedBottles = 0;
+  totalBottles = 10;
 
   ctx;
   canvas;
@@ -21,6 +25,7 @@ class World {
     this.draw();
     this.setWorld();
     this.run();
+    addCoins();
   }
   setWorld() {
     this.character.world = this;
@@ -30,7 +35,7 @@ class World {
     setInterval(() => {
       this.checkThrowableObjects();
       this.checkCollisions();
-    }, 200);
+    }, 500);
   }
   checkThrowableObjects() {
     if (this.keyboard.D) {
@@ -47,6 +52,18 @@ class World {
       }
     });
   }
+
+  addCoins() {
+    for (let i = 0; i < 5; i++) {
+      let x = -500 + Math.random() * 2500;
+      let y = 200 + Math.random() * 100;
+      let coin = new Coin();
+      coin.x = x;
+      coin.y = y;
+      this.coins.push(coin);
+    }
+  }
+
   draw() {
     this.ctx.clearRect(0, 0, canvas.width, canvas.height); // waan Masaxay
     // Sawir kadib
@@ -57,9 +74,9 @@ class World {
     this.addObjectsToMap(this.level.clouds);
     this.addObjectsToMap(this.level.enamies);
     this.addObjectsToMap(this.throwableObjects);
+    this.addObjectsToMap(this.bottlebar);
 
     this.ctx.translate(-this.camara_x, 0);
-
     this.addToMap(this.statusbar);
     this.addToMap(this.bottle);
     this.addToMap(this.coin);
