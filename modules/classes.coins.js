@@ -1,9 +1,10 @@
-class Coins {
-  constructor(parameters) {
-    super().loadImage('img/6_salsa_bottle/2_salsa_bottle_on_ground.png');
-    this.x = 250;
-    this.y = 350;
-
-    this.x = 0 + Math.random() * 500;
+class Coin extends MovableObjects {
+  height = 100;
+  width = 100;
+  constructor() {
+    super().loadImage('img/7_statusbars/3_icons/icon_coin.png');
+    this.x = 450;
+    this.y = 150;
+    this.x = 400 + Math.random() * 800;
   }
 }

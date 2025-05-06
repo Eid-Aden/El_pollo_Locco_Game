@@ -2,8 +2,9 @@ class World {
   character = new Character();
   statusbar = new Statusbar();
   bottle = new Bottles();
-  bottlebar = [new BottleBar(), new BottleBar(), new BottleBar()];
+  bottlebar = new BottleBar();
   coin = new Coinbar();
+  coinIcon = new Coin();
   throwableObjects = [];
   level = level1;
   coins = [];
@@ -12,6 +13,7 @@ class World {
   totalCoins = 5;
   collectedBottles = 0;
   totalBottles = 10;
+  PlayerGround = [];
 
   ctx;
   canvas;
@@ -25,7 +27,8 @@ class World {
     this.draw();
     this.setWorld();
     this.run();
-    addCoins();
+    this.addBottles(); // <--- Hier hinzufügen
+    /*  addCoins(); */
   }
   setWorld() {
     this.character.world = this;
@@ -35,6 +38,7 @@ class World {
     setInterval(() => {
       this.checkThrowableObjects();
       this.checkCollisions();
+      this.checkCollectBottles(); // <--- Hier hinzufügen
     }, 500);
   }
   checkThrowableObjects() {
@@ -53,15 +57,48 @@ class World {
     });
   }
 
-  addCoins() {
-    for (let i = 0; i < 5; i++) {
+  get persantage() {
+    return (this.collectedBottles / this.totalBottles) * 100;
+  }
+
+  addBottles() {
+    for (let i = 0; i < this.totalBottles; i++) {
       let x = -500 + Math.random() * 2500;
-      let y = 200 + Math.random() * 100;
-      let coin = new Coin();
-      coin.x = x;
-      coin.y = y;
-      this.coins.push(coin);
+      let y = 380;
+      let bottle = new Bottles();
+      bottle.x = x;
+      bottle.y = y;
+      this.bottles.push(bottle);
     }
+  }
+
+  checkCollectBottles() {
+    this.bottles.forEach((bottle, index) => {
+      if (this.character.isColliding(bottle)) {
+        this.bottles.splice(index, 1); // Entferne die gesammelte Flasche
+        this.collectedBottles++;
+        this.bottle.setPercentage(this.collectedBottles, this.totalBottles);
+      }
+    });
+  }
+
+  checkCollectBottles() {
+    this.bottles.forEach((bottle, index) => {
+      if (this.character.isColliding(bottle)) {
+        this.bottles.splice(index, 1); // Flasche entfernen
+        this.collectedBottles++; // Anzahl gesammelter Flaschen erhöhen
+        this.bottle.setPercentage(this.collectedBottles, this.totalBottles); // Balken aktualisieren
+        console.log('Flasche gesammelt!'); // Zum Testen
+      }
+    });
+  }
+
+  drawBottleBarText() {
+    this.ctx.font = '12px Arial';
+    this.ctx.fillStyle = 'black';
+    this.ctx.textAlign = 'left';
+    this.ctx.textBaseline = 'top';
+    this.ctx.fillText(`${this.collectedBottles} / ${this.totalBottles}`, 250, 110);
   }
 
   draw() {
@@ -70,20 +107,27 @@ class World {
     this.ctx.translate(this.camara_x, 0); //Back
     this.addObjectsToMap(this.level.backgrounds);
 
-    this.addToMap(this.character);
-    this.addObjectsToMap(this.level.clouds);
-    this.addObjectsToMap(this.level.enamies);
-    this.addObjectsToMap(this.throwableObjects);
-    this.addObjectsToMap(this.bottlebar);
-
     this.ctx.translate(-this.camara_x, 0);
     this.addToMap(this.statusbar);
     this.addToMap(this.bottle);
     this.addToMap(this.coin);
+    this.ctx.translate(this.camara_x, 0); //Back
+    this.addObjectsToMap(this.level.coinIcon);
+
+    this.addToMap(this.character);
+
+    this.addObjectsToMap(this.level.clouds);
+    this.addObjectsToMap(this.level.enamies);
+    this.addObjectsToMap(this.throwableObjects);
+
+    this.addObjectsToMap(this.level.bottlebar);
+
+    this.ctx.translate(-this.camara_x, 0);
 
     let self = this; //waxay markasta   Sawiraysaa Draw
     requestAnimationFrame(() => {
       self.draw();
+      this.drawBottleBarText();
     });
   }
   addObjectsToMap(objects) {

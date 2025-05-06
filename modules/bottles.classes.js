@@ -7,6 +7,7 @@ class BottleBar extends MovableObjects {
     this.x = 250;
     this.y = 350;
 
-    this.x = 0 + Math.random() * 500;
+    /*    this.x = 0 + Math.random() * 500; */
+    this.x = 500 + Math.random() * 1000;
   }
 }

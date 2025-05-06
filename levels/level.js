@@ -3,7 +3,11 @@ const level1 = new Level(
 
   [(new Cloud(), new Cloud())],
 
-  generateBackgrounds()
+  generateBackgrounds(),
+
+  [new BottleBar(), new BottleBar(), new BottleBar(), new BottleBar()],
+
+  [new Coin(), new Coin(), new Coin(), new Coin(), new Coin(), new Coin(), new Coin()]
 );
 
 function generateBackgrounds() {
