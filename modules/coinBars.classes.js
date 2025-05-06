@@ -16,5 +16,33 @@ class Coinbar extends DrawableObj {
     this.y = 40;
     this.height = 50;
     this.width = 250;
+    this.setPercentage(0, 10);
+    this.totalBCoins = 10;
+    this.collectedCoins = 0;
+  }
+  setPercentage(collectedCoins, totalCoins) {
+    this.collectedCoins = collectedCoins;
+    this.totalCoins = totalCoins;
+    this.percentage = (this.collectedCoins / this.totalCoins) * 100;
+    let path = this.IMAGES[this.coinsBar()];
+    this.img = this.imageCache[path];
+  }
+
+  coinsBar() {
+    if (this.percentage == 0) {
+      return 5;
+    } else if (this.percentage <= 20) {
+      return 1;
+    } else if (this.percentage <= 40) {
+      return 2;
+    } else if (this.percentage <= 60) {
+      return 3;
+    } else if (this.percentage <= 80) {
+      return 4;
+    } else if (this.percentage <= 100) {
+      return 5;
+    } else {
+      return 0;
+    }
   }
 }

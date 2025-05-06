@@ -22,30 +22,29 @@ class Bottles extends DrawableObj {
     this.totalBottles = 10;
     this.collectedBottles = 0;
 
-    this.setPercentage(this.collectedBottles, this.totalBottles); // Anfangswert setzen
+    this.setPercentage(100);
   }
 
-  setPercentage(collectedBottles, totalBottles) {
-    this.collectedBottles = collectedBottles;
-    this.totalBottles = totalBottles;
-    this.percentage = (this.collectedBottles / this.totalBottles) * 100;
+  setPercentage(percentage) {
+    this.percentage = percentage;
+
     let path = this.IMAGES[this.bottleBar()];
     this.img = this.imageCache[path];
   }
 
   bottleBar() {
-    if (this.percentage == 0) {
+    if (this.percentage == 100) {
       return 5;
-    } else if (this.percentage <= 20) {
-      return 1;
-    } else if (this.percentage <= 40) {
-      return 2;
-    } else if (this.percentage <= 60) {
-      return 3;
-    } else if (this.percentage <= 80) {
+    } else if (this.percentage > 80) {
       return 4;
-    } else if (this.percentage <= 100) {
-      return 5;
+    } else if (this.percentage > 60) {
+      return 3;
+    } else if (this.percentage > 40) {
+      return 2;
+    } else if (this.percentage > 20) {
+      return 1;
+    } else {
+      return 0;
     }
   }
 }
