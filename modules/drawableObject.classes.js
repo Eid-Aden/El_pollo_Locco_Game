@@ -16,10 +16,6 @@ class DrawableObj {
     ctx.drawImage(this.img, this.x, this.y, this.width, this.height);
 
     // Prozentzahl drüber zeichnen
-    ctx.font = '16px Arial';
-    ctx.fillStyle = 'red';
-    ctx.textAlign = 'left';
-    ctx.fillText(this.percentage, this.x + this.width / 1.5, this.y + this.height / 1.8);
   }
 
   loadImages(arr) {

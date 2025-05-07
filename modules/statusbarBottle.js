@@ -3,7 +3,7 @@
  * Shows how many bottles the player has collected.
  */
 class Bottles extends DrawableObj {
-  IMAGES = [
+  BollteIMAGES = [
     'img/7_statusbars/1_statusbar/3_statusbar_bottle/blue/0.png',
     'img/7_statusbars/1_statusbar/3_statusbar_bottle/blue/20.png',
     'img/7_statusbars/1_statusbar/3_statusbar_bottle/blue/40.png',
@@ -13,8 +13,6 @@ class Bottles extends DrawableObj {
   ];
 
   percentage = 0;
-  collectedBottles = 0;
-  totalBottles = 10;
 
   /**
    * Creates an instance of the Bottles class.
@@ -22,13 +20,16 @@ class Bottles extends DrawableObj {
    */
   constructor() {
     super();
-    this.loadImages(this.IMAGES);
+    this.loadImages(this.BollteIMAGES);
     this.x = 50;
     this.y = 80;
     this.height = 50;
     this.width = 250;
 
-    this.setPercentage(0, this.totalBottles);
+    this.collectedBottles = 0;
+    this.totalBottles = 10;
+
+    this.setPercentage(0, 10);
   }
 
   /**
@@ -36,17 +37,9 @@ class Bottles extends DrawableObj {
    * @param {number} collectedBottles - The number of bottles collected by the player.
    * @param {number} totalBottles - The total number of bottles available in the level.
    */
-  setPercentage(collectedBottles, totalBottles) {
+  setPercentage(collectedBottles) {
     this.collectedBottles = collectedBottles;
-    this.totalBottles = totalBottles;
-
-    if (this.totalBottles > 0) {
-      this.percentage = (this.collectedBottles / this.totalBottles) * 100;
-    } else {
-      this.percentage = 0;
-    }
-
-    let path = this.IMAGES[this.bottleBar()];
+    let path = this.BollteIMAGES[this.bottleBar()];
     this.img = this.imageCache[path];
   }
 
@@ -55,18 +48,6 @@ class Bottles extends DrawableObj {
    * @returns {number} Index of the image to show from the IMAGES array.
    */
   bottleBar() {
-    if (this.percentage == 0) {
-      return 0;
-    } else if (this.percentage <= 20) {
-      return 1;
-    } else if (this.percentage <= 40) {
-      return 2;
-    } else if (this.percentage <= 60) {
-      return 3;
-    } else if (this.percentage <= 80) {
-      return 4;
-    } else {
-      return 5;
-    }
+    return Math.min(5, Math.max(0, this.collectedBottles));
   }
 }

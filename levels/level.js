@@ -5,7 +5,7 @@ const level1 = new Level(
 
   generateBackgrounds(),
 
-  [new BottleBar(), new BottleBar(), new BottleBar(), new BottleBar()],
+  [new BottleBar(), new BottleBar(), new BottleBar(), new BottleBar(), new BottleBar(), new BottleBar(), new BottleBar()],
 
   [new Coin(), new Coin(), new Coin(), new Coin(), new Coin(), new Coin(), new Coin()]
 );

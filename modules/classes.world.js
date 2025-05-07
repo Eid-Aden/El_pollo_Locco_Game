@@ -33,6 +33,7 @@ class World {
   setWorld() {
     this.character.world = this;
   }
+
   //  cheking  if there  is  a colision
   run() {
     setInterval(() => {
@@ -41,6 +42,15 @@ class World {
       this.checkCollectBottles(); // <--- Hier hinzufügen
     }, 500);
   }
+
+  /* get percentage() {
+    return Math.min(this.PlayerGround.length * 20, 100);
+  } */
+
+  get persantage() {
+    return (this.collectedBottles / this.totalBottles) * 100;
+  }
+
   checkThrowableObjects() {
     if (this.keyboard.D) {
       let bottle = new ThrowableObjects(this.character.x + 100, this.character.y + 100);
