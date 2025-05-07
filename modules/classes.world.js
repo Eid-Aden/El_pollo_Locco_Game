@@ -19,6 +19,7 @@ class World {
   canvas;
   keyboard;
   camara_x = 0;
+  brokenBottle = new Audio('audio/broken-bottle.mp3');
 
   constructor(canvas, keyboard) {
     this.ctx = canvas.getContext('2d');
@@ -28,7 +29,7 @@ class World {
     this.setWorld();
     this.run();
     this.addBottles(); // <--- Hier hinzufügen
-    /*  addCoins(); */
+    this.addCoins();
   }
   setWorld() {
     this.character.world = this;
@@ -40,21 +41,16 @@ class World {
       this.checkThrowableObjects();
       this.checkCollisions();
       this.checkCollectBottles(); // <--- Hier hinzufügen
+      this.checkCollectCoins();
     }, 500);
   }
 
-  /* get percentage() {
-    return Math.min(this.PlayerGround.length * 20, 100);
-  } */
-
-  get persantage() {
-    return (this.collectedBottles / this.totalBottles) * 100;
-  }
-
   checkThrowableObjects() {
-    if (this.keyboard.D) {
+    if (this.keyboard.D && this.collectedBottles > 0) {
       let bottle = new ThrowableObjects(this.character.x + 100, this.character.y + 100);
       this.throwableObjects.push(bottle);
+      this.collectedBottles--; // Anzahl verringern
+      this.bottle.setPercentage(this.collectedBottles, this.totalBottles); // Flaschenbalken aktualisie
     }
   }
 
@@ -65,10 +61,6 @@ class World {
         this.statusbar.setPercentage(this.character.energy);
       }
     });
-  }
-
-  get persantage() {
-    return (this.collectedBottles / this.totalBottles) * 100;
   }
 
   addBottles() {
@@ -85,20 +77,11 @@ class World {
   checkCollectBottles() {
     this.bottles.forEach((bottle, index) => {
       if (this.character.isColliding(bottle)) {
-        this.bottles.splice(index, 1); // Entferne die gesammelte Flasche
-        this.collectedBottles++;
-        this.bottle.setPercentage(this.collectedBottles, this.totalBottles);
-      }
-    });
-  }
-
-  checkCollectBottles() {
-    this.bottles.forEach((bottle, index) => {
-      if (this.character.isColliding(bottle)) {
         this.bottles.splice(index, 1); // Flasche entfernen
         this.collectedBottles++; // Anzahl gesammelter Flaschen erhöhen
         this.bottle.setPercentage(this.collectedBottles, this.totalBottles); // Balken aktualisieren
         console.log('Flasche gesammelt!'); // Zum Testen
+        this.brokenBottle.play();
       }
     });
   }
@@ -109,6 +92,57 @@ class World {
     this.ctx.textAlign = 'left';
     this.ctx.textBaseline = 'top';
     this.ctx.fillText(`${this.collectedBottles} / ${this.totalBottles}`, 250, 110);
+  }
+
+  // here Comming Icoins Logical Code
+
+  /*  ADD Conis */
+  addCoins() {
+    for (let i = 0; i < this.totalCoins; i++) {
+      let x = -500 + Math.random() * 2500;
+      let y = 380;
+      let coin = new Coin();
+      coin.x = x;
+      coin.y = y;
+      this.coins.push(coin);
+    }
+  }
+
+  /*  Check CoinCollected*/
+
+  checkCollectCoins() {
+    this.coins.forEach((coin, index) => {
+      if (this.character.isColliding(coin)) {
+        this.coins.splice(index, 1); // Entferne die gesammelte Flasche
+        this.collectedCoin++;
+
+        this.coin.setPercentage(this.collectedCoin, this.totalCoins); // Balken aktualisieren
+        console.log('Coins gesammelt!'); // Zum Testen
+        this.brokenBottle.play();
+      }
+    });
+  }
+
+  /* checkCollectCoins() {
+    for (let i = this.coins.length - 1; i >= 0; i--) {
+      if (this.character.isColliding(this.coins[i])) {
+        this.coins.splice(i, 1); // sicher entfernen
+        this.collectedCoin++;
+        this.coin.setPercentage(this.collectedCoin, this.totalCoins);
+        console.log('Coin eingesammelt!');
+        this.brokenBottle.play();
+      }
+    }
+  } */
+
+  // Drwing
+
+  drawCoinsText() {
+    this.ctx.font = '12px Arial';
+    this.ctx.fillStyle = 'black';
+    this.ctx.textAlign = 'left';
+    this.ctx.textBaseline = 'top';
+    this.ctx.fillText(`${this.collectedCoin} / ${this.totalCoins}`, 250, 70);
   }
 
   draw() {
@@ -138,6 +172,7 @@ class World {
     requestAnimationFrame(() => {
       self.draw();
       this.drawBottleBarText();
+      this.drawCoinsText();
     });
   }
   addObjectsToMap(objects) {

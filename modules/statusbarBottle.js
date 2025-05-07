@@ -29,7 +29,7 @@ class Bottles extends DrawableObj {
     this.collectedBottles = 0;
     this.totalBottles = 10;
 
-    this.setPercentage(0, 10);
+    this.setPercentage(0);
   }
 
   /**
