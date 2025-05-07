@@ -2,7 +2,7 @@ class World {
   character = new Character();
   statusbar = new Statusbar();
   bottle = new Bottles();
-  bottlebar = new BottleBar();
+  bottlebar = new BottleGround();
   coin = new Coinbar();
   coinIcon = new Coin();
   throwableObjects = [];
@@ -67,7 +67,7 @@ class World {
     for (let i = 0; i < this.totalBottles; i++) {
       let x = -500 + Math.random() * 2500;
       let y = 380;
-      let bottle = new Bottles();
+      let bottle = new BottleGround();
       bottle.x = x;
       bottle.y = y;
       this.bottles.push(bottle);
@@ -78,12 +78,21 @@ class World {
     this.bottles.forEach((bottle, index) => {
       if (this.character.isColliding(bottle)) {
         this.bottles.splice(index, 1); // Flasche entfernen
+
         this.collectedBottles++; // Anzahl gesammelter Flaschen erhöhen
         this.bottle.setPercentage(this.collectedBottles, this.totalBottles); // Balken aktualisieren
         console.log('Flasche gesammelt!'); // Zum Testen
         this.brokenBottle.play();
       }
     });
+  }
+
+  removeBottles(bottle) {
+    let index = this.bottles.indexOf(bottle);
+    if (index > -1) {
+      this.bottles.splice(index, 1);
+      this.bottle.setPercentage(this.collectedBottles, this.totalBottles);
+    }
   }
 
   drawBottleBarText() {
@@ -99,41 +108,47 @@ class World {
   /*  ADD Conis */
   addCoins() {
     for (let i = 0; i < this.totalCoins; i++) {
-      let x = -500 + Math.random() * 2500;
+      let x = 300 + i * 100; // Sicher sichtbar
       let y = 380;
       let coin = new Coin();
       coin.x = x;
       coin.y = y;
       this.coins.push(coin);
     }
+    /* for (let i = 0; i < this.totalCoins; i++) {
+      let x = -500 + Math.random() * 2500;
+      let y = 380;
+      let coin = new Coin();
+      coin.x = x;
+      coin.y = y;
+      this.coins.push(coin);
+    } */
   }
 
   /*  Check CoinCollected*/
 
   checkCollectCoins() {
-    this.coins.forEach((coin, index) => {
-      if (this.character.isColliding(coin)) {
-        this.coins.splice(index, 1); // Entferne die gesammelte Flasche
-        this.collectedCoin++;
-
-        this.coin.setPercentage(this.collectedCoin, this.totalCoins); // Balken aktualisieren
-        console.log('Coins gesammelt!'); // Zum Testen
-        this.brokenBottle.play();
-      }
-    });
-  }
-
-  /* checkCollectCoins() {
     for (let i = this.coins.length - 1; i >= 0; i--) {
-      if (this.character.isColliding(this.coins[i])) {
-        this.coins.splice(i, 1); // sicher entfernen
+      let coin = this.coins[i];
+      if (this.character.isColliding(coin)) {
+        this.coins.splice(i, 1);
         this.collectedCoin++;
         this.coin.setPercentage(this.collectedCoin, this.totalCoins);
-        console.log('Coin eingesammelt!');
+
+        console.log('Coins gesammelt!');
         this.brokenBottle.play();
       }
     }
-  } */
+  }
+
+  // Remove Coins After Collisions
+  reomvetCoin(coin) {
+    let index = this.coins.indexOf(coin);
+    if (index > -1) {
+      this.coins.splice(index, 1);
+      this.coins.setPercentage(5 - this.coins.length, 5);
+    }
+  }
 
   // Drwing
 
@@ -156,16 +171,14 @@ class World {
     this.addToMap(this.bottle);
     this.addToMap(this.coin);
     this.ctx.translate(this.camara_x, 0); //Back
-    this.addObjectsToMap(this.level.coinIcon);
+    this.addObjectsToMap(this.coins);
+    this.addObjectsToMap(this.bottles);
 
     this.addToMap(this.character);
 
     this.addObjectsToMap(this.level.clouds);
     this.addObjectsToMap(this.level.enamies);
     this.addObjectsToMap(this.throwableObjects);
-
-    this.addObjectsToMap(this.level.bottlebar);
-
     this.ctx.translate(-this.camara_x, 0);
 
     let self = this; //waxay markasta   Sawiraysaa Draw

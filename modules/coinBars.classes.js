@@ -16,9 +16,9 @@ class Coinbar extends DrawableObj {
     this.y = 40;
     this.height = 50;
     this.width = 250;
-    this.totalCoins = 10; // <-- zuerst totalCoins setzen
+    this.totalCoins = 10;
     this.collectedCoins = 0;
-    this.setPercentage(0, 10); // <-- dann setPercentage aufrufen
+    this.setPercentage(0, 10);
   }
 
   setPercentage(collectedCoins, totalCoins) {

@@ -1,10 +1,10 @@
 class Coin extends MovableObjects {
   height = 100;
-  width = 50;
+  width = 100;
   constructor() {
-    super().loadImage('img/7_statusbars/3_icons/icon_coin.png');
-    this.x = 650;
-    this.y = 150;
+    super().loadImage('img/8_coin/coin_1.png');
+    this.x = 600;
+    this.y = 360;
     this.x = 1500 + Math.random() * 900;
   }
 }
