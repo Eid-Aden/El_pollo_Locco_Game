@@ -30,6 +30,8 @@ class World {
     this.run();
     this.addBottles(); // <--- Hier hinzufügen
     this.addCoins();
+    this.addChicken();
+    this.addSmallChicken();
   }
   setWorld() {
     this.character.world = this;
@@ -57,10 +59,48 @@ class World {
   checkCollisions() {
     this.level.enamies.forEach((enemy) => {
       if (this.character.isColliding(enemy)) {
-        this.character.hit();
-        this.statusbar.setPercentage(this.character.energy);
+        if (this.character.y + this.character.height <= enemy.y + 10) {
+          enemy.isDead = true;
+          this.setChickensDeadImages(enemy);
+          setTimeout(() => {
+            let index = this.level.enamies.indexOf(enemy);
+            if (index > -1) {
+              this.level.enamies.splice(index, 1);
+            }
+          }, 100);
+        } else {
+          this.character.hit();
+          this.statusbar.setPercentage(this.character.energy);
+        }
       }
     });
+  }
+
+  setChickensDeadImages(chicken) {
+    if (chicken instanceof SmallChicken) {
+      chicken.loadImage('img/3_enemies_chicken/chicken_small/2_dead/dead.png');
+    } else {
+      chicken.loadImage('img/3_enemies_chicken/chicken_normal/2_dead/dead.png');
+    }
+  }
+
+  addChicken() {
+    for (let i = 0; i < 5; i++) {
+      this.x = 2000 + Math.random() * 500;
+      this.speed = 0.12 + Math.random() * 0.25;
+      let chicken = new Chicken();
+      chicken.x = this.x;
+      this.level.enamies.push(chicken);
+    }
+  }
+  addSmallChicken() {
+    for (let i = 0; i < 5; i++) {
+      this.x = 1000 + Math.random() * 500;
+      this.speed = 0.12 + Math.random() * 0.25;
+      let small_chicken = new SmallChicken();
+      small_chicken.x = this.x;
+      this.level.enamies.push(small_chicken);
+    }
   }
 
   addBottles() {
@@ -115,14 +155,6 @@ class World {
       coin.y = y;
       this.coins.push(coin);
     }
-    /* for (let i = 0; i < this.totalCoins; i++) {
-      let x = -500 + Math.random() * 2500;
-      let y = 380;
-      let coin = new Coin();
-      coin.x = x;
-      coin.y = y;
-      this.coins.push(coin);
-    } */
   }
 
   /*  Check CoinCollected*/

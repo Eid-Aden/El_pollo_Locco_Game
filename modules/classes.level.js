@@ -5,6 +5,7 @@ class Level {
   levelEnd_x = 2500;
   bottlebar;
   coinIcon;
+
   constructor(enamies, clouds, backgrounds, bottlebar, coinIcon) {
     this.enamies = enamies;
     this.clouds = clouds;
