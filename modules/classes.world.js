@@ -20,6 +20,7 @@ class World {
   keyboard;
   camara_x = 0;
   brokenBottle = new Audio('audio/broken-bottle.mp3');
+  chickenSound = new Audio('audio/chickenSound.mp3');
 
   constructor(canvas, keyboard) {
     this.ctx = canvas.getContext('2d');
@@ -44,7 +45,7 @@ class World {
       this.checkCollisions();
       this.checkCollectBottles(); // <--- Hier hinzufügen
       this.checkCollectCoins();
-    }, 500);
+    }, 100);
   }
 
   checkThrowableObjects() {
@@ -56,24 +57,53 @@ class World {
     }
   }
 
+  isJumpingOnEnemy(enemy) {
+    const charBottom = this.character.y + this.character.height - this.character.offset.bottom;
+    const charTop = this.character.y + this.character.offset.top;
+    const enemyTop = enemy.y + enemy.offset.top;
+    const enemyBottom = enemy.y + enemy.height - enemy.offset.bottom;
+
+    const verticalHit = charBottom >= enemyTop && charTop < enemyTop + 10;
+    const horizontalHit =
+      this.character.x + this.character.width - this.character.offset.right > enemy.x + enemy.offset.left &&
+      this.character.x + this.character.offset.left < enemy.x + enemy.width - enemy.offset.right;
+
+    return verticalHit && horizontalHit;
+  }
+
   checkCollisions() {
     this.level.enamies.forEach((enemy) => {
-      if (this.character.isColliding(enemy)) {
-        if (this.character.y + this.character.height <= enemy.y + 10) {
-          enemy.isDead = true;
-          this.setChickensDeadImages(enemy);
-          setTimeout(() => {
-            let index = this.level.enamies.indexOf(enemy);
-            if (index > -1) {
-              this.level.enamies.splice(index, 1);
-            }
-          }, 100);
-        } else {
-          this.character.hit();
-          this.statusbar.setPercentage(this.character.energy);
-        }
+      if (!this.character.isColliding(enemy)) return;
+
+      if (enemy instanceof Chicken || enemy instanceof SmallChicken) {
+        this.handleChickenCollision(enemy);
+      } else {
+        this.character.hit();
+        this.statusbar.setPercentage(this.character.energy);
       }
     });
+  }
+  handleChickenCollision(enemy) {
+    if (this.isJumpingOnEnemy(enemy) && this.character.speedY < 0) {
+      // Charakter springt von oben auf Gegner
+      if (enemy.isDead) return;
+      console.log('Charakter springt von oben auf Gegner:', enemy);
+      this.chickenSound.play();
+      this.character.speedY = 5; // Rückstoß nach oben
+      enemy.isDead = true;
+      this.setChickensDeadImages(enemy);
+
+      setTimeout(() => {
+        const index = this.level.enamies.indexOf(enemy);
+        if (index > -1) {
+          this.level.enamies.splice(index, 1);
+        }
+      }, 1000);
+    } else if (!enemy.isDead) {
+      // Gegner lebt, und Charakter ist nicht von oben gekommen → Schaden
+      this.character.hit();
+      this.statusbar.setPercentage(this.character.energy);
+    }
   }
 
   setChickensDeadImages(chicken) {
@@ -85,8 +115,8 @@ class World {
   }
 
   addChicken() {
-    for (let i = 0; i < 5; i++) {
-      this.x = 2000 + Math.random() * 500;
+    for (let i = 0; i < 10; i++) {
+      this.x = 2000 + Math.random() * 800;
       this.speed = 0.12 + Math.random() * 0.25;
       let chicken = new Chicken();
       chicken.x = this.x;
@@ -94,7 +124,7 @@ class World {
     }
   }
   addSmallChicken() {
-    for (let i = 0; i < 5; i++) {
+    for (let i = 0; i < 10; i++) {
       this.x = 1000 + Math.random() * 500;
       this.speed = 0.12 + Math.random() * 0.25;
       let small_chicken = new SmallChicken();

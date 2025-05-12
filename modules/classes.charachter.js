@@ -1,7 +1,16 @@
 class Character extends MovableObjects {
+  y = 160;
+  speed = 20;
+  speedY = 0;
   width = 200;
   height = 280;
-  y = 160;
+
+  offset = {
+    top: 20,
+    right: 20,
+    bottom: 0,
+    left: 20,
+  };
 
   walkingImage = [
     'img/2_character_pepe/2_walk/W-22.png',
@@ -34,7 +43,6 @@ class Character extends MovableObjects {
 
   walkingHurt = ['img/2_character_pepe/4_hurt/H-41.png', 'img/2_character_pepe/4_hurt/H-42.png', 'img/2_character_pepe/4_hurt/H-43.png'];
 
-  speed = 5;
   world;
   walkingSound = new Audio('audio/running.mp3');
   hurtSound = new Audio('audio/hurt.mp3');
@@ -75,11 +83,8 @@ class Character extends MovableObjects {
     setInterval(() => {
       if (this.isDead()) {
         this.playAnimation(this.walkingDead);
-
-        document.getElementById('dead').innerHTML = ' You Lost !!';
       } else if (this.isHurt()) {
         this.playAnimation(this.walkingHurt);
-        document.getElementById('hurt').innerHTML = 'You Hurt  Me';
       } else if (this.isAboveGround()) {
         this.playAnimation(this.walkingJumping);
       } else {
