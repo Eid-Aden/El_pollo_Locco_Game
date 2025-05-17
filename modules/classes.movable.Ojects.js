@@ -12,7 +12,7 @@ class MovableObjects extends DrawableObj {
   width = 150;
   imageCache = {};
   currentImage = 0;
-  speed = 0.15;
+  speed = 0.12;
   otherDirection = false;
   speedY = 0;
   accelaration = 2.5;

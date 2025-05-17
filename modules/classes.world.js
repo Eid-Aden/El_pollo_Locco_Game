@@ -13,7 +13,7 @@ class World {
   totalCoins = 5;
   collectedBottles = 0;
   totalBottles = 10;
-  PlayerGround = [];
+  bossHits = 0;
 
   ctx;
   canvas;
@@ -26,10 +26,13 @@ class World {
     this.ctx = canvas.getContext('2d');
     this.canvas = canvas;
     this.keyboard = keyboard;
+    this.endboss = new EndBoss(); // ✅ NEU
+    this.endboss.world = this; // ✅ NEU
+    this.level.enamies.push(this.endboss);
     this.draw();
     this.setWorld();
     this.run();
-    this.addBottles(); // <--- Hier hinzufügen
+    this.addBottles();
     this.addCoins();
     this.addChicken();
     this.addSmallChicken();
@@ -43,8 +46,9 @@ class World {
     setInterval(() => {
       this.checkThrowableObjects();
       this.checkCollisions();
-      this.checkCollectBottles(); // <--- Hier hinzufügen
-      this.checkCollectCoins();
+      this.checkCollectBottles();
+
+      this.isBottleColissionBoss();
     }, 100);
   }
 
@@ -52,9 +56,27 @@ class World {
     if (this.keyboard.D && this.collectedBottles > 0) {
       let bottle = new ThrowableObjects(this.character.x + 100, this.character.y + 100);
       this.throwableObjects.push(bottle);
-      this.collectedBottles--; // Anzahl verringern
-      this.bottle.setPercentage(this.collectedBottles, this.totalBottles); // Flaschenbalken aktualisie
+      this.collectedBottles--;
+      this.bottle.setPercentage(this.collectedBottles, this.totalBottles);
     }
+  }
+
+  isBottleColissionBoss() {
+    this.throwableObjects.forEach((bottle, index) => {
+      if (this.endboss && this.character.isColliding(this.endboss)) {
+        this.bossHits++;
+        this.bottleSplash(bottle);
+        this.throwableObjects.splice(index, 1);
+
+        if (this.bossHits >= 3) {
+          this.endboss.isDead = true;
+        }
+      }
+    });
+  }
+
+  bottleSplash(bottle) {
+    bottle.loadImage('img/6_salsa_bottle/bottle_rotation/bottle_splash/3_bottle_splash.png');
   }
 
   isJumpingOnEnemy(enemy) {
@@ -100,7 +122,6 @@ class World {
         }
       }, 1000);
     } else if (!enemy.isDead) {
-      // Gegner lebt, und Charakter ist nicht von oben gekommen → Schaden
       this.character.hit();
       this.statusbar.setPercentage(this.character.energy);
     }
@@ -203,7 +224,6 @@ class World {
     }
   }
 
-  // Remove Coins After Collisions
   reomvetCoin(coin) {
     let index = this.coins.indexOf(coin);
     if (index > -1) {
@@ -211,8 +231,6 @@ class World {
       this.coins.setPercentage(5 - this.coins.length, 5);
     }
   }
-
-  // Drwing
 
   drawCoinsText() {
     this.ctx.font = '12px Arial';

@@ -14,8 +14,6 @@ class DrawableObj {
 
   draw(ctx) {
     ctx.drawImage(this.img, this.x, this.y, this.width, this.height);
-
-    // Prozentzahl drüber zeichnen
   }
 
   loadImages(arr) {
