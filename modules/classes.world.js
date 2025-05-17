@@ -63,13 +63,18 @@ class World {
 
   isBottleColissionBoss() {
     this.throwableObjects.forEach((bottle, index) => {
-      if (this.endboss && this.character.isColliding(this.endboss)) {
+      if (this.endboss && bottle.isColliding(this.endboss)) {
         this.bossHits++;
         this.bottleSplash(bottle);
-        this.throwableObjects.splice(index, 1);
+        setTimeout(() => {
+          this.throwableObjects.splice(index, 1);
+        }, 100);
 
-        if (this.bossHits >= 3) {
+        if (this.bossHits >= 5) {
           this.endboss.isDead = true;
+          this.endboss.loadImage(this.endboss.deadImage[0]);
+        } else {
+          this.endboss.loadImage(this.endboss.hurtImage[0]);
         }
       }
     });

@@ -1,4 +1,10 @@
 class ThrowableObjects extends MovableObjects {
+  offset = {
+    top: 20,
+    right: 20,
+    bottom: 20,
+    left: 20,
+  };
   constructor(x, y) {
     super();
     this.loadImage('img/6_salsa_bottle/bottle_rotation/1_bottle_rotation.png');
@@ -8,11 +14,15 @@ class ThrowableObjects extends MovableObjects {
     this.width = 100;
     this.throw();
   }
+
   throw() {
     this.speedY = 30;
     this.aplyGravity();
-    setInterval(() => {
+    this.throwInterval = setInterval(() => {
       this.x += 10;
+      if (this.x > 3000) {
+        clearInterval(this.throwInterval); // Stoppt irgendwann
+      }
     }, 15);
   }
 }

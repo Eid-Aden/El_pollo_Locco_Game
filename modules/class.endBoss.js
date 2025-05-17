@@ -1,4 +1,10 @@
 class EndBoss extends MovableObjects {
+  offset = {
+    top: 0,
+    right: 0,
+    bottom: 0,
+    left: 0,
+  };
   width = 350;
   height = 430;
   y = 50;
@@ -62,7 +68,7 @@ class EndBoss extends MovableObjects {
         let distance = Math.abs(this.x - this.world.character.x);
         if (distance < 200) {
           this.playAnimation(this.attackImage);
-          character.hit();
+          this.character.hit();
         } else {
           this.playAnimation(this.walkingImage);
         }
