@@ -1,4 +1,5 @@
 class Character extends MovableObjects {
+  groundLevel = 180;
   y = 160;
   speed = 20;
   speedY = 0;
@@ -93,5 +94,20 @@ class Character extends MovableObjects {
         }
       }
     }, 50);
+  }
+
+  // The Jumping Function:
+
+  isJumpingOnEnemy(enemy) {
+    const cBottom = this.y + this.height - this.offset.bottom;
+    const cTop = this.y + this.offset.top;
+    const eTop = enemy.y + enemy.offset.top;
+    const eBottom = enemy.y + enemy.height - enemy.offset.bottom;
+
+    const verticalHit = cBottom >= eTop && cTop < eTop + 10;
+    const horizontalHit =
+      this.x + this.width - this.offset.right > enemy.x + enemy.offset.left && this.x + this.offset.left < enemy.x + enemy.width - enemy.offset.right;
+
+    return verticalHit && horizontalHit;
   }
 }

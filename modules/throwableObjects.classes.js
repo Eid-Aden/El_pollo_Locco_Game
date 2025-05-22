@@ -21,7 +21,7 @@ class ThrowableObjects extends MovableObjects {
     this.throwInterval = setInterval(() => {
       this.x += 10;
       if (this.x > 3000) {
-        clearInterval(this.throwInterval); // Stoppt irgendwann
+        clearInterval(this.throwInterval);
       }
     }, 15);
   }

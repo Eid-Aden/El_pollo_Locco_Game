@@ -2,7 +2,7 @@ class Level {
   enamies;
   clouds;
   backgrounds;
-  levelEnd_x = 2500;
+  levelEnd_x = 3500;
   bottlebar;
   coinIcon;
 

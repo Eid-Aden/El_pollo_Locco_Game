@@ -25,6 +25,11 @@ class MovableObjects extends DrawableObj {
         this.y -= this.speedY;
         this.speedY -= this.accelaration;
       }
+
+      if (this.y >= this.groundLevel) {
+        this.y = this.groundLevel;
+        this.speedY = 0;
+      }
     }, 1000 / 25);
   }
 
@@ -32,7 +37,7 @@ class MovableObjects extends DrawableObj {
     if (this instanceof ThrowableObjects) {
       return true;
     } else {
-      return this.y < 155;
+      return this.y < this.groundLevel;
     }
   }
 
@@ -51,8 +56,8 @@ class MovableObjects extends DrawableObj {
   draw(ctx) {
     ctx.drawImage(this.img, this.x, this.y, this.width, this.height);
   }
-
-  drawFrame(ctx) {
+  /* 
+   drawFrame(ctx) {
     if (this instanceof Character || this instanceof Chicken || this instanceof SmallChicken) {
       ctx.beginPath();
       ctx.lineWidth = '4';
@@ -61,10 +66,8 @@ class MovableObjects extends DrawableObj {
       ctx.rect(this.x, this.y, +this.width, this.height);
       ctx.stroke();
     }
-  }
-
-  // character isColiding  Chicken//
-
+  } 
+ */
   isColliding(mo) {
     return (
       this.x + this.width - this.offset.right > mo.x + mo.offset.left &&

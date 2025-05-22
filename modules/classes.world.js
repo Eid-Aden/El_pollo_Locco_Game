@@ -26,8 +26,8 @@ class World {
     this.ctx = canvas.getContext('2d');
     this.canvas = canvas;
     this.keyboard = keyboard;
-    this.endboss = new EndBoss(); // ✅ NEU
-    this.endboss.world = this; // ✅ NEU
+    this.endboss = new EndBoss();
+    this.endboss.world = this;
     this.level.enamies.push(this.endboss);
     this.draw();
     this.setWorld();
@@ -47,7 +47,7 @@ class World {
       this.checkThrowableObjects();
       this.checkCollisions();
       this.checkCollectBottles();
-
+      this.checkCollectCoins();
       this.isBottleColissionBoss();
     }, 100);
   }
@@ -73,6 +73,7 @@ class World {
         if (this.bossHits >= 5) {
           this.endboss.isDead = true;
           this.endboss.loadImage(this.endboss.deadImage[0]);
+          document.getElementById('gameOver').innerHTML = `  <img id="imgTS" src="img/You won, you lost/You Win A.png" alt="">`;
         } else {
           this.endboss.loadImage(this.endboss.hurtImage[0]);
         }
@@ -82,20 +83,6 @@ class World {
 
   bottleSplash(bottle) {
     bottle.loadImage('img/6_salsa_bottle/bottle_rotation/bottle_splash/3_bottle_splash.png');
-  }
-
-  isJumpingOnEnemy(enemy) {
-    const charBottom = this.character.y + this.character.height - this.character.offset.bottom;
-    const charTop = this.character.y + this.character.offset.top;
-    const enemyTop = enemy.y + enemy.offset.top;
-    const enemyBottom = enemy.y + enemy.height - enemy.offset.bottom;
-
-    const verticalHit = charBottom >= enemyTop && charTop < enemyTop + 10;
-    const horizontalHit =
-      this.character.x + this.character.width - this.character.offset.right > enemy.x + enemy.offset.left &&
-      this.character.x + this.character.offset.left < enemy.x + enemy.width - enemy.offset.right;
-
-    return verticalHit && horizontalHit;
   }
 
   checkCollisions() {
@@ -110,13 +97,13 @@ class World {
       }
     });
   }
+
   handleChickenCollision(enemy) {
-    if (this.isJumpingOnEnemy(enemy) && this.character.speedY < 0) {
-      // Charakter springt von oben auf Gegner
+    if (this.character.isJumpingOnEnemy(enemy) && this.character.speedY < 0) {
       if (enemy.isDead) return;
-      console.log('Charakter springt von oben auf Gegner:', enemy);
+
       this.chickenSound.play();
-      this.character.speedY = 5; // Rückstoß nach oben
+      this.character.speedY = 5;
       enemy.isDead = true;
       this.setChickensDeadImages(enemy);
 
@@ -129,6 +116,9 @@ class World {
     } else if (!enemy.isDead) {
       this.character.hit();
       this.statusbar.setPercentage(this.character.energy);
+      if (this.character.energy === 0) {
+        document.getElementById('lost').innerHTML = ' Your lost this time!!';
+      }
     }
   }
 
@@ -142,7 +132,7 @@ class World {
 
   addChicken() {
     for (let i = 0; i < 10; i++) {
-      this.x = 2000 + Math.random() * 800;
+      this.x = 2500 + Math.random() * 800;
       this.speed = 0.12 + Math.random() * 0.25;
       let chicken = new Chicken();
       chicken.x = this.x;
@@ -151,7 +141,7 @@ class World {
   }
   addSmallChicken() {
     for (let i = 0; i < 10; i++) {
-      this.x = 1000 + Math.random() * 500;
+      this.x = 2000 + Math.random() * 500;
       this.speed = 0.12 + Math.random() * 0.25;
       let small_chicken = new SmallChicken();
       small_chicken.x = this.x;
@@ -199,12 +189,9 @@ class World {
     this.ctx.fillText(`${this.collectedBottles} / ${this.totalBottles}`, 250, 110);
   }
 
-  // here Comming Icoins Logical Code
-
-  /*  ADD Conis */
   addCoins() {
     for (let i = 0; i < this.totalCoins; i++) {
-      let x = 300 + i * 100; // Sicher sichtbar
+      let x = 300 + i * 100;
       let y = 380;
       let coin = new Coin();
       coin.x = x;
@@ -278,14 +265,13 @@ class World {
       this.addToMap(o);
     });
   }
+
   addToMap(mo) {
     if (mo.otherDirection) {
       this.flipImage(mo);
     }
-    mo.draw(this.ctx);
-    mo.drawFrame(this.ctx);
 
-    // Blue rectangle
+    mo.draw(this.ctx);
 
     if (mo.otherDirection) {
       this.flipBack(mo);

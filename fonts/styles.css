@@ -40,3 +40,19 @@ button {
   background: darkkhaki;
   font-size: 64px;
 }
+
+#gameOver {
+  width: 450;
+  height: 450;
+  font-size: 60;
+  color: black;
+  background: whitesmoke;
+  position: absolute;
+  top: 200;
+  left: 200;
+}
+
+#imgTS {
+  border-radius: 40px;
+  width: 400px;
+}
