@@ -65,6 +65,7 @@ class World {
     this.throwableObjects.forEach((bottle, index) => {
       if (this.endboss && bottle.isColliding(this.endboss)) {
         this.bossHits++;
+
         this.bottleSplash(bottle);
         setTimeout(() => {
           this.throwableObjects.splice(index, 1);
