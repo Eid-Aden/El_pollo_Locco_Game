@@ -43,7 +43,7 @@ class World {
     this.character.world = this;
   }
 
-  //  cheking  if there  is  a colision
+  //cheking  if there  is  a colision
   run() {
     setInterval(() => {
       this.checkThrowableObjects();
