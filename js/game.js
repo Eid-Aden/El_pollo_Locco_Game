@@ -52,12 +52,13 @@ window.addEventListener('keyup', (e) => {
   }
 });
 
-function mutedAll() {
-  document.getElementById('muteButton').onclick = () => {
-    character.pauseAllSounds();
-  };
+function toggleMute() {
+  const icon = document.getElementById('muteIcon');
+  if (SoundManager.isMuted) {
+    SoundManager.unmuteAll();
+    icon.src = 'img/volume.png';
+  } else {
+    SoundManager.muteAll();
+    icon.src = 'img/mute.png';
+  }
 }
-
-window.onload = function () {
-  mutedAll();
-};

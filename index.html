@@ -23,6 +23,7 @@
     <script src="modules/classes.charachter.js"></script>
     <script src="modules/throwableObjects.classes.js"></script>
     <script src="modules/class.endBoss.js"></script>
+    <script src="modules/sound.classes.js"></script>
     <script src="levels/level.js"></script>
     <script src="js/game.js"></script>
   </head>
@@ -32,7 +33,11 @@
     </header>
 
     <h1>El Pollo Locco</h1>
-    <div><img id="muteButton" src="img/mute.png" alt="" /></div>
+
+    <div id="soundMute" onclick="toggleMute()">
+      <img id="muteIcon" src="img/volume.png" width="24" alt="" />
+    </div>
+
     <h1 id="gameOver"></h1>
     <h2 id="lost"></h2>
     <canvas id="canvas" width="720" height=" 480"> </canvas>

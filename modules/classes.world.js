@@ -36,6 +36,8 @@ class World {
     this.addCoins();
     this.addChicken();
     this.addSmallChicken();
+    SoundManager.register(this.brokenBottle);
+    SoundManager.register(this.chickenSound);
   }
   setWorld() {
     this.character.world = this;
@@ -103,7 +105,7 @@ class World {
     if (this.character.isJumpingOnEnemy(enemy) && this.character.speedY < 0) {
       if (enemy.isDead) return;
 
-      this.chickenSound.play();
+      SoundManager.play(this.chickenSound);
       this.character.speedY = 5;
       enemy.isDead = true;
       this.setChickensDeadImages(enemy);
@@ -169,7 +171,8 @@ class World {
         this.collectedBottles++; // Anzahl gesammelter Flaschen erhöhen
         this.bottle.setPercentage(this.collectedBottles, this.totalBottles); // Balken aktualisieren
         console.log('Flasche gesammelt!'); // Zum Testen
-        this.brokenBottle.play();
+        /*    this.brokenBottle.play(); */
+        SoundManager.play(this.brokenBottle);
       }
     });
   }

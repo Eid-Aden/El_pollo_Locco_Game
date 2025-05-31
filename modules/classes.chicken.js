@@ -28,6 +28,13 @@ class Chicken extends MovableObjects {
     this.loadImages(this.walkingImage);
     this.animate();
     this.isDead = false;
+
+    //  Sound registrieren
+    SoundManager.register(this.walkingSound);
+  }
+
+  cluck() {
+    SoundManager.play(this.walkingSound);
   }
 
   animate() {

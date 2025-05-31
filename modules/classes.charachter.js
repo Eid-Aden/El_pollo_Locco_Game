@@ -86,7 +86,12 @@ class Character extends MovableObjects {
     this.loadImages(this.idleImg);
     this.loadImages(this.longIdleImg);
     this.lastMoveTime = Date.now();
-    /*  idleTime = 0; */
+
+    //  Sound beim SoundManager registrieren
+    SoundManager.register(this.walkingSound);
+    SoundManager.register(this.hurtSound);
+    SoundManager.register(this.deadSound);
+    SoundManager.register(this.soundSnore);
 
     this.aplyGravity();
     this.animate();
@@ -105,14 +110,14 @@ class Character extends MovableObjects {
       if (this.world.keyboard.RIGHT && this.x < this.world.level.levelEnd_x) {
         this.moveRight();
         this.otherDirection = false;
-        this.walkingSound.play();
+        SoundManager.play(this.walkingSound);
         this.lastMoveTime = Date.now(); // Bewegung erkannt
       }
 
       if (this.world.keyboard.LEFT && this.x > 0) {
         this.movLeft();
         this.otherDirection = true;
-        this.walkingSound.play();
+        SoundManager.play(this.walkingSound);
         this.lastMoveTime = Date.now(); // Bewegung erkannt
       }
 
@@ -131,7 +136,9 @@ class Character extends MovableObjects {
         this.isSleeping = false;
       } else if (this.isHurt()) {
         this.playAnimation(this.walkingHurt);
-        this.hurtSound.play();
+
+        SoundManager.play(this.hurtSound);
+
         this.stopSnore(); // Wacht beim Schmerz auf
         this.isSleeping = false;
       } else if (this.isAboveGround()) {
@@ -148,7 +155,7 @@ class Character extends MovableObjects {
         } else if (idleTime > 10) {
           this.playAnimation(this.longIdleImg);
           if (!this.isSleeping) {
-            this.soundSnore.play();
+            SoundManager.play(this.soundSnore);
             this.isSleeping = true;
           }
         } else {
@@ -198,6 +205,5 @@ class Character extends MovableObjects {
       this.brokenBottle.pause();
       this.brokenBottle.currentTime = 0;
     }
-    // you Cann Add More List  iyo Wanna !!!
   }
 }
