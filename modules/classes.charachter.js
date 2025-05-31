@@ -87,7 +87,7 @@ class Character extends MovableObjects {
     this.loadImages(this.longIdleImg);
     this.lastMoveTime = Date.now();
 
-    //  Sound beim SoundManager registrieren
+    //Sound beim SoundManager registrieren
     SoundManager.register(this.walkingSound);
     SoundManager.register(this.hurtSound);
     SoundManager.register(this.deadSound);
