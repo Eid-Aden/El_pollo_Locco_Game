@@ -41,6 +41,12 @@ button {
   font-size: 64px;
 }
 
+#muteButton {
+  width: 24px;
+  height: 24px;
+  cursor: pointer;
+}
+
 #gameOver {
   width: 450;
   height: 450;

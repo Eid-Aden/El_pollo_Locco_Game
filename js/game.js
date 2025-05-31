@@ -52,10 +52,12 @@ window.addEventListener('keyup', (e) => {
   }
 });
 
-function toggleMute() {
-  isMuted = !isMuted;
-
-  walkingSound.muted = isMuted;
-  hurtSound.muted = isMuted;
-  deadSound.muted = isMuted;
+function mutedAll() {
+  document.getElementById('muteButton').onclick = () => {
+    character.pauseAllSounds();
+  };
 }
+
+window.onload = function () {
+  mutedAll();
+};

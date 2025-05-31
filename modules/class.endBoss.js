@@ -66,7 +66,9 @@ class EndBoss extends MovableObjects {
 
       if (this.world && this.world.character) {
         let distance = Math.abs(this.x - this.world.character.x);
-        if (distance < 200) {
+        if (distance < 400) {
+          this.speed = 0.8 + Math.random() * 0.9;
+
           this.playAnimation(this.attackImage);
           this.character.hit();
         } else {

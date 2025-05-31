@@ -127,15 +127,24 @@ class Character extends MovableObjects {
     setInterval(() => {
       if (this.isDead()) {
         this.playAnimation(this.walkingDead);
+        this.stopSnore(); // Wacht beim Schmerz auf
+        this.isSleeping = false;
       } else if (this.isHurt()) {
         this.playAnimation(this.walkingHurt);
+        this.hurtSound.play();
+        this.stopSnore(); // Wacht beim Schmerz auf
+        this.isSleeping = false;
       } else if (this.isAboveGround()) {
         this.playAnimation(this.walkingJumping);
+        this.stopSnore(); // Auch beim Springen aufwachen
+        this.isSleeping = false;
       } else {
         let idleTime = (Date.now() - this.lastMoveTime) / 1000;
 
         if (this.world.keyboard.RIGHT || this.world.keyboard.LEFT) {
           this.playAnimation(this.walkingImage);
+          this.stopSnore();
+          this.isSleeping = false;
         } else if (idleTime > 10) {
           this.playAnimation(this.longIdleImg);
           if (!this.isSleeping) {
@@ -145,6 +154,7 @@ class Character extends MovableObjects {
         } else {
           this.playAnimation(this.idleImg);
           this.stopSnore();
+          this.isSleeping = false;
         }
       }
     }, 50);
@@ -163,5 +173,31 @@ class Character extends MovableObjects {
       this.x + this.width - this.offset.right > enemy.x + enemy.offset.left && this.x + this.offset.left < enemy.x + enemy.width - enemy.offset.right;
 
     return verticalHit && horizontalHit;
+  }
+
+  // Stopping All Sound in my Game
+
+  pauseAllSounds() {
+    if (this.soundSnore) {
+      this.soundSnore.pause();
+      this.soundSnore.currentTime = 0;
+    }
+    if (this.walkingSound) {
+      this.walkingSound.pause();
+      this.walkingSound.currentTime = 0;
+    }
+    if (this.jumpSound) {
+      this.jumpSound.pause();
+      this.jumpSound.currentTime = 0;
+    }
+    if (this.hurtSound) {
+      this.hurtSound.pause();
+      this.hurtSound.currentTime = 0;
+    }
+    if (this.brokenBottle) {
+      this.brokenBottle.pause();
+      this.brokenBottle.currentTime = 0;
+    }
+    // you Cann Add More List  iyo Wanna !!!
   }
 }
