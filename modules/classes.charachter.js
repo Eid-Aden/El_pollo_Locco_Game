@@ -22,25 +22,25 @@ class Character extends MovableObjects {
   ];
 
   walkingJumping = [
-    '/img/2_character_pepe/3_jump/J-31.png',
-    '/img/2_character_pepe/3_jump/J-32.png',
-    '/img/2_character_pepe/3_jump/J-33.png',
-    '/img/2_character_pepe/3_jump/J-34.png',
-    '/img/2_character_pepe/3_jump/J-35.png',
-    '/img/2_character_pepe/3_jump/J-36.png',
-    '/img/2_character_pepe/3_jump/J-37.png',
-    '/img/2_character_pepe/3_jump/J-38.png',
-    '/img/2_character_pepe/3_jump/J-39.png',
+    'img/2_character_pepe/3_jump/J-31.png',
+    'img/2_character_pepe/3_jump/J-32.png',
+    'img/2_character_pepe/3_jump/J-33.png',
+    'img/2_character_pepe/3_jump/J-34.png',
+    'img/2_character_pepe/3_jump/J-35.png',
+    'img/2_character_pepe/3_jump/J-36.png',
+    'img/2_character_pepe/3_jump/J-37.png',
+    'img/2_character_pepe/3_jump/J-38.png',
+    'img/2_character_pepe/3_jump/J-39.png',
   ];
 
   walkingDead = [
-    '/img/2_character_pepe/5_dead/D-51.png',
-    '/img/2_character_pepe/5_dead/D-52.png',
-    '/img/2_character_pepe/5_dead/D-53.png',
-    '/img/2_character_pepe/5_dead/D-54.png',
-    '/img/2_character_pepe/5_dead/D-55.png',
-    '/img/2_character_pepe/5_dead/D-56.png',
-    '/img/2_character_pepe/5_dead/D-57.png',
+    'img/2_character_pepe/5_dead/D-51.png',
+    'img/2_character_pepe/5_dead/D-52.png',
+    'img/2_character_pepe/5_dead/D-53.png',
+    'img/2_character_pepe/5_dead/D-54.png',
+    'img/2_character_pepe/5_dead/D-55.png',
+    'img/2_character_pepe/5_dead/D-56.png',
+    'img/2_character_pepe/5_dead/D-57.png',
   ];
 
   walkingHurt = ['img/2_character_pepe/4_hurt/H-41.png', 'img/2_character_pepe/4_hurt/H-42.png', 'img/2_character_pepe/4_hurt/H-43.png'];
@@ -78,14 +78,14 @@ class Character extends MovableObjects {
 
   constructor() {
     super();
-    this.loadImage('img/2_character_pepe/2_walk/W-21.png');
-    this.loadImages(this.walkingHurt);
-    this.loadImages(this.walkingDead);
-    this.loadImages(this.walkingJumping);
+
+    this.loadImage(this.idleImg[0]);
     this.loadImages(this.walkingImage);
+    this.loadImages(this.walkingJumping);
+    this.loadImages(this.walkingDead);
+    this.loadImages(this.walkingHurt);
     this.loadImages(this.idleImg);
     this.loadImages(this.longIdleImg);
-    this.lastMoveTime = Date.now();
 
     //Sound beim SoundManager registrieren
     SoundManager.register(this.walkingSound);
