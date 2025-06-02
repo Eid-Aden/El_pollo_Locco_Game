@@ -6,8 +6,22 @@ let keyboard = new Keyboard();
 function init() {
   canvas = document.getElementById('canvas');
   world = new World(canvas, keyboard);
+}
 
-  console.log(' meine  Charact ist', world.character);
+function openFullscreen() {
+  let canvas = document.getElementById('canvas');
+
+  if (canvas.requestFullscreen) {
+    canvas.requestFullscreen();
+  } else if (canvas.webkitRequestFullscreen) {
+    canvas.webkitRequestFullscreen(); // für Safari
+  } else if (canvas.msRequestFullscreen) {
+    canvas.msRequestFullscreen(); // für ältere IE-Versionen
+  }
+}
+
+function startGame() {
+  document.getElementById('overlay').style.display = 'none';
 }
 
 window.addEventListener('keydown', (e) => {

@@ -12,11 +12,6 @@ body {
   padding: 0;
 }
 
-canvas {
-  background-color: #000000;
-  border-radius: 5px;
-}
-
 h1 {
   font-family: 'Poppins', sans-serif;
   font-weight: 900;
@@ -30,17 +25,102 @@ header {
   margin: 0;
   padding: 0;
 }
-button {
-  width: fit-content;
+header h1 {
+  width: 100%;
   font-family: 'Poppins', sans-serif;
   font-weight: 800;
-  text-align: end;
+  text-align: center;
   color: white;
   border: transparent;
-  background: darkkhaki;
+  background: transparent;
   font-size: 64px;
 }
 
+.overlay {
+  position: fixed;
+  background: transparent;
+  width: 100%;
+  height: 100vh;
+  z-index: 100;
+}
+
+canvas {
+  background-color: #000000;
+  border-radius: 5px;
+  display: block;
+  margin: 0 auto;
+  position: relative;
+  z-index: 1;
+}
+
+/* Overlay über dem Canvas */
+.overlay {
+  position: absolute;
+  top: 50px;
+  left: 0;
+  width: 100%;
+  height: 100vh;
+  background-color: rgba(0, 0, 0, 0.1); /* halb transparentes Grau */
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  z-index: 10;
+}
+
+/* Startbild genau passend */
+.startImg {
+  width: 720px;
+  height: 500px;
+  border-radius: 5px;
+}
+.youWin {
+  width: 720px;
+  height: 500px;
+  border-radius: 5px;
+}
+
+/* Buttons zentriert */
+.con_Container {
+  display: flex;
+  gap: 20px;
+  margin-top: 20px;
+}
+
+button {
+  border: none;
+}
+.cantrol.start_BTN.impres_BTN {
+  border: none;
+  background: darkgreen;
+  width: 100px;
+  height: 40px;
+  border-radius: 12px;
+  font-family: 'Poppins', sans-serif;
+  color: white;
+  font-size: 20px;
+  cursor: pointer;
+}
+
+footer {
+  width: 100%;
+  position: fixed;
+  bottom: 0;
+}
+
+.cantrol,
+.start_BTN,
+.impres_BTN {
+  border: none;
+  background: darkgreen;
+  width: 150px;
+  height: 40px;
+  border-radius: 5px;
+  font-family: 'Poppins', sans-serif;
+  color: white;
+  font-size: 20px;
+  cursor: pointer;
+}
 #muteButton {
   width: 24px;
   height: 24px;
