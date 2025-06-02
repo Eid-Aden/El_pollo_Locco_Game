@@ -78,6 +78,7 @@ class World {
           this.endboss.isDead = true;
           this.endboss.loadImage(this.endboss.deadImage[0]);
           document.getElementById('youWin').style.display = 'block';
+          document.getElementById('restartBtn').style.display = 'block';
         } else {
           this.endboss.loadImage(this.endboss.hurtImage[0]);
         }
@@ -122,6 +123,7 @@ class World {
       this.statusbar.setPercentage(this.character.energy);
       if (this.character.energy === 0) {
         document.getElementById('youWin').style.display = 'block';
+        document.getElementById('restartBtn').style.display = 'block';
 
         this.gameOver = true;
 

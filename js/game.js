@@ -76,3 +76,7 @@ function toggleMute() {
     icon.src = 'img/mute.png';
   }
 }
+
+function restartGame() {
+  location.reload();
+}
