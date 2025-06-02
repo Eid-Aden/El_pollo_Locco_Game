@@ -21,6 +21,7 @@ class World {
   camara_x = 0;
   brokenBottle = new Audio('audio/broken-bottle.mp3');
   chickenSound = new Audio('audio/chickenSound.mp3');
+  gameOver = false;
 
   constructor(canvas, keyboard) {
     this.ctx = canvas.getContext('2d');
@@ -76,7 +77,7 @@ class World {
         if (this.bossHits >= 5) {
           this.endboss.isDead = true;
           this.endboss.loadImage(this.endboss.deadImage[0]);
-          document.getElementById('gameOver').innerHTML = `  <img id="imgTS" src="img/You won, you lost/You Win A.png" alt="">`;
+          document.getElementById('youWin').style.display = 'block';
         } else {
           this.endboss.loadImage(this.endboss.hurtImage[0]);
         }
@@ -120,7 +121,18 @@ class World {
       this.character.hit();
       this.statusbar.setPercentage(this.character.energy);
       if (this.character.energy === 0) {
-        document.getElementById('lost').innerHTML = ' Your lost this time!!';
+        document.getElementById('youWin').style.display = 'block';
+
+        this.gameOver = true;
+
+        // Bewegungen stoppen:
+        this.character.speed = 0;
+        this.character.speedY = 0;
+
+        this.level.enamies.forEach((enemy) => {
+          enemy.speed = 0;
+          enemy.speedY = 0;
+        });
       }
     }
   }
@@ -139,6 +151,8 @@ class World {
       this.speed = 0.12 + Math.random() * 0.25;
       let chicken = new Chicken();
       chicken.x = this.x;
+      chicken.world = this;
+
       this.level.enamies.push(chicken);
     }
   }
@@ -148,6 +162,7 @@ class World {
       this.speed = 0.12 + Math.random() * 0.25;
       let small_chicken = new SmallChicken();
       small_chicken.x = this.x;
+      small_chicken.world = this;
       this.level.enamies.push(small_chicken);
     }
   }
@@ -171,7 +186,7 @@ class World {
         this.collectedBottles++; // Anzahl gesammelter Flaschen erhöhen
         this.bottle.setPercentage(this.collectedBottles, this.totalBottles); // Balken aktualisieren
         console.log('Flasche gesammelt!'); // Zum Testen
-        /*    this.brokenBottle.play(); */
+
         SoundManager.play(this.brokenBottle);
       }
     });

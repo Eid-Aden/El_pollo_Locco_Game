@@ -107,6 +107,7 @@ class Character extends MovableObjects {
 
   animate() {
     setInterval(() => {
+      if (this.world?.gameOver) return;
       if (this.world.keyboard.RIGHT && this.x < this.world.level.levelEnd_x) {
         this.moveRight();
         this.otherDirection = false;
@@ -130,6 +131,7 @@ class Character extends MovableObjects {
     }, 1000 / 60);
 
     setInterval(() => {
+      if (this.world?.gameOver) return;
       if (this.isDead()) {
         this.playAnimation(this.walkingDead);
         this.stopSnore(); // Wacht beim Schmerz auf

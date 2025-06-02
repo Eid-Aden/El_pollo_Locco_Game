@@ -74,10 +74,15 @@ canvas {
   height: 500px;
   border-radius: 5px;
 }
+
 .youWin {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
   width: 720px;
-  height: 500px;
-  border-radius: 5px;
+  height: 480px;
+  z-index: 200;
 }
 
 /* Buttons zentriert */
