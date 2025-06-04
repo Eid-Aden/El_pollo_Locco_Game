@@ -24,7 +24,7 @@
     ></script>
 
     <link rel="shortcut icon" href="img/favicon.png" type="image/x-icon" />
-    <link rel="stylesheet" href="fonts/styles.css" />
+    <link rel="stylesheet" href="styles.css" />
     <script src="modules/drawableObject.classes.js"></script>
     <script src="modules/classes.movable.Ojects.js"></script>
     <script src="modules/classes.cloud.js"></script>
@@ -48,26 +48,34 @@
   </head>
   <body>
     <header>
-      <h1>El Pollo Locco</h1>
+      <h1>El Pollo Locco Game</h1>
     </header>
 
-    <div id="soundMute" onclick="toggleMute()">
+    <div id="soundMute" onclick="toggleMute()" class="muteBTN_fullscreenBTN">
       <img id="muteIcon" src="img/volume.png" width="24" alt="" />
+      <div onclick="openFullscreen()"><img class="fullscreen" src="img/fullscreen.png" alt="" /></div>
     </div>
-    <button onclick="openFullscreen()">Vollbild</button>
+    <!-- Mobile Buttons When User hast Mobilte Devices !! -->
+    <div class="swapyourPhone">
+      <img id="swapPhone" src="img/swapYourPhone.gif" style="display: none" />
+    </div>
 
-    <!--  <h1 id="gameOver"></h1> -->
-    <h2 id="lost"></h2>
     <canvas id="canvas" width="720" height="480"> </canvas>
-    <b id="hurt"></b>
-    <h1 id="dead"></h1>
+
+    <div class="mobile_content">
+      <img class="mobileOnlyImg" src="img/left-arrow.png" alt="" />
+      <img class="mobileOnlyImg" src="img/right-arrow.png" alt="" />
+      <img class="mobileOnlyImg" src="img/spacing.png" alt="" />
+      <img class="mobileOnlyImg" src="img/bottle.png" alt="" />
+    </div>
+
     <img id="youWin" class="youWin" src="img/9_intro_outro_screens/game_over/game over!.png" alt="" style="display: none" />
     <button id="restartBtn" class="restartBtn" onclick="restartGame()" style="display: none">Restart</button>
 
     <div class="overlay" id="overlay">
       <img id="startImg" class="startImg" src="img/9_intro_outro_screens/start/startscreen_1.png" alt="" />
 
-      <div class="con_Container">
+      <div class="container_infBTN">
         <button class="start_BTN" id="start_BTN" onclick="startGame()">Start</button>
         <button class="cantrol" id=" control_BTN">Control</button>
 

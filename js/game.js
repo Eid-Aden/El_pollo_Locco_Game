@@ -78,6 +78,24 @@ function toggleMute() {
   }
 }
 
+/* function checkScreenSize() {
+  const swap = document.getElementById('swapPhone');
+  const mobile = document.querySelector('.mobile_content');
+
+  if (window.innerWidth < 700) {
+    swap.style.display = 'block';
+    mobile.style.display = 'none';
+  } else {
+    swap.style.display = 'none';
+    mobile.style.display = 'flex';
+  }
+}
+
+
+window.addEventListener('load', checkScreenSize);
+window.addEventListener('resize', checkScreenSize);
+*/
+
 function restartGame() {
   location.reload();
   startGame();
