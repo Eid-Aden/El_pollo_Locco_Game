@@ -53,12 +53,14 @@ class EndBoss extends MovableObjects {
 
   animate() {
     setInterval(() => {
+      if (this.world?.gameOver || this.isDead) return;
       if (!this.isDead) {
         this.movLeft();
       }
     }, 1000 / 60);
 
     setInterval(() => {
+      if (this.world?.gameOver || this.isDead) return;
       if (this.isDead) {
         this.loadImage(this.deadImage[0]);
         return;
@@ -70,7 +72,8 @@ class EndBoss extends MovableObjects {
           this.speed = 0.8 + Math.random() * 0.9;
 
           this.playAnimation(this.attackImage);
-          this.character.hit();
+
+          this.world.character.hit();
         } else {
           this.playAnimation(this.walkingImage);
         }

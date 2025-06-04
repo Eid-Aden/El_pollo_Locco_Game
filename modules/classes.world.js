@@ -79,6 +79,7 @@ class World {
           this.endboss.loadImage(this.endboss.deadImage[0]);
           document.getElementById('youWin').style.display = 'block';
           document.getElementById('restartBtn').style.display = 'block';
+          SoundManager.pauseAll();
         } else {
           this.endboss.loadImage(this.endboss.hurtImage[0]);
         }
@@ -126,6 +127,7 @@ class World {
         document.getElementById('restartBtn').style.display = 'block';
 
         this.gameOver = true;
+        SoundManager.pauseAll();
 
         // Bewegungen stoppen:
         this.character.speed = 0;
@@ -232,7 +234,7 @@ class World {
         this.coin.setPercentage(this.collectedCoin, this.totalCoins);
 
         console.log('Coins gesammelt!');
-        this.brokenBottle.play();
+        SoundManager.play(this.brokenBottle);
       }
     }
   }

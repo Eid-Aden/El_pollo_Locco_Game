@@ -3,15 +3,14 @@ class SoundManager {
   static isMuted = false;
 
   static register(sound) {
-    this.sounds.push(sound);
+    if (sound instanceof Audio) {
+      this.sounds.push(sound);
+    }
   }
 
   static muteAll() {
     this.isMuted = true;
-    this.sounds.forEach((sound) => {
-      sound.pause();
-      sound.currentTime = 0;
-    });
+    this.pauseAll();
   }
 
   static unmuteAll() {
@@ -19,8 +18,23 @@ class SoundManager {
   }
 
   static play(sound) {
-    if (!this.isMuted) {
+    if (!this.isMuted && sound instanceof Audio) {
       sound.play();
     }
+  }
+
+  static pauseAll() {
+    this.sounds.forEach((sound) => {
+      if (sound && typeof sound.pause === 'function') {
+        try {
+          if (!sound.paused) {
+            sound.pause();
+            sound.currentTime = 0;
+          }
+        } catch (e) {
+          console.warn('Fehler beim Stoppen von Sound:', e);
+        }
+      }
+    });
   }
 }

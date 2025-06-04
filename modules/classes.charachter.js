@@ -92,6 +92,7 @@ class Character extends MovableObjects {
     SoundManager.register(this.hurtSound);
     SoundManager.register(this.deadSound);
     SoundManager.register(this.soundSnore);
+    SoundManager.register(this.jumpSound);
 
     this.aplyGravity();
     this.animate();
@@ -107,7 +108,7 @@ class Character extends MovableObjects {
 
   animate() {
     setInterval(() => {
-      if (this.world?.gameOver) return;
+      if (this.world?.gameOver || this.isDead() || this.world?.endboss?.isDead) return;
       if (this.world.keyboard.RIGHT && this.x < this.world.level.levelEnd_x) {
         this.moveRight();
         this.otherDirection = false;
@@ -119,6 +120,7 @@ class Character extends MovableObjects {
         this.movLeft();
         this.otherDirection = true;
         SoundManager.play(this.walkingSound);
+
         this.lastMoveTime = Date.now(); // Bewegung erkannt
       }
 
@@ -131,14 +133,13 @@ class Character extends MovableObjects {
     }, 1000 / 60);
 
     setInterval(() => {
-      if (this.world?.gameOver) return;
+      if (this.world?.gameOver || this.isDead() || this.world?.endboss?.isDead) return;
       if (this.isDead()) {
         this.playAnimation(this.walkingDead);
         this.stopSnore(); // Wacht beim Schmerz auf
         this.isSleeping = false;
       } else if (this.isHurt()) {
         this.playAnimation(this.walkingHurt);
-
         SoundManager.play(this.hurtSound);
 
         this.stopSnore(); // Wacht beim Schmerz auf
@@ -158,6 +159,7 @@ class Character extends MovableObjects {
           this.playAnimation(this.longIdleImg);
           if (!this.isSleeping) {
             SoundManager.play(this.soundSnore);
+
             this.isSleeping = true;
           }
         } else {
@@ -182,30 +184,5 @@ class Character extends MovableObjects {
       this.x + this.width - this.offset.right > enemy.x + enemy.offset.left && this.x + this.offset.left < enemy.x + enemy.width - enemy.offset.right;
 
     return verticalHit && horizontalHit;
-  }
-
-  // Stopping All Sound in my Game
-
-  pauseAllSounds() {
-    if (this.soundSnore) {
-      this.soundSnore.pause();
-      this.soundSnore.currentTime = 0;
-    }
-    if (this.walkingSound) {
-      this.walkingSound.pause();
-      this.walkingSound.currentTime = 0;
-    }
-    if (this.jumpSound) {
-      this.jumpSound.pause();
-      this.jumpSound.currentTime = 0;
-    }
-    if (this.hurtSound) {
-      this.hurtSound.pause();
-      this.hurtSound.currentTime = 0;
-    }
-    if (this.brokenBottle) {
-      this.brokenBottle.pause();
-      this.brokenBottle.currentTime = 0;
-    }
   }
 }

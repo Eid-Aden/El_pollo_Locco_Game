@@ -1,6 +1,6 @@
 let canvas;
 let world;
-let isMuted = false;
+
 let keyboard = new Keyboard();
 
 function init() {
@@ -22,6 +22,7 @@ function openFullscreen() {
 
 function startGame() {
   document.getElementById('overlay').style.display = 'none';
+  init();
 }
 
 window.addEventListener('keydown', (e) => {
@@ -79,4 +80,5 @@ function toggleMute() {
 
 function restartGame() {
   location.reload();
+  startGame();
 }
