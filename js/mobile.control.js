@@ -1,0 +1,16 @@
+function MobileControls() {
+  const buttons = [
+    { id: 'btn-left', key: 'LEFT' },
+    { id: 'btn-right', key: 'RIGHT' },
+    { id: 'btn-space', key: 'SPACE' },
+    { id: 'btn-bottle', key: 'D' },
+  ];
+
+  buttons.forEach(({ id, key }) => {
+    const controlBnt = document.getElementById(id);
+    controlBnt.addEventListener('touchstart', () => (keyboard[key] = true));
+    controlBnt.addEventListener('touchend', () => (keyboard[key] = false));
+  });
+}
+
+window.addEventListener('load', MobileControls);

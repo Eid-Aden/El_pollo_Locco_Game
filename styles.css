@@ -2,234 +2,227 @@
   font-family: 'zabars';
   src: url('fonts/zabars.ttf') format('truetype');
 }
+html,
+body {
+  height: 100%;
+  margin: 0;
+  padding: 0;
+}
 
 body {
   font-family: 'zabars', sans-serif;
   font-weight: 400;
   display: flex;
   justify-content: center;
-  align-items: center;
   flex-direction: column;
   background-image: url('../img/coverImg/africa.jpg');
   background-repeat: no-repeat;
+  background-position: center center;
   background-size: cover;
   margin: 0;
   padding: 0;
-}
-
-h1 {
-  font-family: 'zabars', sans-serif;
-  font-weight: 900;
-  font-size: 80px;
-  color: rgba(253, 239, 45, 0.597);
-  margin: 0;
-}
-
-header {
-  width: 100%;
-  margin: 0;
-  padding: 0;
-}
-
-header h1 {
-  font-family: 'zabars', sans-serif;
-  font-weight: 800;
-  font-size: 74px;
-  color: #fff8dc;
-  text-align: center;
-  background: transparent;
-  text-shadow: 1px 1px 2px #d4af37, 2px 2px 4px #8b7500, 0 0 8px #ffd700;
-  letter-spacing: 5px;
-}
-
-.overlay {
-  position: fixed;
-  background: transparent;
-  width: 100%;
-  height: 100vh;
-  z-index: 100;
-}
-
-canvas {
-  background-color: #000000;
-  border-radius: 5px;
-  display: block;
-  margin: 0 auto;
   position: relative;
-  z-index: 1;
 }
 
-/* Overlay über dem Canvas */
-.overlay {
-  position: absolute;
-  top: 20px;
-  left: 0;
-  width: 100%;
-  height: 100vh;
-  background-color: transparent;
+.mobile_hidden {
   display: flex;
-  flex-direction: column;
   justify-content: center;
-  align-items: center;
-  z-index: 30;
-}
-
-/* Startbild genau passend */
-.startImg {
-  width: 720px;
-  height: 600px;
-  border-radius: 5px;
-}
-
-.youWin {
-  position: absolute;
-  top: 50%;
-  left: 50%;
-  transform: translate(-50%, -50%);
-  width: 720px;
-  height: 480px;
-  z-index: 200;
-}
-
-.restartBtn {
-  position: absolute;
-  top: 65%;
-  left: 50%;
-  transform: translate(-50%, -50%);
-  padding: 12px 24px;
-  font-size: 20px;
-  background-color: darkgreen;
-  color: white;
-  border: none;
-  border-radius: 10px;
-  cursor: pointer;
-  z-index: 200;
-}
-
-button {
-  border: none;
-}
-.container_infBTN {
-  border: none;
-
-  width: 500px;
-  height: 40px;
-  border-radius: 12px;
-  font-family: 'Poppins', sans-serif;
-  color: white;
-  font-size: 20px;
-  cursor: pointer;
-  position: absolute;
-  top: 110px;
-  display: flex;
-  gap: 50px;
-}
-
-footer {
-  width: 100%;
+  gap: 15px;
   position: fixed;
-  bottom: 0;
+  bottom: 20px;
+  left: 0;
+  right: 0;
+  z-index: 200;
+  padding: 10px;
 }
 
-.cantrol,
-.start_BTN,
-.impres_BTN {
-  border: none;
-  background: darkgreen;
-  width: 150px;
-  height: 40px;
-  border-radius: 5px;
-  font-family: 'Poppins', sans-serif;
-  color: white;
-  font-size: 20px;
-  cursor: pointer;
-}
-#muteButton {
-  width: 24px;
-  height: 24px;
-  cursor: pointer;
+@media (min-width: 700px) {
+  .mobile_hidden {
+    display: none;
+  }
 }
 
-#gameOver {
-  width: 450;
-  height: 450;
-  font-size: 60;
-  color: black;
+.btn-arrow {
+  width: 100px;
+}
+
+.btn-arrow-right {
+  width: 60px;
+  height: 50;
+  background: darkgray;
+  padding: 8px;
+  border-radius: 3px;
+}
+.btn-arrow-left {
+  width: 60px;
+  height: 50;
+  background: darkgray;
+  padding: 8px;
+  border-radius: 3px;
+}
+.btn-arrow-jump {
+  width: 60px;
+  height: 50;
+  background: darkgray;
+  padding: 8px;
+  border-radius: 3px;
+}
+.btn-arrow-bottle {
+  width: 60px;
+  height: 50;
   background: whitesmoke;
-  position: absolute;
-  top: 200;
-  left: 200;
-}
-
-#imgTS {
-  border-radius: 40px;
-  width: 400px;
-}
-
-.mobileOnlyImg {
-  width: 55px;
-  height: 40px;
-  background: #023047;
-  color: #fff8dc;
+  padding: 8px;
   border-radius: 3px;
 }
 
-.mobile_content {
-  display: none;
-  width: 40%;
-  justify-content: space-between;
-  align-items: center;
+canvas {
+  position: relative;
+  width: 100%;
+  max-width: 720px;
+  width: 100%;
+  height: auto;
+  background: black;
+  border-radius: 5px;
+  z-index: 1;
+}
+
+.overlay {
   position: absolute;
-  bottom: 20px;
 
-  transform: translateX(-50%);
-  z-index: 8;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  border-radius: 5px;
+  z-index: 9;
 }
 
-@media screen and (max-width: 720px) {
-  /* Zusätzliche Regeln für kleinere Monitore  */
-  body {
-    color: #000;
-  }
-  .mobile_content {
-    display: flex;
-    top: 550px;
-    width: 40%;
-    justify-content: space-between;
-
-    position: absolute;
-  }
-}
-.fullscreen {
-  width: 45px;
-  height: 35px;
-  height: 18px;
-  cursor: pointer;
+.cover_img {
+  position: absolute;
+  top: 175px;
+  left: 190px;
+  width: 100%;
+  max-width: auto;
+  height: 485px;
+  object-fit: cover;
+  border-radius: 5px;
 }
 
-.muteBTN_fullscreenBTN {
+.container_user_story {
+  display: flex;
+  justify-content: center;
+  position: absolute;
+  z-index: 20;
+}
+.canvas-wrapper {
+  display: flex;
+  justify-content: center;
+}
+
+.fullscreen-muttBnt {
+  width: 100%;
+  max-width: 720px;
   display: flex;
   justify-content: space-between;
   align-items: center;
-  width: 40%;
-  padding-bottom: 20px;
+  cursor: pointer;
+  background: #e2cc9b;
+  margin: 0 auto;
+  padding: 8px;
+  border-radius: 4px;
 }
-/* .swapyourPhone {
-  display: none; /* wird von JS gesteuert */
-/*   position: fixed;
-  top: 0;
-  left: 0;
+
+.allcover {
+  background: #f8e4b4; /* Papierfarben */
+  border-radius: 20px;
+  padding: 30px;
+  /*   max-width: 700px; */
+  box-shadow: 0 10px 25px rgba(0, 0, 0, 0.3);
+  border: 2px solid #d4b07a; /* heller Rand */
+  text-align: center;
+  margin-top: 10px;
+  position: absolute;
+  z-index: 99;
+  left: 250px;
+  width: 65%;
+}
+
+h1 {
+  font-size: 66px;
+  letter-spacing: 15px;
+  color: #5a3b1d;
+  /*  color: #ffffff; */
+  margin-bottom: 20px;
+  font-weight: bold;
+}
+
+.game-window {
+  background: linear-gradient(to top, #ffa726, #81d4fa);
+  border-radius: 15px;
+  /*  padding: 10px; */
+  overflow: hidden;
+  margin-bottom: 20px;
+}
+
+.game-window img {
   width: 100%;
-  height: 100vh;
-  background-color: black;
-  z-index: 999;
+  border-radius: 5px;
+}
+
+.button-row {
+  display: flex;
+  justify-content: space-around;
+  flex-wrap: wrap;
+  gap: 10px;
+}
+
+.button-row button {
+  background-color: #f5e1b3;
+  border: 2px solid #5a3b1d;
+  color: #5a3b1d;
+  padding: 10px 20px;
+  font-size: 16px;
+  font-weight: bold;
+  border-radius: 10px;
+  cursor: pointer;
+  transition: 0.2s;
+}
+
+.button-row button:hover {
+  background-color: #e2cc9b;
+}
+
+.coverCard {
+  width: 100%;
 
   display: flex;
   justify-content: center;
-  align-items: center;
-} */
+  position: absolute; /* wichtig: absolute, um über dem Cover zu liegen */
+  top: 20px;
+  z-index: 200; /* höher als das Cover */
+  border-radius: 20px;
+  cursor: pointer;
+}
 
-/* .swapyourPhone img {
-  max-width: 80%;
-  height: auto;
-} */
+.coverCard.retext {
+  text-align: center;
+  background-color: #f5e1b3;
+  border: 2px solid #5a3b1d;
+  color: #5a3b1d;
+  padding: 10px 20px;
+  font-size: 16px;
+  font-weight: bold;
+  border-radius: 10px;
+  width: 150px;
+  position: absolute;
+  left: 705px; /* px ergänzen */
+  top: 300px;
+  z-index: 201; /* höher als Bild */
+  transition: 0.2s;
+}
+
+.retext:hover {
+  background-color: #e2cc9b;
+}
+.restarImg {
+  width: 28px;
+}

@@ -20,11 +20,6 @@ function openFullscreen() {
   }
 }
 
-function startGame() {
-  document.getElementById('overlay').style.display = 'none';
-  init();
-}
-
 window.addEventListener('keydown', (e) => {
   console.log(e.keyCode);
   if (e.keyCode == 39) {
@@ -78,24 +73,14 @@ function toggleMute() {
   }
 }
 
-/* function checkScreenSize() {
-  const swap = document.getElementById('swapPhone');
-  const mobile = document.querySelector('.mobile_content');
+function startGame() {
+  document.getElementById('llcover').style.display = 'none';
 
-  if (window.innerWidth < 700) {
-    swap.style.display = 'block';
-    mobile.style.display = 'none';
-  } else {
-    swap.style.display = 'none';
-    mobile.style.display = 'flex';
-  }
+  document.getElementById('canvas').style.display = 'block';
+  document.getElementById('soundMute').style.display = 'flex';
+
+  init();
 }
-
-
-window.addEventListener('load', checkScreenSize);
-window.addEventListener('resize', checkScreenSize);
-*/
-
 function restartGame() {
   location.reload();
   startGame();

@@ -68,7 +68,6 @@ class World {
     this.throwableObjects.forEach((bottle, index) => {
       if (this.endboss && bottle.isColliding(this.endboss)) {
         this.bossHits++;
-
         this.bottleSplash(bottle);
         setTimeout(() => {
           this.throwableObjects.splice(index, 1);
@@ -77,7 +76,7 @@ class World {
         if (this.bossHits >= 5) {
           this.endboss.isDead = true;
           this.endboss.loadImage(this.endboss.deadImage[0]);
-          document.getElementById('youWin').style.display = 'block';
+          /*   document.getElementById('youWin').style.display = 'block'; */
           document.getElementById('restartBtn').style.display = 'block';
           SoundManager.pauseAll();
         } else {
@@ -123,7 +122,7 @@ class World {
       this.character.hit();
       this.statusbar.setPercentage(this.character.energy);
       if (this.character.energy === 0) {
-        document.getElementById('youWin').style.display = 'block';
+        /*  document.getElementById('youWin').style.display = 'block'; */
         document.getElementById('restartBtn').style.display = 'block';
 
         this.gameOver = true;

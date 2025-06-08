@@ -45,50 +45,46 @@
     <script src="modules/sound.classes.js"></script>
     <script src="levels/level.js"></script>
     <script src="js/game.js"></script>
+    <script src="js/mobile.control.js"></script>
   </head>
-  <body>
+  <body onload="init()">
     <header>
-      <h1>El Pollo Locco Game</h1>
+      <div class="allcover" id="llcover">
+        <h1>El Pollo Locco</h1>
+
+        <div class="game-window">
+          <img src="img/9_intro_outro_screens/start/startscreen_1.png" alt="" />
+        </div>
+
+        <div class="button-row">
+          <button onclick="startGame()">START</button>
+          <button>USER STORY</button>
+          <button>HOW TO USE</button>
+        </div>
+      </div>
     </header>
 
-    <div id="soundMute" onclick="toggleMute()" class="muteBTN_fullscreenBTN">
-      <img id="muteIcon" src="img/volume.png" width="24" alt="" />
-      <div onclick="openFullscreen()"><img class="fullscreen" src="img/fullscreen.png" alt="" /></div>
-    </div>
-    <!-- Mobile Buttons When User hast Mobilte Devices !! -->
-    <div class="swapyourPhone">
-      <img id="swapPhone" src="img/swapYourPhone.gif" style="display: none" />
+    <!-- Restart Button über allem -->
+    <div id="restartBtn" style="display: none; position: absolute; top: 20px; left: 0; width: 100%; z-index: 300" onclick="restartGame()">
+      <img src="img/9_intro_outro_screens/game_over/game over!.png" alt="" class="coverCard" />
+      <p class="coverCard retext"><img src="img/restart.png" alt="" class="restarImg" /></p>
     </div>
 
-    <canvas id="canvas" width="720" height="480"> </canvas>
+    <div id="game_over"></div>
 
-    <div class="mobile_content">
-      <img class="mobileOnlyImg" src="img/left-arrow.png" alt="" />
-      <img class="mobileOnlyImg" src="img/right-arrow.png" alt="" />
-      <img class="mobileOnlyImg" src="img/spacing.png" alt="" />
-      <img class="mobileOnlyImg" src="img/bottle.png" alt="" />
+    <div class="canvas-wrapper">
+      <canvas id="canvas" width="720" height="480" style="display: none"></canvas>
+    </div>
+    <div id="soundMute" onclick="toggleMute()" class="fullscreen-muttBnt" style="display: none">
+      <img id="muteIcon" src="img/volume.png" width="24" alt="" width="28" />
+      <div onclick="openFullscreen()"><img class="fullscreen" src="img/fullscreen.png" alt="" width="28" /></div>
     </div>
 
-    <img id="youWin" class="youWin" src="img/9_intro_outro_screens/game_over/game over!.png" alt="" style="display: none" />
-    <button id="restartBtn" class="restartBtn" onclick="restartGame()" style="display: none">Restart</button>
-
-    <div class="overlay" id="overlay">
-      <img id="startImg" class="startImg" src="img/9_intro_outro_screens/start/startscreen_1.png" alt="" />
-
-      <div class="container_infBTN">
-        <button class="start_BTN" id="start_BTN" onclick="startGame()">Start</button>
-        <button class="cantrol" id=" control_BTN">Control</button>
-
-        <button id="impres_BTN" class="impres_BTN">Impresseum</button>
-      </div>
+    <div class="mobile_hidden" id="mobile_hidden">
+      <img id="btn-left" class="btn-arrow-left" src="img/left-arrow.png" alt="" />
+      <img id="btn-right" class="btn-arrow-right" src="img/right-arrow.png" alt="" />
+      <img id="btn-space" class="btn-arrow-jump" src="img/space.png" alt="" />
+      <img id="btn-bottle" class="btn-arrow-bottle" src="img/bottle.png" alt="" />
     </div>
-
-    <footer>
-      <nav class="navbar navbar-light bg-light">
-        <div class="container-fluid">
-          <a class="navbar-brand" href="#">Home</a>
-        </div>
-      </nav>
-    </footer>
   </body>
 </html>
