@@ -125,17 +125,18 @@ class World {
         /*  document.getElementById('youWin').style.display = 'block'; */
         document.getElementById('restartBtn').style.display = 'block';
 
-        this.gameOver = true;
+        /*  this.gameOver = true; */
         SoundManager.pauseAll();
 
         // Bewegungen stoppen:
-        this.character.speed = 0;
-        this.character.speedY = 0;
+        /* this.character.speed = 0;
+        this.character.speedY = 0; */
 
-        this.level.enamies.forEach((enemy) => {
+        /* this.level.enamies.forEach((enemy) => {
           enemy.speed = 0;
           enemy.speedY = 0;
         });
+      */
       }
     }
   }

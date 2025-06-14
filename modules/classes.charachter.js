@@ -133,7 +133,7 @@ class Character extends MovableObjects {
     }, 1000 / 60);
 
     setInterval(() => {
-      if (this.world?.gameOver || this.isDead() || this.world?.endboss?.isDead) return;
+      /* if (this.world?.gameOver || this.isDead() || this.world?.endboss?.isDead) return; */
       if (this.isDead()) {
         this.playAnimation(this.walkingDead);
         this.stopSnore(); // Wacht beim Schmerz auf

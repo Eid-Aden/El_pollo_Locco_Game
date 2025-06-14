@@ -85,3 +85,11 @@ function restartGame() {
   location.reload();
   startGame();
 }
+
+window.addEventListener('resize', () => {
+  if (window.innerWidth <= 720) {
+    document.getElementById('soundMute').style.display = 'none';
+  } else {
+    document.getElementById('soundMute').style.display = 'flex';
+  }
+});

@@ -14,3 +14,23 @@ function MobileControls() {
 }
 
 window.addEventListener('load', MobileControls);
+
+function checkOrientation() {
+  const isMobile = window.innerWidth < 720;
+  const isPortrait = window.innerHeight > window.innerWidth;
+
+  const hint = document.getElementById('rotateHint');
+
+  if (isMobile && isPortrait) {
+    hint.style.display = 'block';
+  } else {
+    hint.style.display = 'none';
+  }
+}
+
+// Beim Laden prüfen
+window.addEventListener('load', checkOrientation);
+
+// Beim Drehen des Geräts prüfen
+window.addEventListener('resize', checkOrientation);
+window.addEventListener('orientationchange', checkOrientation);

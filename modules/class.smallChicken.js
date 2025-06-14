@@ -30,8 +30,6 @@ class SmallChicken extends MovableObjects {
 
   animate() {
     setInterval(() => {
-      /*    console.log('world =', this.world); */
-
       if (this.world?.gameOver || this.isDead || this.world?.endboss?.isDead) return;
       this.movLeft();
     }, 1000 / 60);

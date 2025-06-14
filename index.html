@@ -48,6 +48,9 @@
     <script src="js/mobile.control.js"></script>
   </head>
   <body onload="init()">
+    <div class="swapYourPhone" id="rotateHint">
+      <img src="img/swapYourPhone.gif" alt="" />
+    </div>
     <header>
       <div class="allcover" id="llcover">
         <h1>El Pollo Locco</h1>
@@ -64,27 +67,33 @@
       </div>
     </header>
 
-    <!-- Restart Button über allem -->
-    <div id="restartBtn" style="display: none; position: absolute; top: 20px; left: 0; width: 100%; z-index: 300" onclick="restartGame()">
-      <img src="img/9_intro_outro_screens/game_over/game over!.png" alt="" class="coverCard" />
-      <p class="coverCard retext"><img src="img/restart.png" alt="" class="restarImg" /></p>
+    <div id="restartBtn" onclick="restartGame()" class="restart-overlay" style="display: none">
+      <div class="restart-container">
+        <img src="img/9_intro_outro_screens/game_over/game over!.png" alt="" class="gameover-image" />
+
+        <div class="restart-button">
+          <img src="img/restart.png" alt="Restart" class="restart-icon" />
+        </div>
+      </div>
     </div>
 
     <div id="game_over"></div>
 
-    <!--   <div class="canvas-wrapper"> -->
-    <canvas class="canvas" id="canvas" width="720" height="480" style="display: none"></canvas>
-    <!--    </div> -->
-    <div id="soundMute" onclick="toggleMute()" class="fullscreen-muttBnt" style="display: none">
-      <img id="muteIcon" src="img/volume.png" width="24" alt="" width="28" />
-      <div onclick="openFullscreen()"><img class="fullscreen" src="img/fullscreen.png" alt="" width="28" /></div>
-    </div>
+    <div class="canvas-wrapper">
+      <canvas class="canvas" id="canvas" width="720" height="480" style="display: none"></canvas>
 
-    <div class="mobile_hidden" id="mobile_hidden">
-      <img id="btn-left" class="btn-arrow-left" src="img/right-arrow (2).png" alt="" />
-      <img id="btn-right" class="btn-arrow-right" src="img/left runing.png" alt="" />
-      <img id="btn-space" class="btn-arrow-jump" src="img/arrow-up.png" alt="" />
-      <img id="btn-bottle" class="btn-arrow-bottle" src="img/throwSybol.png" alt="" />
+      <div class="mobile_hidden" id="mobile_hidden">
+        <img id="muteIcon" class="bottons" src="img/volume.png" width="24" alt="" width="28" onclick="toggleMute()" />
+
+        <img id="btn-left" class="bottons" src="img/left runing.png" alt="" />
+        <img id="btn-right" class="bottons" src="img/right-arrow (2).png" alt="" />
+        <img id="btn-space" class="bottons" src="img/arrow-up.png" alt="" />
+        <img id="btn-bottle" class="bottons" src="img/throwSybol.png" alt="" />
+      </div>
+      <div id="soundMute" onclick="toggleMute()" class="fullscreen-muttBnt">
+        <img id="muteIcon" src="img/volume.png" width="24" alt="" width="28" />
+        <div onclick="openFullscreen()"><img class="fullscreen" src="img/fullscreen.png" alt="" width="28" /></div>
+      </div>
     </div>
   </body>
 </html>
