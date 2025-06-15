@@ -15,7 +15,7 @@ body {
 body {
   font-family: 'zabars', sans-serif;
   font-weight: 400;
-  background-image: url('../img/coverImg/africa.jpg');
+  background-image: url('img/coverImg/africa.jpg');
   background-repeat: no-repeat;
   background-position: center center;
   background-size: cover;
@@ -224,6 +224,7 @@ h1 {
   height: auto;
   border-radius: 20px;
   display: block;
+  min-height: 100vh;
 }
 
 .restart-button {
@@ -270,39 +271,35 @@ h1 {
   object-fit: contain;
 }
 
-/* Media Queries */
-@media (max-width: 720px) {
-  .mobile_hidden {
-    display: flex;
-    justify-content: space-between;
-  }
-  .swapYourPhone {
-    display: flex;
-    min-height: 100vh;
-    width: 100%;
-  }
-  .restart-icon {
-    width: 30px;
-  }
-  .restart-button {
-    top: 75%;
-    padding: 0;
-  }
+header {
+  width: 100%;
 }
 
 @media only screen and (max-width: 720px) {
   .canvas {
-    width: 100%;
+    width: 80%;
     height: auto;
-  }
-
-  body {
-    padding-top: 20px;
-    display: block;
   }
 }
 
-@media only screen and (max-width: 720px) {
+@media only screen and (max-width: 900px) {
+  .fullscreen-muttBnt {
+    display: none;
+  }
+}
+
+.mobile_hidden {
+  display: none;
+}
+
+@media (max-width: 880px) {
+  .mobile_hidden {
+    display: flex;
+    justify-content: center;
+    gap: 10px;
+    padding: 10px;
+  }
+
   .fullscreen-muttBnt {
     display: none;
   }
