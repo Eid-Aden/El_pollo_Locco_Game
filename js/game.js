@@ -74,22 +74,18 @@ function toggleMute() {
 }
 
 function startGame() {
-  document.getElementById('llcover').style.display = 'none';
+  // Nur bei Desktop-Breite anzeigen
+  if (window.innerWidth > 878) {
+    document.getElementById('soundMute').style.display = 'flex';
+  }
 
+  document.getElementById('llcover').style.display = 'none';
   document.getElementById('canvas').style.display = 'block';
-  document.getElementById('soundMute').style.display = 'flex';
 
   init();
 }
+
 function restartGame() {
   location.reload();
   startGame();
 }
-
-window.addEventListener('resize', () => {
-  if (window.innerWidth <= 720) {
-    document.getElementById('soundMute').style.display = 'none';
-  } else {
-    document.getElementById('soundMute').style.display = 'flex';
-  }
-});

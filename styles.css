@@ -108,7 +108,7 @@ body {
 }
 
 /* Sound und Fullscreen Button */
-.fullscreen-muttBnt {
+.fullscreen_for_disktop {
   display: none;
   justify-content: space-between;
   width: 100%;
@@ -281,10 +281,19 @@ header {
     height: auto;
   }
 }
+@media only screen and (max-width: 450px) {
+  .button-row button {
+    padding: 3px;
+    border-radius: 4px;
+  }
+  .button-row {
+    gap: 2px;
+  }
+}
 
-@media only screen and (max-width: 900px) {
-  .fullscreen-muttBnt {
-    display: none;
+@media (max-width: 878px) {
+  .fullscreen_for_disktop {
+    display: none !important;
   }
 }
 
@@ -300,7 +309,7 @@ header {
     padding: 10px;
   }
 
-  .fullscreen-muttBnt {
+  h1 {
     display: none;
   }
 }

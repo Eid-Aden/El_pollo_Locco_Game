@@ -1,4 +1,4 @@
-const level1 = new Level(
+level1 = new Level(
   [new Chicken(), new SmallChicken()],
 
   [(new Cloud(), new Cloud())],

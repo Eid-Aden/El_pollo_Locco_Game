@@ -47,7 +47,7 @@
     <script src="js/game.js"></script>
     <script src="js/mobile.control.js"></script>
   </head>
-  <body onload="init()">
+  <body>
     <div class="swapYourPhone" id="rotateHint">
       <img src="img/swapYourPhone.gif" alt="" />
     </div>
@@ -65,10 +65,6 @@
           <button>HOW TO USE</button>
         </div>
       </div>
-      <div id="soundMute" onclick="toggleMute()" class="fullscreen-muttBnt">
-        <img id="muteIcon_desktop" src="img/volume.png" width="24" alt="" width="28" />
-        <div onclick="openFullscreen()"><img class="fullscreen" src="img/fullscreen.png" alt="" width="28" /></div>
-      </div>
     </header>
 
     <div id="restartBtn" onclick="restartGame()" class="restart-overlay" style="display: none">
@@ -82,6 +78,11 @@
     </div>
 
     <div id="game_over"></div>
+
+    <div class="fullscreen_for_disktop" id="soundMute" onclick="toggleMute()">
+      <img id="muteIcon_desktop" src="img/volume.png" width="24" alt="" width="28" />
+      <div onclick="openFullscreen()"><img class="fullscreen" src="img/fullscreen.png" alt="" width="28" /></div>
+    </div>
 
     <div class="canvas-wrapper">
       <canvas class="canvas" id="canvas" width="720" height="480" style="display: none"></canvas>
