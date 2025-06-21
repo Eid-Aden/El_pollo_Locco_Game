@@ -63,7 +63,7 @@ window.addEventListener('keyup', (e) => {
 });
 
 function toggleMute() {
-  const icon = document.getElementById('muteIcon');
+  const icon = document.getElementById('muteIcon_desktop');
   if (SoundManager.isMuted) {
     SoundManager.unmuteAll();
     icon.src = 'img/volume.png';

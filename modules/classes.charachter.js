@@ -87,7 +87,6 @@ class Character extends MovableObjects {
     this.loadImages(this.idleImg);
     this.loadImages(this.longIdleImg);
 
-    //Sound beim SoundManager registrieren
     SoundManager.register(this.walkingSound);
     SoundManager.register(this.hurtSound);
     SoundManager.register(this.deadSound);
@@ -106,47 +105,60 @@ class Character extends MovableObjects {
     }
   }
 
+  intervalIds = [];
+
+  setStoppableInterval(fn, time) {
+    let id = setInterval(fn, time);
+    this.intervalIds.push(id);
+  }
+
+  stopAllIntervals() {
+    this.intervalIds.forEach(clearInterval);
+    this.intervalIds = [];
+  }
   animate() {
-    setInterval(() => {
-      if (this.world?.gameOver || this.isDead() || this.world?.endboss?.isDead) return;
+    this.setStoppableInterval(() => {
+      if (this.world?.gameOver || this.isDead() || this.world?.endboss?.isDead) {
+        this.stopAllIntervals();
+        return;
+      }
+
       if (this.world.keyboard.RIGHT && this.x < this.world.level.levelEnd_x) {
         this.moveRight();
         this.otherDirection = false;
         SoundManager.play(this.walkingSound);
-        this.lastMoveTime = Date.now(); // Bewegung erkannt
+        this.lastMoveTime = Date.now();
       }
 
       if (this.world.keyboard.LEFT && this.x > 0) {
         this.movLeft();
         this.otherDirection = true;
         SoundManager.play(this.walkingSound);
-
-        this.lastMoveTime = Date.now(); // Bewegung erkannt
+        this.lastMoveTime = Date.now();
       }
 
       if (this.world.keyboard.SPACE && !this.isAboveGround()) {
         this.jump();
-        this.lastMoveTime = Date.now(); // Sprung erkannt
+        this.lastMoveTime = Date.now();
       }
 
       this.world.camara_x = -this.x + 100;
     }, 1000 / 60);
 
-    setInterval(() => {
-      /* if (this.world?.gameOver || this.isDead() || this.world?.endboss?.isDead) return; */
+    this.setStoppableInterval(() => {
       if (this.isDead()) {
         this.playAnimation(this.walkingDead);
-        this.stopSnore(); // Wacht beim Schmerz auf
+        this.stopSnore();
         this.isSleeping = false;
       } else if (this.isHurt()) {
         this.playAnimation(this.walkingHurt);
         SoundManager.play(this.hurtSound);
 
-        this.stopSnore(); // Wacht beim Schmerz auf
+        this.stopSnore();
         this.isSleeping = false;
       } else if (this.isAboveGround()) {
         this.playAnimation(this.walkingJumping);
-        this.stopSnore(); // Auch beim Springen aufwachen
+        this.stopSnore();
         this.isSleeping = false;
       } else {
         let idleTime = (Date.now() - this.lastMoveTime) / 1000;
@@ -170,8 +182,6 @@ class Character extends MovableObjects {
       }
     }, 50);
   }
-
-  // The Jumping Function:
 
   isJumpingOnEnemy(enemy) {
     const cBottom = this.y + this.height - this.offset.bottom;

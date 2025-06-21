@@ -23,6 +23,18 @@ class World {
   chickenSound = new Audio('audio/chickenSound.mp3');
   gameOver = false;
 
+  intervalIds = [];
+
+  setStoppableInterval(fn, time) {
+    let id = setInterval(fn, time);
+    this.intervalIds.push(id);
+  }
+
+  stopAllIntervals() {
+    this.intervalIds.forEach(clearInterval);
+    this.intervalIds = [];
+  }
+
   constructor(canvas, keyboard) {
     this.ctx = canvas.getContext('2d');
     this.canvas = canvas;
@@ -46,7 +58,7 @@ class World {
 
   //cheking  if there  is  a colision
   run() {
-    setInterval(() => {
+    this.setStoppableInterval(() => {
       this.checkThrowableObjects();
       this.checkCollisions();
       this.checkCollectBottles();
@@ -73,11 +85,21 @@ class World {
           this.throwableObjects.splice(index, 1);
         }, 100);
 
-        if (this.bossHits >= 5) {
+        if (this.bossHits >= 6) {
           this.endboss.isDead = true;
           this.endboss.loadImage(this.endboss.deadImage[0]);
-          /*   document.getElementById('youWin').style.display = 'block'; */
-          document.getElementById('restartBtn').style.display = 'block';
+          document.getElementById('youWin').style.display = 'block';
+
+          this.gameOver = true;
+          this.stopAllIntervals();
+
+          // Gegner auch stoppen:
+          this.level.enamies.forEach((enemy) => {
+            if (typeof enemy.stopAllIntervals === 'function') {
+              enemy.stopAllIntervals();
+            }
+          });
+
           SoundManager.pauseAll();
         } else {
           this.endboss.loadImage(this.endboss.hurtImage[0]);
@@ -122,21 +144,19 @@ class World {
       this.character.hit();
       this.statusbar.setPercentage(this.character.energy);
       if (this.character.energy === 0) {
-        /*  document.getElementById('youWin').style.display = 'block'; */
         document.getElementById('restartBtn').style.display = 'block';
 
-        /*  this.gameOver = true; */
-        SoundManager.pauseAll();
+        this.gameOver = true;
+        this.stopAllIntervals();
 
-        // Bewegungen stoppen:
-        /* this.character.speed = 0;
-        this.character.speedY = 0; */
-
-        /* this.level.enamies.forEach((enemy) => {
-          enemy.speed = 0;
-          enemy.speedY = 0;
+        // Gegner auch stoppen:
+        this.level.enamies.forEach((enemy) => {
+          if (typeof enemy.stopAllIntervals === 'function') {
+            enemy.stopAllIntervals();
+          }
         });
-      */
+
+        SoundManager.pauseAll();
       }
     }
   }

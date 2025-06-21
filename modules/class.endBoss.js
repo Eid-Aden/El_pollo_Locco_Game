@@ -50,6 +50,7 @@ class EndBoss extends MovableObjects {
     this.animate();
     this.isDead = false;
   }
+  ttackStartTime = null;
 
   animate() {
     setInterval(() => {

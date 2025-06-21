@@ -37,15 +37,27 @@ class Chicken extends MovableObjects {
     SoundManager.play(this.walkingSound);
   }
 
+  intervalIds = [];
+
+  setStoppableInterval(fn, time) {
+    let id = setInterval(fn, time);
+    this.intervalIds.push(id);
+  }
+
+  stopAllIntervals() {
+    this.intervalIds.forEach(clearInterval);
+    this.intervalIds = [];
+  }
+
   animate() {
-    setInterval(() => {
+    this.setStoppableInterval(() => {
       if (this.world?.gameOver || this.isDead) return;
       if (!this.isDead) {
         this.movLeft();
       }
     }, 1000 / 60);
 
-    setInterval(() => {
+    this.setStoppableInterval(() => {
       if (this.world?.gameOver) return;
       if (!this.isDead) {
         this.playAnimation(this.walkingImage);

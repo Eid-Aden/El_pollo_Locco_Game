@@ -68,8 +68,17 @@
     </header>
 
     <div id="restartBtn" onclick="restartGame()" class="restart-overlay" style="display: none">
-      <div class="restart-container">
+      <div class="restart-gameover">
         <img src="img/9_intro_outro_screens/game_over/game over!.png" alt="" class="gameover-image" />
+
+        <div class="restart-button">
+          <img src="img/restart.png" alt="Restart" class="restart-icon" />
+        </div>
+      </div>
+    </div>
+    <div id="youWin" onclick="restartGame()" class="overlay-winImg" style="display: none">
+      <div class="restart-container">
+        <img src="img\You won, you lost\You Win A.png" alt="" class="win_image" />
 
         <div class="restart-button">
           <img src="img/restart.png" alt="Restart" class="restart-icon" />
