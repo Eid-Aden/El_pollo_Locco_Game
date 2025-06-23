@@ -5,9 +5,11 @@ class EndBoss extends MovableObjects {
     bottom: 0,
     left: 0,
   };
+
   width = 350;
   height = 430;
   y = 50;
+
   walkingImage = ['img/4_enemie_boss_chicken/1_walk/G1.png', 'img/4_enemie_boss_chicken/1_walk/G2.png', 'img/4_enemie_boss_chicken/1_walk/G3.png'];
 
   alertImage = [
@@ -38,6 +40,9 @@ class EndBoss extends MovableObjects {
 
   constructor() {
     super();
+
+    this.energy = 100;
+    this.isDead = false;
     this.loadImage(this.walkingImage[0]);
     this.loadImages(this.walkingImage);
     this.loadImages(this.attackImage);
@@ -45,36 +50,72 @@ class EndBoss extends MovableObjects {
     this.loadImages(this.hurtImage);
     this.loadImages(this.deadImage);
 
-    this.x = 3000;
-    this.speed = 0.01 + Math.random() * 0.2;
+    this.x = 5000;
+    this.speed = 1 + Math.random() * 0.9;
     this.animate();
     this.isDead = false;
+    this.playAnimation(this.alertImage);
   }
-  ttackStartTime = null;
+
+  intervalIds = [];
+
+  setStoppableInterval(fn, time) {
+    let id = setInterval(fn, time);
+    this.intervalIds.push(id);
+  }
+
+  stopAllIntervals() {
+    this.intervalIds.forEach(clearInterval);
+    this.intervalIds = [];
+  }
 
   animate() {
-    setInterval(() => {
+    // Bewegung
+    this.setStoppableInterval(() => {
       if (this.world?.gameOver || this.isDead) return;
-      if (!this.isDead) {
-        this.movLeft();
-      }
-    }, 1000 / 60);
+      this.movLeft();
+    }, 1000 / 250);
 
-    setInterval(() => {
+    // Animation / Angriff
+    this.setStoppableInterval(() => {
       if (this.world?.gameOver || this.isDead) return;
+
       if (this.isDead) {
         this.loadImage(this.deadImage[0]);
         return;
       }
 
       if (this.world && this.world.character) {
-        let distance = Math.abs(this.x - this.world.character.x);
+        let character = this.world.character;
+        let distance = Math.abs(this.x - character.x);
+
         if (distance < 400) {
-          this.speed = 0.8 + Math.random() * 0.9;
+          this.playAnimation(this.alertImage);
 
-          this.playAnimation(this.attackImage);
+          if (distance < 400) {
+            this.playAnimation(this.alertImage);
 
-          this.world.character.hit();
+            if (distance < 300) {
+              this.playAnimation(this.attackImage);
+
+              if (character.energy > 0) {
+                character.energy -= 10;
+                this.world.statusbar.setPercentage(character.energy);
+                character.playAnimation(character.walkingHurt);
+
+                if (character.energy <= 0) {
+                  character.isDead = true;
+
+                  document.getElementById('gameOverEndBos').style.display = 'block';
+
+                  this.world.gameOver = true;
+                  this.world.stopAllIntervals();
+
+                  console.log('EndBoss stoppt wegen Tod des Characters');
+                }
+              }
+            }
+          }
         } else {
           this.playAnimation(this.walkingImage);
         }

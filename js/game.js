@@ -89,3 +89,26 @@ function restartGame() {
   location.reload();
   startGame();
 }
+
+function toggleBox(boxId) {
+  const allBoxes = [document.getElementById('storyBox'), document.getElementById('howToUseBox'), document.getElementById('impresseum')];
+
+  const selectedBox = document.getElementById(boxId);
+  const isVisible = selectedBox.classList.contains('show');
+
+  // Alle Boxen schließen
+  allBoxes.forEach((box) => {
+    if (box !== selectedBox) {
+      box.classList.remove('show');
+      box.style.display = 'none';
+    }
+  });
+
+  if (!isVisible) {
+    selectedBox.style.display = 'block';
+    setTimeout(() => selectedBox.classList.add('show'), 10);
+  } else {
+    selectedBox.classList.remove('show');
+    setTimeout(() => (selectedBox.style.display = 'none'), 500);
+  }
+}

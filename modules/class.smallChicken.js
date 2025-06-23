@@ -23,7 +23,7 @@ class SmallChicken extends MovableObjects {
     this.loadImage(this.walkingImage[0]);
     this.loadImages(this.walkingImage);
     this.x = 1500 + Math.random() * 500;
-    this.speed = 0.8 + Math.random() * 1;
+    this.speed = 0.8 + Math.random() * 0.2;
     this.animate();
     this.isDead = false;
   }

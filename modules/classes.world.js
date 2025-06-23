@@ -170,7 +170,7 @@ class World {
   }
 
   addChicken() {
-    for (let i = 0; i < 10; i++) {
+    for (let i = 0; i < 6; i++) {
       this.x = 2500 + Math.random() * 800;
       this.speed = 0.12 + Math.random() * 0.25;
       let chicken = new Chicken();
@@ -181,7 +181,7 @@ class World {
     }
   }
   addSmallChicken() {
-    for (let i = 0; i < 10; i++) {
+    for (let i = 0; i < 5; i++) {
       this.x = 2000 + Math.random() * 500;
       this.speed = 0.12 + Math.random() * 0.25;
       let small_chicken = new SmallChicken();

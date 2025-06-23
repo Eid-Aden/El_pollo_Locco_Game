@@ -95,6 +95,7 @@ class Character extends MovableObjects {
 
     this.aplyGravity();
     this.animate();
+    this.lastMoveTime = Date.now();
   }
 
   stopSnore() {
@@ -116,6 +117,7 @@ class Character extends MovableObjects {
     this.intervalIds.forEach(clearInterval);
     this.intervalIds = [];
   }
+
   animate() {
     this.setStoppableInterval(() => {
       if (this.world?.gameOver || this.isDead() || this.world?.endboss?.isDead) {
