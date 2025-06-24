@@ -7,8 +7,8 @@
     <!-- Bootstrap Code -->
 
     <link rel="shortcut icon" href="img/favicon.png" type="image/x-icon" />
-    <link rel="stylesheet" href="styles.css" />
-    <link rel="stylesheet" href="styles/popupCards.css" />
+    <link rel="stylesheet" href="style/styles.css" />
+    <link rel="stylesheet" href="style/popupCards.css" />
     <script src="modules/drawableObject.classes.js"></script>
     <script src="modules/classes.movable.Ojects.js"></script>
     <script src="modules/classes.cloud.js"></script>
@@ -156,7 +156,7 @@
       </div>
     </header>
 
-    <div id="restartBtn" onclick="restartGame()" class="restart-overlay" style="display: none">
+    <div id="restartBtn" onclick="startGame()" class="restart-overlay" style="display: none">
       <div class="restart-gameover">
         <img src="img/9_intro_outro_screens/game_over/game over!.png" alt="" class="gameover-image" />
 
@@ -165,12 +165,12 @@
         </div>
       </div>
     </div>
-    <div id="youWin" onclick="restartGame()" class="overlay-winImg" style="display: none">
+    <div id="youWin" onclick="startGame()" class="overlay-winImg" style="display: none">
       <div class="restart-container">
-        <img src="img\You won, you lost\You Win A.png" alt="" class="win_image" />
+        <img src="img/You won, you lost/You win B.png" alt="" class="win_image" />
 
-        <div class="restart-button">
-          <img src="img/restart.png" alt="Restart" class="restart-icon" />
+        <div class="win-restart-button">
+          <img src="img/restart.png" alt="Restart" class="win-restart-icon" />
         </div>
       </div>
     </div>

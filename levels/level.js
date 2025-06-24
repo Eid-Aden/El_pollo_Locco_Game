@@ -10,6 +10,16 @@ level1 = new Level(
   [new Coin()]
 );
 
+function initLevel1() {
+  level1 = new Level(
+    [new Chicken(), new Chicken(), new SmallChicken()],
+    [(new Cloud(), new Cloud())],
+    generateBackgrounds(),
+    [new BottleGround()],
+    [new Coin()]
+  );
+}
+
 function generateBackgrounds() {
   const backgrounds = [];
   const tileWidth = 719.5;

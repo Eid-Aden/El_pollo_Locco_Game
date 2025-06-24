@@ -50,8 +50,8 @@ class EndBoss extends MovableObjects {
     this.loadImages(this.hurtImage);
     this.loadImages(this.deadImage);
 
-    this.x = 5000;
-    this.speed = 1 + Math.random() * 0.9;
+    this.x = 2600;
+    this.speed = 0.8 + Math.random() * 0.3;
     this.animate();
     this.isDead = false;
     this.playAnimation(this.alertImage);
@@ -74,7 +74,7 @@ class EndBoss extends MovableObjects {
     this.setStoppableInterval(() => {
       if (this.world?.gameOver || this.isDead) return;
       this.movLeft();
-    }, 1000 / 250);
+    }, 1000 / 60);
 
     // Animation / Angriff
     this.setStoppableInterval(() => {

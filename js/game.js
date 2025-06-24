@@ -4,6 +4,7 @@ let world;
 let keyboard = new Keyboard();
 
 function init() {
+  initLevel1();
   canvas = document.getElementById('canvas');
   world = new World(canvas, keyboard);
 }
@@ -74,7 +75,13 @@ function toggleMute() {
 }
 
 function startGame() {
-  // Nur bei Desktop-Breite anzeigen
+  if (world && typeof world.stopAllIntervals === 'function') {
+    world.stopAllIntervals();
+  }
+
+  document.getElementById('restartBtn').style.display = 'none';
+  document.getElementById('youWin').style.display = 'none';
+
   if (window.innerWidth > 878) {
     document.getElementById('soundMute').style.display = 'flex';
   }
@@ -87,7 +94,6 @@ function startGame() {
 
 function restartGame() {
   location.reload();
-  startGame();
 }
 
 function toggleBox(boxId) {
@@ -96,7 +102,6 @@ function toggleBox(boxId) {
   const selectedBox = document.getElementById(boxId);
   const isVisible = selectedBox.classList.contains('show');
 
-  // Alle Boxen schließen
   allBoxes.forEach((box) => {
     if (box !== selectedBox) {
       box.classList.remove('show');

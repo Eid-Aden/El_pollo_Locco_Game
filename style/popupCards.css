@@ -1,3 +1,122 @@
+/*  Styling For Winners */
+
+.overlay-winImg {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  background-color: rgba(0, 0, 0, 0.1);
+  z-index: 1000;
+}
+
+.restart-container {
+  display: flex;
+  background: #f2f2f2;
+  border-radius: 25px;
+  box-shadow: 0 0 15px rgba(0, 0, 0, 0.5);
+  width: 100%;
+  max-width: 800px;
+  margin: 0 auto;
+}
+
+.win_image {
+  max-width: 100%;
+  height: auto;
+  border-radius: 15px;
+
+  background: transparent;
+  display: block;
+  box-sizing: border-box;
+}
+
+.win-restart-button {
+  width: 25%;
+  position: absolute;
+  top: 25%;
+  left: 30%;
+  transform: translate(-20%, -20%);
+
+  background-color: transparent;
+  border: 2px solid transparent;
+  border-radius: 4px;
+  padding: 5px;
+  cursor: pointer;
+  transition: background-color 0.2s;
+}
+
+.win-restart-button {
+  margin-top: 10px;
+  cursor: pointer;
+  transition: transform 0.2s;
+}
+
+.win-restart-button:hover {
+  transform: scale(1.1);
+  background-color: #ff7b0033;
+}
+
+.win-restart-icon {
+  display: block;
+  margin: 0 auto;
+  width: 200px;
+}
+
+.restarImg {
+  width: 24px;
+}
+
+.restart-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100vw;
+  height: 100vh;
+  background-color: rgba(0, 0, 0, 0.5);
+  z-index: 300;
+
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.restart-gameover {
+  position: relative;
+  display: inline-block;
+}
+
+.gameover-image {
+  max-width: 100vw;
+  height: auto;
+  border-radius: 3px;
+  display: block;
+  min-height: 100vh;
+}
+
+.restart-button {
+  width: 10%;
+  position: absolute;
+  top: 25%;
+  left: 50%;
+  transform: translate(-20%, -20%);
+
+  background-color: #edf6f9;
+  border: 2px solid #edf6f9;
+  border-radius: 4px;
+  padding: 5px;
+  cursor: pointer;
+  transition: background-color 0.2s;
+}
+
+.restart-button:hover {
+  background-color: #caf0f8;
+}
+
+.restart-icon {
+  display: block;
+  margin: 0 auto;
+  width: 24px;
+}
+
 .story {
   position: absolute;
   top: 100px;

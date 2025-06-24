@@ -14,6 +14,8 @@ class World {
   collectedBottles = 0;
   totalBottles = 10;
   bossHits = 0;
+  lastThrowTime = 0;
+  throwCooldown = 500;
 
   ctx;
   canvas;
@@ -68,11 +70,13 @@ class World {
   }
 
   checkThrowableObjects() {
-    if (this.keyboard.D && this.collectedBottles > 0) {
-      let bottle = new ThrowableObjects(this.character.x + 100, this.character.y + 100);
+    const now = new Date().getTime();
+    if (this.keyboard.D && this.collectedBottles > 0 && now - this.lastThrowTime > this.throwCooldown) {
+      let bottle = new ThrowableObjects(this.character.x + 200, this.character.y + 200);
       this.throwableObjects.push(bottle);
       this.collectedBottles--;
       this.bottle.setPercentage(this.collectedBottles, this.totalBottles);
+      this.lastThrowTime = now;
     }
   }
 
@@ -81,10 +85,7 @@ class World {
       if (this.endboss && bottle.isColliding(this.endboss)) {
         this.bossHits++;
         this.bottleSplash(bottle);
-        setTimeout(() => {
-          this.throwableObjects.splice(index, 1);
-        }, 100);
-
+        this.throwableObjects.splice(index, 1);
         if (this.bossHits >= 6) {
           this.endboss.isDead = true;
           this.endboss.loadImage(this.endboss.deadImage[0]);
@@ -93,7 +94,6 @@ class World {
           this.gameOver = true;
           this.stopAllIntervals();
 
-          // Gegner auch stoppen:
           this.level.enamies.forEach((enemy) => {
             if (typeof enemy.stopAllIntervals === 'function') {
               enemy.stopAllIntervals();
@@ -145,11 +145,8 @@ class World {
       this.statusbar.setPercentage(this.character.energy);
       if (this.character.energy === 0) {
         document.getElementById('restartBtn').style.display = 'block';
-
         this.gameOver = true;
         this.stopAllIntervals();
-
-        // Gegner auch stoppen:
         this.level.enamies.forEach((enemy) => {
           if (typeof enemy.stopAllIntervals === 'function') {
             enemy.stopAllIntervals();
@@ -205,12 +202,9 @@ class World {
   checkCollectBottles() {
     this.bottles.forEach((bottle, index) => {
       if (this.character.isColliding(bottle)) {
-        this.bottles.splice(index, 1); // Flasche entfernen
-
-        this.collectedBottles++; // Anzahl gesammelter Flaschen erhöhen
-        this.bottle.setPercentage(this.collectedBottles, this.totalBottles); // Balken aktualisieren
-        console.log('Flasche gesammelt!'); // Zum Testen
-
+        this.bottles.splice(index, 1);
+        this.collectedBottles++;
+        this.bottle.setPercentage(this.collectedBottles, this.totalBottles);
         SoundManager.play(this.brokenBottle);
       }
     });
@@ -243,8 +237,6 @@ class World {
     }
   }
 
-  /*  Check CoinCollected*/
-
   checkCollectCoins() {
     for (let i = this.coins.length - 1; i >= 0; i--) {
       let coin = this.coins[i];
@@ -253,7 +245,6 @@ class World {
         this.collectedCoin++;
         this.coin.setPercentage(this.collectedCoin, this.totalCoins);
 
-        console.log('Coins gesammelt!');
         SoundManager.play(this.brokenBottle);
       }
     }
