@@ -2,7 +2,7 @@
 
 .overlay-winImg {
   position: absolute;
-  top: 0;
+
   left: 0;
   width: 100%;
   background-color: rgba(0, 0, 0, 0.1);
@@ -11,7 +11,7 @@
 
 .restart-container {
   display: flex;
-  background: #f2f2f2;
+  background: transparent;
   border-radius: 25px;
   box-shadow: 0 0 15px rgba(0, 0, 0, 0.5);
   width: 100%;
@@ -52,13 +52,13 @@
 
 .win-restart-button:hover {
   transform: scale(1.1);
-  background-color: #ff7b0033;
+  background-color: #ff7b00af;
 }
 
 .win-restart-icon {
   display: block;
   margin: 0 auto;
-  width: 200px;
+  width: 100px;
 }
 
 .restarImg {

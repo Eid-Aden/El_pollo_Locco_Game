@@ -5,6 +5,7 @@ class EndBoss extends MovableObjects {
     bottom: 0,
     left: 0,
   };
+  energy = 100;
 
   width = 350;
   height = 430;
@@ -99,7 +100,7 @@ class EndBoss extends MovableObjects {
               this.playAnimation(this.attackImage);
 
               if (character.energy > 0) {
-                character.energy -= 10;
+                character.energy -= 2;
                 this.world.statusbar.setPercentage(character.energy);
                 character.playAnimation(character.walkingHurt);
 

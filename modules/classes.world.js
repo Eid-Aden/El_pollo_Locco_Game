@@ -1,6 +1,7 @@
 class World {
   character = new Character();
   statusbar = new Statusbar();
+  statusEndBoss = new StatusBarEndBos();
   bottle = new Bottles();
   bottlebar = new BottleGround();
   coin = new Coinbar();
@@ -80,17 +81,52 @@ class World {
     }
   }
 
-  isBottleColissionBoss() {
+  /*  isBottleColissionBoss() {
     this.throwableObjects.forEach((bottle, index) => {
       if (this.endboss && bottle.isColliding(this.endboss)) {
         this.bossHits++;
         this.bottleSplash(bottle);
         this.throwableObjects.splice(index, 1);
         if (this.bossHits >= 6) {
+          this.statusEndBoss.setPercentage(this.endboss.energy);
           this.endboss.isDead = true;
           this.endboss.loadImage(this.endboss.deadImage[0]);
           document.getElementById('youWin').style.display = 'block';
 
+          this.gameOver = true;
+          this.stopAllIntervals();
+
+          this.level.enamies.forEach((enemy) => {
+            if (typeof enemy.stopAllIntervals === 'function') {
+              enemy.stopAllIntervals();
+            }
+          });
+
+          SoundManager.pauseAll();
+        } else {
+          this.endboss.loadImage(this.endboss.hurtImage[0]);
+        }
+      }
+    });
+  } */
+
+  isBottleColissionBoss() {
+    this.throwableObjects.forEach((bottle, index) => {
+      if (this.endboss && bottle.isColliding(this.endboss)) {
+        this.bottleSplash(bottle);
+        this.throwableObjects.splice(index, 1);
+
+        this.endboss.energy -= 10;
+        if (this.endboss.energy < 0) {
+          this.endboss.energy = 0;
+        }
+
+        this.statusEndBoss.setPercentage(this.endboss.energy);
+
+        if (this.endboss.energy <= 0) {
+          this.endboss.isDead = true;
+          this.endboss.loadImage(this.endboss.deadImage[0]);
+          document.getElementById('youWin').style.display = 'block';
           this.gameOver = true;
           this.stopAllIntervals();
 
@@ -274,6 +310,9 @@ class World {
 
     this.ctx.translate(-this.camara_x, 0);
     this.addToMap(this.statusbar);
+
+    this.addToMap(this.statusEndBoss);
+
     this.addToMap(this.bottle);
     this.addToMap(this.coin);
     this.ctx.translate(this.camara_x, 0); //Back
