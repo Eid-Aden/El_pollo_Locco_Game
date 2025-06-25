@@ -1,4 +1,10 @@
+/**
+ * UI component for displaying the player's collected coins.
+ * Shows the coin bar with a visual fill level.
+ * Inherits from DrawableObj.
+ */
 class Coinbar extends DrawableObj {
+  /** @type {string[]} Image paths for different coin bar fill levels */
   IMAGES = [
     'img/7_statusbars/1_statusbar/1_statusbar_coin/orange/0.png',
     'img/7_statusbars/1_statusbar/1_statusbar_coin/orange/20.png',
@@ -7,8 +13,13 @@ class Coinbar extends DrawableObj {
     'img/7_statusbars/1_statusbar/1_statusbar_coin/orange/80.png',
     'img/7_statusbars/1_statusbar/1_statusbar_coin/orange/100.png',
   ];
+
+  /** @type {number} Current fill percentage of the coin bar */
   percentage = 100;
 
+  /**
+   * Initializes the coin bar UI element.
+   */
   constructor() {
     super();
     this.loadImages(this.IMAGES);
@@ -21,14 +32,24 @@ class Coinbar extends DrawableObj {
     this.setPercentage(0, 10);
   }
 
+  /**
+   * Updates the coin bar based on collected coins and total coins.
+   * @param {number} collectedCoins - Number of coins the player has collected.
+   * @param {number} totalCoins - Total number of coins available.
+   */
   setPercentage(collectedCoins, totalCoins) {
     this.collectedCoins = collectedCoins;
     this.totalCoins = totalCoins;
     this.percentage = (this.collectedCoins / this.totalCoins) * 100;
-    let path = this.IMAGES[this.coinsBar()];
+
+    const path = this.IMAGES[this.coinsBar()];
     this.img = this.imageCache[path];
   }
 
+  /**
+   * Determines which image to show based on the percentage.
+   * @returns {number} Index of the image in the IMAGES array.
+   */
   coinsBar() {
     if (this.percentage == 0) {
       return 5;

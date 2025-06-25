@@ -24,6 +24,7 @@ class World {
   camara_x = 0;
   brokenBottle = new Audio('audio/broken-bottle.mp3');
   chickenSound = new Audio('audio/chickenSound.mp3');
+  backgroundSound = new Audio('audio/game-background-sound.mp3');
   gameOver = false;
 
   intervalIds = [];
@@ -54,12 +55,16 @@ class World {
     this.addSmallChicken();
     SoundManager.register(this.brokenBottle);
     SoundManager.register(this.chickenSound);
+    this.backgroundSound.loop = true;
+    this.backgroundSound.volume = 0.3;
+
+    SoundManager.register(this.backgroundSound);
   }
+
   setWorld() {
     this.character.world = this;
   }
 
-  //cheking  if there  is  a colision
   run() {
     this.setStoppableInterval(() => {
       this.checkThrowableObjects();
@@ -72,7 +77,11 @@ class World {
 
   checkThrowableObjects() {
     const now = new Date().getTime();
-    if (this.keyboard.D && this.collectedBottles > 0 && now - this.lastThrowTime > this.throwCooldown) {
+    if (
+      this.keyboard.D &&
+      this.collectedBottles > 0 &&
+      now - this.lastThrowTime > this.throwCooldown
+    ) {
       let bottle = new ThrowableObjects(this.character.x + 200, this.character.y + 200);
       this.throwableObjects.push(bottle);
       this.collectedBottles--;
@@ -81,42 +90,15 @@ class World {
     }
   }
 
-  /*  isBottleColissionBoss() {
-    this.throwableObjects.forEach((bottle, index) => {
-      if (this.endboss && bottle.isColliding(this.endboss)) {
-        this.bossHits++;
-        this.bottleSplash(bottle);
-        this.throwableObjects.splice(index, 1);
-        if (this.bossHits >= 6) {
-          this.statusEndBoss.setPercentage(this.endboss.energy);
-          this.endboss.isDead = true;
-          this.endboss.loadImage(this.endboss.deadImage[0]);
-          document.getElementById('youWin').style.display = 'block';
-
-          this.gameOver = true;
-          this.stopAllIntervals();
-
-          this.level.enamies.forEach((enemy) => {
-            if (typeof enemy.stopAllIntervals === 'function') {
-              enemy.stopAllIntervals();
-            }
-          });
-
-          SoundManager.pauseAll();
-        } else {
-          this.endboss.loadImage(this.endboss.hurtImage[0]);
-        }
-      }
-    });
-  } */
-
   isBottleColissionBoss() {
     this.throwableObjects.forEach((bottle, index) => {
       if (this.endboss && bottle.isColliding(this.endboss)) {
         this.bottleSplash(bottle);
-        this.throwableObjects.splice(index, 1);
+        setTimeout(() => {
+          this.throwableObjects.splice(index, 1);
+        }, 50);
 
-        this.endboss.energy -= 10;
+        this.endboss.energy -= 15;
         if (this.endboss.energy < 0) {
           this.endboss.energy = 0;
         }
@@ -129,6 +111,7 @@ class World {
           document.getElementById('youWin').style.display = 'block';
           this.gameOver = true;
           this.stopAllIntervals();
+          SoundManager.pauseAll();
 
           this.level.enamies.forEach((enemy) => {
             if (typeof enemy.stopAllIntervals === 'function') {
@@ -183,6 +166,7 @@ class World {
         document.getElementById('restartBtn').style.display = 'block';
         this.gameOver = true;
         this.stopAllIntervals();
+        SoundManager.pauseAll();
         this.level.enamies.forEach((enemy) => {
           if (typeof enemy.stopAllIntervals === 'function') {
             enemy.stopAllIntervals();
@@ -343,7 +327,6 @@ class World {
     if (mo.otherDirection) {
       this.flipImage(mo);
     }
-
     mo.draw(this.ctx);
 
     if (mo.otherDirection) {

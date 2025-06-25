@@ -7,6 +7,7 @@ function init() {
   initLevel1();
   canvas = document.getElementById('canvas');
   world = new World(canvas, keyboard);
+  SoundManager.play(world.backgroundSound);
 }
 
 function openFullscreen() {
@@ -88,6 +89,7 @@ function startGame() {
 
   document.getElementById('llcover').style.display = 'none';
   document.getElementById('canvas').style.display = 'block';
+  SoundManager.play(this.backgroundSound);
 
   init();
 }

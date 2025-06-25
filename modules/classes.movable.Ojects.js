@@ -1,24 +1,27 @@
+/**
+ * Base class for all movable game objects like characters, enemies, and items.
+ * Handles movement, gravity, collisions, and animations.
+ */
 class MovableObjects extends DrawableObj {
-  offset = {
-    top: 0,
-    right: 0,
-    bottom: 0,
-    left: 0,
-  };
+  offset = { top: 0, right: 0, bottom: 0, left: 0 };
   x = 180;
   y = 60;
+  groundLevel = 220;
   img;
-  height = 100;
   width = 150;
-  imageCache = {};
-  currentImage = 0;
+  height = 100;
   speed = 0.12;
-  otherDirection = false;
   speedY = 0;
-  accelaration = 2.5;
+  accelaration = 2.5; // typo: should be 'acceleration'
+  otherDirection = false;
   energy = 100;
   lastHurt = 0;
+  imageCache = {};
+  currentImage = 0;
 
+  /**
+   * Applies gravity to the object.
+   */
   aplyGravity() {
     setInterval(() => {
       if (this.isAboveGround() || this.speedY > 0) {
@@ -33,41 +36,27 @@ class MovableObjects extends DrawableObj {
     }, 1000 / 25);
   }
 
+  /**
+   * Checks if the object is above the ground.
+   */
   isAboveGround() {
-    if (this instanceof ThrowableObjects) {
-      return true;
-    } else {
-      return this.y < this.groundLevel;
-    }
+    if (this instanceof ThrowableObjects) return true;
+    return this.y < this.groundLevel;
   }
 
-  isOnGround() {
-    return !this.isAboveGround();
-  }
-  isFallingDown() {
-    return this.y < 220 && this.speedY < 0;
+  isDead() {
+    return this.energy === 0;
   }
 
-  loadImage(path) {
-    this.img = new Image();
-    this.img.src = path;
+  isHurt() {
+    return (Date.now() - this.lastHurt) / 100 < 0.5;
   }
 
-  draw(ctx) {
-    ctx.drawImage(this.img, this.x, this.y, this.width, this.height);
-  }
-
-  drawFrame(ctx) {
-    if (this instanceof Character || this instanceof Chicken || this instanceof SmallChicken) {
-      ctx.beginPath();
-      ctx.lineWidth = '4';
-
-      ctx.strokeStyle = this instanceof Character ? 'blue' : 'red';
-      ctx.rect(this.x, this.y, +this.width, this.height);
-      ctx.stroke();
-    }
-  }
-
+  /**
+   * Checks if this object is colliding with another.
+   * @param {MovableObjects} mo - Other object to check collision with.
+   * @returns {boolean}
+   */
   isColliding(mo) {
     return (
       this.x + this.width - this.offset.right > mo.x + mo.offset.left &&
@@ -77,42 +66,25 @@ class MovableObjects extends DrawableObj {
     );
   }
 
-  hit() {
-    this.energy -= 1;
-    if (this.energy < 0) {
-      this.energy = 0;
-    } else {
-      this.lastHurt = new Date().getTime();
-    }
-  }
-  isDead() {
-    return this.energy === 0;
-  }
-
-  isHurt() {
-    let timePassed = new Date().getTime() - this.lastHurt; // deferent  in ms
-    timePassed = timePassed / 100; // deferent  in s
-    /*    console.log(timePassed); */
-    return timePassed < 0.5;
-  }
   /**
-   *
-   * @param {Array} arr   with  fue  Imaages
+   * Loads multiple images into cache.
+   * @param {string[]} arr - Array of image paths.
    */
   loadImages(arr) {
     arr.forEach((path) => {
-      this.img = new Image();
-      this.img.src = path;
-
-      this.imageCache[path] = this.img;
+      const img = new Image();
+      img.src = path;
+      this.imageCache[path] = img;
     });
   }
 
+  /**
+   * Plays an animation by cycling through cached images.
+   * @param {string[]} images - Animation frame paths.
+   */
   playAnimation(images) {
-    /*   if (this.world?.gameOver || this.isDead || this.world?.endboss?.isDead) return; */
-    let i = this.currentImage % images.length;
-    let path = images[i];
-    this.img = this.imageCache[path];
+    const i = this.currentImage % images.length;
+    this.img = this.imageCache[images[i]];
     this.currentImage++;
   }
 
@@ -123,7 +95,18 @@ class MovableObjects extends DrawableObj {
   movLeft() {
     this.x -= this.speed;
   }
+
   jump() {
     this.speedY = 35;
+  }
+
+  /**
+   * Reduces energy when hit.
+   */
+  hit() {
+    this.energy = Math.max(0, this.energy - 1);
+    if (this.energy > 0) {
+      this.lastHurt = Date.now();
+    }
   }
 }

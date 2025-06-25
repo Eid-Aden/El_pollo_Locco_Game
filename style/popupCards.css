@@ -48,6 +48,9 @@
   margin-top: 10px;
   cursor: pointer;
   transition: transform 0.2s;
+  background: #caf0f8a0;
+  border-radius: 3px;
+  padding: 3px;
 }
 
 .win-restart-button:hover {
