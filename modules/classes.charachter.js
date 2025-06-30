@@ -164,7 +164,6 @@ class Character extends MovableObjects {
   animateMovement() {
     this.setStoppableInterval(() => {
       if (this.shouldStopGame()) return;
-
       this.handleRightMovement();
       this.handleLeftMovement();
       this.handleJump();
@@ -278,13 +277,10 @@ class Character extends MovableObjects {
     const characterBottom = this.y + this.height - this.offset.bottom;
     const characterTop = this.y + this.offset.top;
     const enemyTop = enemy.y + enemy.offset.top;
-
     const isVerticalCollision = characterBottom >= enemyTop && characterTop < enemyTop + 10;
-
     const isHorizontalOverlap =
       this.x + this.width - this.offset.right > enemy.x + enemy.offset.left &&
       this.x + this.offset.left < enemy.x + enemy.width - enemy.offset.right;
-
     return isVerticalCollision && isHorizontalOverlap;
   }
 }

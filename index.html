@@ -48,7 +48,7 @@
           <button onclick="startGame()">START</button>
           <button onclick="toggleBox('storyBox')">USER STORY</button>
           <button onclick="toggleBox('howToUseBox')">HOW TO USE</button>
-          <button onclick="toggleBox('impresseum')">impresseum</button>
+          <button onclick="toggleBox('impresseum')">Impresseum</button>
         </div>
       </div>
       <div class="story" id="storyBox">
@@ -57,13 +57,16 @@
           <h4 onclick="toggleBox('storyBox')">X</h4>
         </div>
 
-        <p>
-          In this action-packed game, you play as Pepe, a fearless hero from Mexico, on a mission to save his homeland from a bizarre new threat: a
-          horde of evil chickens taking over the desert! A strange force has turned the once-peaceful chickens into wild, aggressive beasts. Now led
-          by the terrifying end boss, El Pollo Grande, they’ve begun to attack villages across the land. The people are desperate — and Pepe is their
-          last hope. Armed with nothing but his courage and his abuela’s legendary spicy salsa, Pepe must journey across scorching deserts, face
-          countless feathered foes, and put an end to the chicken invasion once and for all. Because in this world... 🔥 Only salsa can stop the
-          madness
+        <p class="storyText">
+          In this action-packed game, you play as Pepe, a fearless hero from Mexico, on a mission to
+          save his homeland from a bizarre new threat: a horde of evil chickens taking over the
+          desert! A strange force has turned the once-peaceful chickens into wild, aggressive
+          beasts. Now led by the terrifying end boss, El Pollo Grande, they’ve begun to attack
+          villages across the land. The people are desperate — and Pepe is their last hope. Armed
+          with nothing but his courage and his abuela’s legendary spicy salsa, Pepe must journey
+          across scorching deserts, face countless feathered foes, and put an end to the chicken
+          invasion once and for all. Because in this world...
+          <strong>🔥 Only salsa can stop the madness</strong>
         </p>
       </div>
 
@@ -73,7 +76,9 @@
           <h4 onclick="toggleBox('howToUseBox')">X</h4>
         </div>
 
-        <p>Welcome to <strong>El Pollo Locco</strong>! Here's how to control the game on your mobile device:</p>
+        <p>
+          Welcome to <strong>El Pollo Locco</strong>! Here's how to control the game on your device:
+        </p>
 
         <h4>🔼 Controls</h4>
         <table>
@@ -101,8 +106,8 @@
 
         <h4>🔁 Rotate Your Device</h4>
         <p>
-          Please rotate your device to <strong>landscape mode</strong> for the best experience. If you're in portrait mode, a message will appear
-          automatically asking you to rotate.
+          Please rotate your device to <strong>landscape mode</strong> for the best experience. If
+          you're in portrait mode, a message will appear automatically asking you to rotate.
         </p>
 
         <h4>❗ Notes</h4>
@@ -119,15 +124,12 @@
 
         <p>Angaben gemäß § 5 DDG</p>
         <p>
-          Eid Aden<br />
+          Eid Aden Abdi<br />
           <br />
           Brandenburger Str 7<br />
           65428 Rüsselsheim<br />
         </p>
-        <p>
-          <strong>Vertreten durch:</strong><br />
-          Eid Aden Abdi<br />
-        </p>
+
         <p>
           <strong>Kontakt:</strong><br />
           Telefon: 49-01606386105<br />
@@ -139,16 +141,30 @@
           Erstellt mit dem
           <a href="https://impressum-generator.de" rel="dofollow">Impressum-Generator</a>
           von WebsiteWissen.com, dem Ratgeber für
-          <a href="https://websitewissen.com/website-erstellen" rel="dofollow">Website-Erstellung</a>,
-          <a href="https://websitewissen.com/homepage-baukasten-vergleich" rel="dofollow">Homepage-Baukästen</a> und
-          <a href="https://websitewissen.com/shopsysteme-vergleich" rel="dofollow">Shopsysteme</a>. Rechtstext von der
+          <a href="https://websitewissen.com/website-erstellen" rel="dofollow">Website-Erstellung</a
+          >,
+          <a href="https://websitewissen.com/homepage-baukasten-vergleich" rel="dofollow"
+            >Homepage-Baukästen</a
+          >
+          und
+          <a href="https://websitewissen.com/shopsysteme-vergleich" rel="dofollow">Shopsysteme</a>.
+          Rechtstext von der
           <a href="https://www.kanzlei-hasselbach.de/" rel="dofollow">Kanzlei Hasselbach</a>.
         </p>
       </div>
 
-      <div id="gameOverEndBos" onclick="restartGame()" class="restart-overlay" style="display: none">
+      <div
+        id="gameOverEndBos"
+        onclick="restartGame()"
+        class="restart-overlay"
+        style="display: none"
+      >
         <div class="restart-gameover">
-          <img src="img/9_intro_outro_screens/game_over/game over!.png" alt="" class="gameover-image" />
+          <img
+            src="img/9_intro_outro_screens/game_over/game over!.png"
+            alt=""
+            class="gameover-image"
+          />
 
           <div class="restart-button">
             <img src="img/restart.png" alt="Restart" class="restart-icon" />
@@ -159,7 +175,11 @@
 
     <div id="restartBtn" onclick="startGame()" class="restart-overlay" style="display: none">
       <div class="restart-gameover">
-        <img src="img/9_intro_outro_screens/game_over/game over!.png" alt="" class="gameover-image" />
+        <img
+          src="img/9_intro_outro_screens/game_over/game over!.png"
+          alt=""
+          class="gameover-image"
+        />
 
         <div class="restart-button">
           <img src="img/restart.png" alt="Restart" class="restart-icon" />
@@ -180,14 +200,28 @@
 
     <div class="fullscreen_for_disktop" id="soundMute" onclick="toggleMute()">
       <img id="muteIcon_desktop" src="img/volume.png" width="24" alt="" width="28" />
-      <div onclick="openFullscreen()"><img class="fullscreen" src="img/fullscreen.png" alt="" width="28" /></div>
+      <div>
+        <img src="img/home_icon.png" alt="Home Icon" class="homeIcon" onclick="restartGame()" />
+      </div>
+
+      <div onclick="openFullscreen()">
+        <img class="fullscreen" src="img/fullscreen.png" alt="" width="28" />
+      </div>
     </div>
 
     <div class="canvas-wrapper">
       <canvas class="canvas" id="canvas" width="720" height="480" style="display: none"></canvas>
 
       <div class="mobile_hidden" id="mobile_hidden">
-        <img id="muteIcon_mobile" class="bottons" src="img/volume.png" width="24" alt="" width="28" onclick="toggleMute()" />
+        <img
+          id="muteIcon_mobile"
+          class="bottons"
+          src="img/volume.png"
+          width="24"
+          alt=""
+          width="28"
+          onclick="toggleMute()"
+        />
 
         <img id="btn-left" class="bottons" src="img/left runing.png" alt="" />
         <img id="btn-right" class="bottons" src="img/right-arrow (2).png" alt="" />

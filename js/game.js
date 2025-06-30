@@ -23,7 +23,6 @@ function openFullscreen() {
 }
 
 window.addEventListener('keydown', (e) => {
-  console.log(e.keyCode);
   if (e.keyCode == 39) {
     keyboard.RIGHT = true;
   }
@@ -99,7 +98,11 @@ function restartGame() {
 }
 
 function toggleBox(boxId) {
-  const allBoxes = [document.getElementById('storyBox'), document.getElementById('howToUseBox'), document.getElementById('impresseum')];
+  const allBoxes = [
+    document.getElementById('storyBox'),
+    document.getElementById('howToUseBox'),
+    document.getElementById('impresseum'),
+  ];
 
   const selectedBox = document.getElementById(boxId);
   const isVisible = selectedBox.classList.contains('show');
