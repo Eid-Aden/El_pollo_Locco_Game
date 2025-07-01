@@ -2,75 +2,47 @@
 body {
   overflow-x: hidden;
 }
-
+/* Overlay-Styling für Gewinnbildschirm */
+/* Overlay über das ganze Spiel */
 .overlay-winImg {
-  position: absolute;
-
+  position: fixed;
+  top: 0;
   left: 0;
-  width: 100%;
-  background-color: rgba(0, 0, 0, 0.1);
-  z-index: 1000;
+  width: 100vw;
+  height: 100vh;
+  background-color: rgba(0, 0, 0, 0.7); /* dunkler Hintergrund */
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  z-index: 99;
 }
 
+/* Container in der Mitte */
 .restart-container {
   display: flex;
-  background: transparent;
-  border-radius: 25px;
-  box-shadow: 0 0 15px rgba(0, 0, 0, 0.5);
-  width: 100%;
-  max-width: 800px;
+  justify-content: center;
+  flex-direction: column;
+  align-items: center;
+  gap: 20px;
+  background: rgba(255, 255, 255, 0.455);
+  border-radius: 20px;
+  padding: auto 0;
+  width: 90%;
+  max-width: 720px;
+  min-height: 580px;
+  box-shadow: 0 0 25px rgba(0, 0, 0, 0.5);
   margin: 0 auto;
 }
 
+/* Gewinnbild */
 .win_image {
-  max-width: 100%;
+  width: 100%;
   height: auto;
-  border-radius: 15px;
-
-  background: transparent;
-  display: block;
-  box-sizing: border-box;
+  border-radius: 10px;
+  object-fit: contain;
 }
 
-.win-restart-button {
-  width: 25%;
-  position: absolute;
-  top: 25%;
-  left: 30%;
-  transform: translate(-20%, -20%);
-
-  background-color: transparent;
-  border: 2px solid transparent;
-  border-radius: 4px;
-  padding: 5px;
-  cursor: pointer;
-  transition: background-color 0.2s;
-}
-
-.win-restart-button {
-  margin-top: 10px;
-  cursor: pointer;
-  transition: transform 0.2s;
-  background: #caf0f8a0;
-  border-radius: 3px;
-  padding: 3px;
-}
-
-.win-restart-button:hover {
-  transform: scale(1.1);
-  background-color: #ff7b00af;
-}
-
-.win-restart-icon {
-  display: block;
-  margin: 0 auto;
-  width: 100px;
-}
-
-.restarImg {
-  width: 24px;
-}
-
+/* Ende */
 .restart-overlay {
   position: fixed;
   top: 0;
@@ -111,10 +83,17 @@ body {
   padding: 5px;
   cursor: pointer;
   transition: background-color 0.2s;
+  display: flex;
+  justify-content: center;
+  align-items: center;
 }
-
 .restart-button:hover {
   background-color: #caf0f8;
+}
+.restart-icon:hover {
+  padding: 3px;
+  border: 1px solid #0077cc;
+  border-radius: 2px;
 }
 
 .restart-icon {
@@ -286,5 +265,7 @@ body {
   cursor: pointer;
 }
 .homeIcon:hover {
-  background: #ff000066;
+  padding: 3px;
+  border: solid 2px #0077cc;
+  background-color: #caf0f8;
 }

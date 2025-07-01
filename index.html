@@ -153,7 +153,7 @@
         </p>
       </div>
 
-      <div id="gameOverEndBos" onclick="startGame()" class="restart-overlay" style="display: none">
+      <div id="gameOverEndBos" class="restart-overlay" style="display: none">
         <div class="restart-gameover">
           <img
             src="img/9_intro_outro_screens/game_over/game over!.png"
@@ -162,7 +162,8 @@
           />
 
           <div class="restart-button">
-            <img src="img/restart.png" alt="Restart" class="restart-icon" />
+            <img src="img/restart.png" alt="Restart" class="restart-icon" onclick="startGame()" />
+            <img src="img/home_icon.png" class="homeIcon" onclick="restartGame() " />
           </div>
         </div>
       </div>
@@ -178,6 +179,7 @@
 
         <div class="restart-button">
           <img src="img/restart.png" alt="Restart" class="restart-icon" />
+          <img src="img/home_icon.png" alt="Home Icon" class="homeIcon" onclick="restartGame()" />
         </div>
       </div>
     </div>
@@ -185,8 +187,9 @@
       <div class="restart-container">
         <img src="img/You won, you lost/You win B.png" alt="" class="win_image" />
 
-        <div class="win-restart-button">
-          <img src="img/restart.png" alt="Restart" class="win-restart-icon" />
+        <div class="restart-button">
+          <img src="img/restart.png" alt="Restart" class="restart-icon" />
+          <img src="img/home_icon.png" alt="Home Icon" class="homeIcon" onclick="restartGame()" />
         </div>
       </div>
     </div>

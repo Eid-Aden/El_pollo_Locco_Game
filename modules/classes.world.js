@@ -130,7 +130,7 @@ class World {
     this.throwableObjects.forEach((bottle, index) => {
       let distance = Math.abs(this.endboss.x - this.character.x);
 
-      if (distance <= 300 && this.isBottleHittingBoss(bottle)) {
+      if (distance <= 500 && this.isBottleHittingBoss(bottle)) {
         this.handleBottleHit(bottle, index);
       }
     });

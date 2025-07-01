@@ -60,13 +60,13 @@ class ThrowableObjects extends MovableObjects {
       if (this.x > 3000) {
         clearInterval(this.throwInterval);
       }
-    }, 35);
+    }, 30);
   }
   playBottleRotation() {
     let i = 0;
     this.rotationInterval = setInterval(() => {
       this.img = this.imageCache[this.Image_RotationBottle[i]];
       i = (i + 1) % this.Image_RotationBottle.length;
-    }, 1000 / 20); // 20 FPS
+    }, 1000 / 25); // 20 FPS
   }
 }

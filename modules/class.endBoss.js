@@ -183,7 +183,7 @@ class EndBoss extends MovableObjects {
   inflictDamageToCharacter(character) {
     character.isSleeping = false;
     if (character.energy > 0) {
-      character.energy -= 8;
+      character.energy -= 3;
       if (character.energy < 0) character.energy = 0;
 
       this.world.statusbar.setPercentage(character.energy);
