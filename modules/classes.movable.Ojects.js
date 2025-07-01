@@ -12,7 +12,7 @@ class MovableObjects extends DrawableObj {
   height = 100;
   speed = 0.12;
   speedY = 0;
-  accelaration = 2.5; // typo: should be 'acceleration'
+  accelaration = 2;
   otherDirection = false;
   energy = 100;
   lastHurt = 0;
@@ -57,12 +57,13 @@ class MovableObjects extends DrawableObj {
    * @param {MovableObjects} mo - Other object to check collision with.
    * @returns {boolean}
    */
+
   isColliding(mo) {
     return (
-      this.x + this.width - this.offset.right > mo.x + mo.offset.left &&
-      this.y + this.height - this.offset.bottom > mo.y + mo.offset.top &&
-      this.x + this.offset.left < mo.x + mo.width - mo.offset.right &&
-      this.y + this.offset.top < mo.y + mo.height - mo.offset.bottom
+      this.x + this.width > mo.x &&
+      this.x < mo.x + mo.width &&
+      this.y + this.height > mo.y &&
+      this.y < mo.y + mo.height
     );
   }
 

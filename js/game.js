@@ -81,6 +81,7 @@ function startGame() {
 
   document.getElementById('restartBtn').style.display = 'none';
   document.getElementById('youWin').style.display = 'none';
+  document.getElementById('gameOverEndBos').style.display = 'none';
 
   if (window.innerWidth > 878) {
     document.getElementById('soundMute').style.display = 'flex';

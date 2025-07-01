@@ -153,12 +153,7 @@
         </p>
       </div>
 
-      <div
-        id="gameOverEndBos"
-        onclick="restartGame()"
-        class="restart-overlay"
-        style="display: none"
-      >
+      <div id="gameOverEndBos" onclick="startGame()" class="restart-overlay" style="display: none">
         <div class="restart-gameover">
           <img
             src="img/9_intro_outro_screens/game_over/game over!.png"
@@ -196,7 +191,7 @@
       </div>
     </div>
 
-    <div id="game_over"></div>
+    <div id="game_over" onclick="startGame()"></div>
 
     <div class="fullscreen_for_disktop" id="soundMute" onclick="toggleMute()">
       <img id="muteIcon_desktop" src="img/volume.png" width="24" alt="" width="28" />

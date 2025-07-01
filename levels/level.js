@@ -22,7 +22,7 @@ function initLevel1() {
 
 function generateBackgrounds() {
   const backgrounds = [];
-  const tileWidth = 719.5;
+  const tileWidth = 719.0;
 
   for (let i = -3; i <= 6; i++) {
     const x = i * tileWidth;

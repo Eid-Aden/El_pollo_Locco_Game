@@ -13,10 +13,10 @@ function MobileControls() {
   });
 }
 
-window.addEventListener('load', MobileControls);
+/* window.addEventListener('load', MobileControls);
 
 function checkOrientation() {
-  const isMobile = window.innerWidth < 720;
+  const isMobile = window.innerWidth < 1120;
   const isPortrait = window.innerHeight > window.innerWidth;
 
   const hint = document.getElementById('rotateHint');
@@ -25,8 +25,24 @@ function checkOrientation() {
     hint.style.display = 'block';
   } else {
     hint.style.display = 'none';
+   */
+
+function checkOrientation() {
+  const isPortrait = window.innerHeight > window.innerWidth;
+  const isSmallDevice = window.innerWidth <= 1024; // max Breite für Handys und kleine Tablets
+
+  const hint = document.getElementById('rotateHint');
+
+  if (isSmallDevice && isPortrait) {
+    hint.style.display = 'block';
+  } else {
+    hint.style.display = 'none';
   }
 }
+
+window.addEventListener('resize', checkOrientation);
+window.addEventListener('orientationchange', checkOrientation);
+window.addEventListener('load', checkOrientation);
 
 // Beim Laden prüfen
 window.addEventListener('load', checkOrientation);

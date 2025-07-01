@@ -36,11 +36,11 @@ body {
   background-position: center center;
   background-size: cover;
   background-attachment: fixed;
-  padding-top: 50px;
+  padding-top: 15px;
   display: flex;
   flex-direction: column;
   align-items: center;
-  justify-content: center;
+
   position: relative;
 }
 
@@ -138,7 +138,6 @@ body {
   border: 2px solid #d4b07a;
   text-align: center;
   margin: 0 auto;
-  min-height: 100%;
   z-index: 12;
 }
 
@@ -218,31 +217,43 @@ h1 {
 
 .swapYourPhone img {
   max-width: 90%;
-  max-height: 90%;
+  min-height: 100vh;
   object-fit: contain;
+  display: flex;
+  justify-content: center;
 }
 
 header {
   width: 100%;
 }
 
-@media only screen and (max-width: 720px) {
+@media only screen and (max-width: 900px) {
   .canvas {
     width: 80%;
-    height: auto;
-  }
-}
-@media only screen and (max-width: 450px) {
-  .button-row button {
-    padding: 3px;
-    border-radius: 4px;
-  }
-  .button-row {
-    gap: 2px;
+    height: 320px;
+    aspect-ratio: unset; /* optional, um Konflikte zu vermeiden */
   }
 }
 
-@media (max-width: 878px) {
+@media only screen and (max-width: 850px) {
+  .allcover {
+    width: 75%;
+    height: fit-content;
+  }
+
+  .button-row button {
+    padding: 3px;
+    border-radius: 4px;
+    display: flex;
+    letter-spacing: 0;
+    font-size: 12px;
+  }
+  .button-row {
+    gap: 4px;
+  }
+}
+
+@media (max-width: 900px) {
   .fullscreen_for_disktop {
     display: none !important;
   }
@@ -252,7 +263,7 @@ header {
   display: none;
 }
 
-@media (max-width: 880px) {
+@media (max-width: 899px) {
   .mobile_hidden {
     display: flex;
     justify-content: center;

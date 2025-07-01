@@ -97,12 +97,14 @@ class World {
       this.checkCollectBottles();
       this.checkCollectCoins();
       this.isBottleColissionBoss();
+      this.checkBottleHitsChickens();
     }, 100);
   }
 
   /**
    * Handles bottle throwing when the 'D' key is pressed and cooldown is over.
    */
+
   checkThrowableObjects() {
     const now = new Date().getTime();
     if (
@@ -110,7 +112,9 @@ class World {
       this.collectedBottles > 0 &&
       now - this.lastThrowTime > this.throwCooldown
     ) {
-      let bottle = new ThrowableObjects(this.character.x + 200, this.character.y + 200);
+      let offsetX = this.character.otherDirection ? -50 : 50;
+      let bottle = new ThrowableObjects(this.character.x + offsetX, this.character.y + 15);
+      bottle.otherDirection = this.character.otherDirection;
       this.throwableObjects.push(bottle);
       this.collectedBottles--;
       this.bottle.setPercentage(this.collectedBottles, this.totalBottles);
@@ -121,9 +125,12 @@ class World {
   /**
    * Checks if any thrown bottles hit the EndBoss.
    */
+
   isBottleColissionBoss() {
     this.throwableObjects.forEach((bottle, index) => {
-      if (this.isBottleHittingBoss(bottle)) {
+      let distance = Math.abs(this.endboss.x - this.character.x);
+
+      if (distance <= 300 && this.isBottleHittingBoss(bottle)) {
         this.handleBottleHit(bottle, index);
       }
     });
@@ -139,11 +146,37 @@ class World {
   }
 
   /**
+   * Checks if any bottle hits a chicken (Chicken or SmallChicken)
+   * that is within 300px from the character.
+   * Plays splash animation and removes bottle and chicken on hit.
+   */
+  checkBottleHitsChickens() {
+    this.throwableObjects.forEach((bottle, bottleIndex) => {
+      this.level.enamies.forEach((enemy) => {
+        if (
+          (enemy instanceof Chicken || enemy instanceof SmallChicken) &&
+          !enemy.isDead &&
+          bottle.isColliding(enemy)
+        ) {
+          let distance = Math.abs(this.character.x - enemy.x);
+          if (distance < 300) {
+            this.bottleSplash(bottle);
+            SoundManager.play(this.brokenBottle);
+            this.removeBottleAfterDelay(bottleIndex);
+            this.killEnemy(enemy);
+          }
+        }
+      });
+    });
+  }
+
+  /**
    * Handles the logic when a bottle hits the EndBoss.
    * @param {ThrowableObjects} bottle
    * @param {number} index - Index of the bottle in the array.
    */
   handleBottleHit(bottle, index) {
+    SoundManager.play(this.brokenBottle);
     this.bottleSplash(bottle);
     this.removeBottleAfterDelay(index);
     this.reduceBossEnergy(15);
@@ -337,7 +370,7 @@ class World {
    */
   addBottles() {
     for (let i = 0; i < this.totalBottles; i++) {
-      let x = -500 + Math.random() * 2500;
+      let x = 500 + Math.random() * 2500;
       let y = 380;
       let bottle = new BottleGround();
       bottle.x = x;
@@ -354,7 +387,6 @@ class World {
         this.bottles.splice(index, 1);
         this.collectedBottles++;
         this.bottle.setPercentage(this.collectedBottles, this.totalBottles);
-        SoundManager.play(this.brokenBottle);
       }
     });
   }
@@ -402,8 +434,6 @@ class World {
         this.coins.splice(i, 1);
         this.collectedCoin++;
         this.coin.setPercentage(this.collectedCoin, this.totalCoins);
-
-        SoundManager.play(this.brokenBottle);
       }
     }
   }
