@@ -107,11 +107,7 @@ class World {
 
   checkThrowableObjects() {
     const now = new Date().getTime();
-    if (
-      this.keyboard.D &&
-      this.collectedBottles > 0 &&
-      now - this.lastThrowTime > this.throwCooldown
-    ) {
+    if (this.keyboard.D && this.collectedBottles > 0 && now - this.lastThrowTime > this.throwCooldown) {
       let offsetX = this.character.otherDirection ? -50 : 50;
       let bottle = new ThrowableObjects(this.character.x + offsetX, this.character.y + 15);
       bottle.otherDirection = this.character.otherDirection;
@@ -153,11 +149,7 @@ class World {
   checkBottleHitsChickens() {
     this.throwableObjects.forEach((bottle, bottleIndex) => {
       this.level.enamies.forEach((enemy) => {
-        if (
-          (enemy instanceof Chicken || enemy instanceof SmallChicken) &&
-          !enemy.isDead &&
-          bottle.isColliding(enemy)
-        ) {
+        if ((enemy instanceof Chicken || enemy instanceof SmallChicken) && !enemy.isDead && bottle.isColliding(enemy)) {
           let distance = Math.abs(this.character.x - enemy.x);
           if (distance < 300) {
             this.bottleSplash(bottle);

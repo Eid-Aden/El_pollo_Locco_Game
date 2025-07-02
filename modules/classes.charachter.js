@@ -48,11 +48,7 @@ class Character extends MovableObjects {
   ];
 
   /** @type {string[]} Hurt animation frames */
-  walkingHurt = [
-    'img/2_character_pepe/4_hurt/H-41.png',
-    'img/2_character_pepe/4_hurt/H-42.png',
-    'img/2_character_pepe/4_hurt/H-43.png',
-  ];
+  walkingHurt = ['img/2_character_pepe/4_hurt/H-41.png', 'img/2_character_pepe/4_hurt/H-42.png', 'img/2_character_pepe/4_hurt/H-43.png'];
 
   /** @type {string[]} Idle animation frames */
   idleImg = [
@@ -279,8 +275,8 @@ class Character extends MovableObjects {
     const enemyTop = enemy.y + enemy.offset.top;
     const isVerticalCollision = characterBottom >= enemyTop && characterTop < enemyTop + 10;
     const isHorizontalOverlap =
-      this.x + this.width - this.offset.right > enemy.x + enemy.offset.left &&
-      this.x + this.offset.left < enemy.x + enemy.width - enemy.offset.right;
+      this.x + this.width - this.offset.right > enemy.x + enemy.offset.left && this.x + this.offset.left < enemy.x + enemy.width - enemy.offset.right;
+
     return isVerticalCollision && isHorizontalOverlap;
   }
 }

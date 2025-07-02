@@ -22,11 +22,7 @@ class EndBoss extends MovableObjects {
 
   intervalIds = [];
   /** @type {string[]} Walking animation image paths */
-  walkingImage = [
-    'img/4_enemie_boss_chicken/1_walk/G1.png',
-    'img/4_enemie_boss_chicken/1_walk/G2.png',
-    'img/4_enemie_boss_chicken/1_walk/G3.png',
-  ];
+  walkingImage = ['img/4_enemie_boss_chicken/1_walk/G1.png', 'img/4_enemie_boss_chicken/1_walk/G2.png', 'img/4_enemie_boss_chicken/1_walk/G3.png'];
   /** @type {string[]} Alert animation image paths */
   alertImage = [
     'img/4_enemie_boss_chicken/2_alert/G5.png',
@@ -50,17 +46,9 @@ class EndBoss extends MovableObjects {
     'img/4_enemie_boss_chicken/3_attack/G20.png',
   ];
   /** @type {string[]} Hurt animation image paths */
-  hurtImage = [
-    'img/4_enemie_boss_chicken/4_hurt/G21.png',
-    'img/4_enemie_boss_chicken/4_hurt/G22.png',
-    'img/4_enemie_boss_chicken/4_hurt/G23.png',
-  ];
+  hurtImage = ['img/4_enemie_boss_chicken/4_hurt/G21.png', 'img/4_enemie_boss_chicken/4_hurt/G22.png', 'img/4_enemie_boss_chicken/4_hurt/G23.png'];
   /** @type {string[]} Death animation image paths */
-  deadImage = [
-    'img/4_enemie_boss_chicken/5_dead/G24.png',
-    'img/4_enemie_boss_chicken/5_dead/G25.png',
-    'img/4_enemie_boss_chicken/5_dead/G26.png',
-  ];
+  deadImage = ['img/4_enemie_boss_chicken/5_dead/G24.png', 'img/4_enemie_boss_chicken/5_dead/G25.png', 'img/4_enemie_boss_chicken/5_dead/G26.png'];
   /**
    * Constructs the EndBoss object.
    * Initializes all images and starts animations.
@@ -175,30 +163,95 @@ class EndBoss extends MovableObjects {
       this.inflictDamageToCharacter(character);
     }
   }
+
+  /**
+   * Instantly kills the character and ends the game.
+   * @param {Character} character
+   */
+  killCharacterImmediately(character) {
+    if (!character.isDead) {
+      character.energy = 0;
+      character.isDead = true;
+      this.world.gameOver = true;
+      this.stopAllIntervals();
+      this.world.stopAllIntervals();
+      this.world.statusbar.setPercentage(0);
+      character.playAnimation(character.walkingDead);
+      document.getElementById('gameOverEndBos').style.display = 'block';
+      SoundManager.pauseAll();
+    }
+  }
+
   /**
    * Reduces the character's energy and triggers death if needed.
    * Updates UI and stops game if the character dies.
    * @param {Character} character
    */
+
   inflictDamageToCharacter(character) {
     character.isSleeping = false;
-    if (character.energy > 0) {
-      character.energy -= 3;
-      if (character.energy < 0) character.energy = 0;
 
-      this.world.statusbar.setPercentage(character.energy);
+    if (character.energy <= 0) return;
 
-      if (character.energy <= 0) {
-        character.isDead = true;
-        this.world.gameOver = true;
-        this.stopAllIntervals();
-        this.world.stopAllIntervals();
-        character.playAnimation(character.walkingDead);
-        document.getElementById('gameOverEndBos').style.display = 'block';
-        SoundManager.pauseAll();
-      } else {
-        character.playAnimation(character.walkingHurt);
-      }
+    this.reduceCharacterEnergy(character);
+    this.updateStatusbar();
+
+    if (character.energy <= 0) {
+      this.handleCharacterDeath(character);
+    } else {
+      this.playCharacterHurtAnimation(character);
     }
+  }
+
+  /**
+   * Reduces character's energy by 3, down to a minimum of 0.
+   * @param {Character} character
+   */
+  reduceCharacterEnergy(character) {
+    character.energy -= 3;
+    if (character.energy < 0) character.energy = 0;
+  }
+
+  /**
+   * Updates the character status bar in the UI.
+   */
+  updateStatusbar() {
+    this.world.statusbar.setPercentage(this.world.character.energy);
+  }
+
+  /**
+   * Handles all logic when the character dies.
+   * @param {Character} character
+   */
+  handleCharacterDeath(character) {
+    character.isDead = true;
+    this.world.gameOver = true;
+    this.stopAllIntervals();
+    this.world.stopAllIntervals();
+    character.playAnimation(character.walkingDead);
+    document.getElementById('gameOverEndBos').style.display = 'block';
+    SoundManager.pauseAll();
+  }
+
+  /**
+   * Plays the hurt animation for the character.
+   * @param {Character} character
+   */
+  playCharacterHurtAnimation(character) {
+    character.playAnimation(character.walkingHurt);
+  }
+
+  /**
+   * Checks if EndBoss and character are physically colliding based on bounding boxes and offsets.
+   * @returns {boolean} True if EndBoss and character are colliding.
+   */
+  isCollidingWithCharacter() {
+    const c = this.world.character;
+    return (
+      this.x + this.width - this.offset.right > c.x + c.offset.left &&
+      this.x + this.offset.left < c.x + c.width - c.offset.right &&
+      this.y + this.height - this.offset.bottom > c.y + c.offset.top &&
+      this.y + this.offset.top < c.y + c.height - c.offset.bottom
+    );
   }
 }

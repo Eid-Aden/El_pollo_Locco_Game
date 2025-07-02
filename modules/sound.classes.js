@@ -47,7 +47,27 @@ class SoundManager {
   /**
    * Pauses and resets all registered sounds.
    */
+
+  /**
+   * Pauses and resets all registered sounds safely.
+   */
   static pauseAll() {
+    this.sounds.forEach((sound) => {
+      if (sound && typeof sound.pause === 'function') {
+        try {
+          // Nur pausieren, wenn der Sound gerade läuft oder bereit ist
+          if (!sound.paused && sound.readyState >= 2) {
+            sound.pause();
+            sound.currentTime = 0;
+          }
+        } catch (e) {
+          console.warn('Error stopping sound:', e);
+        }
+      }
+    });
+  }
+
+  /* static pauseAll() {
     this.sounds.forEach((sound) => {
       if (sound && typeof sound.pause === 'function') {
         try {
@@ -60,5 +80,5 @@ class SoundManager {
         }
       }
     });
-  }
+  } */
 }
