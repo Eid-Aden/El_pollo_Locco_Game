@@ -24,7 +24,7 @@ function checkOrientation() {
   const hint = document.getElementById('rotateHint');
 
   if (isSmallDevice && isPortrait) {
-    hint.style.display = 'block';
+    hint.style.display = 'flex';
   } else {
     hint.style.display = 'none';
   }
