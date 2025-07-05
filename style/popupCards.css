@@ -1,7 +1,7 @@
 /*  Styling For Winners */
-body {
+/* body {
   overflow-x: hidden;
-}
+} */
 /* Overlay-Styling für Gewinnbildschirm */
 /* Overlay über das ganze Spiel */
 .overlay-winImg {
@@ -73,7 +73,7 @@ body {
 .restart-button {
   width: 20%;
   position: absolute;
-  top: 25%;
+  top: 30%;
   left: 50%;
   transform: translate(-20%, -20%);
 
@@ -266,4 +266,33 @@ body {
   padding: 3px;
   border: solid 2px #0077cc;
   background-color: #caf0f8;
+}
+
+@media (max-width: 900px) {
+  .how-to-use {
+    height: 100vh;
+    width: 50%;
+    overflow: auto;
+    top: 2px;
+    padding: 8px;
+    font-size: 12px;
+    margin-block-start: 0;
+    margin-block-end: 0;
+  }
+}
+@media (max-width: 900px) {
+  .impressum {
+    height: 100vh;
+    width: 50%;
+    overflow: auto;
+    top: 2px;
+    padding: 8px;
+    font-size: 12px;
+    display: block;
+    margin-block-start: 0;
+    margin-block-end: 0;
+  }
+  .story {
+    top: 0;
+  }
 }

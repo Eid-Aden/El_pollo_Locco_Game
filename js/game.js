@@ -65,12 +65,23 @@ window.addEventListener('keyup', (e) => {
 
 function toggleMute() {
   const icon = document.getElementById('muteIcon_desktop');
+
   if (SoundManager.isMuted) {
     SoundManager.unmuteAll();
     icon.src = 'img/volume.png';
   } else {
     SoundManager.muteAll();
     icon.src = 'img/mute.png';
+  }
+}
+function toggleMuteMobile() {
+  const iconMobile = document.getElementById('muteIcon_mobile');
+  if (SoundManager.isMuted) {
+    SoundManager.unmuteAll();
+    iconMobile.src = 'img/volume.png';
+  } else {
+    SoundManager.muteAll();
+    iconMobile.src = 'img/mute.png';
   }
 }
 
