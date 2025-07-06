@@ -296,3 +296,7 @@
     top: 0;
   }
 }
+
+.mobile_hidden {
+  display: none;
+}

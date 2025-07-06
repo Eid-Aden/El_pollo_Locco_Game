@@ -26,7 +26,8 @@
   box-sizing: border-box;
 }
 
-body {
+/* body {
+  min-height: 100vh;
   font-family: 'zabars' serif;
   font-weight: 400;
   background-image: url('../img/coverImg/africa.jpg');
@@ -41,6 +42,42 @@ body {
   overflow-x: hidden;
   overflow-y: hidden;
   background-attachment: scroll;
+}
+ */
+
+html,
+body {
+  height: 100%;
+  margin: 0;
+  padding: 0;
+  max-width: 100%;
+  overflow-y: hidden;
+  overflow-x: hidden;
+}
+
+body {
+  font-family: 'zabars', serif;
+  font-weight: 400;
+  background-image: url('../img/coverImg/africa.jpg');
+  background-repeat: no-repeat;
+  background-position: center center;
+  background-size: cover;
+  /*   background-attachment: fixed; */
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  position: relative;
+  /*  overflow-x: hidden;
+  overflow-y: auto; */
+  background-attachment: scroll;
+}
+
+main {
+  height: 100vh;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  flex-direction: column;
 }
 
 .btn-arrow,
@@ -156,13 +193,13 @@ h1 {
   flex-direction: column;
   min-height: 100vh;
 } */
-main {
+/* main {
   display: flex;
   justify-content: center;
   align-items: center;
   flex-direction: column;
   min-height: 100vh;
-}
+} */
 
 .game-window {
   background: linear-gradient(to top, #ffa726, #81d4fa);
@@ -254,10 +291,11 @@ header {
   }
 }
 
-@media only screen and (max-width: 850px) {
+@media only screen and (max-width: 900px) {
   .allcover {
-    width: 75%;
-    height: fit-content;
+    width: 60%;
+    height: 100%;
+    margin: 3px;
   }
 
   .button-row button {
@@ -269,6 +307,9 @@ header {
   }
   .button-row {
     gap: 4px;
+  }
+  .cover_img {
+    width: 45%;
   }
 }
 
@@ -282,7 +323,7 @@ header {
   display: none;
 }
 
-@media (max-width: 899px) {
+@media (max-width: 1000px) {
   .mobile_hidden {
     display: flex;
     justify-content: space-between;
