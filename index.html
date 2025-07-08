@@ -51,6 +51,19 @@
           <button onclick="toggleBox('impresseum')">Impresseum</button>
         </div>
       </div>
+      <div class="canvas-wrapper" style="display: none" id="canvas-wrapper">
+        <canvas class="canvas" id="canvas" width="720" height="480"></canvas>
+
+        <div class="mobile_hidden" id="mobile_hidden">
+          <img id="muteIcon_mobile" class="bottons" src="img/volume.png" width="24" alt="" width="28" onclick="toggleMuteMobile()" />
+
+          <img id="btn-left" class="bottons" src="img/left runing.png" alt="" />
+          <img id="btn-right" class="bottons" src="img/right-arrow (2).png" alt="" />
+          <img id="btn-space" class="bottons" src="img/arrow-up.png" alt="" />
+          <img id="btn-bottle" class="bottons" src="img/throwSybol.png" alt="" />
+        </div>
+      </div>
+
       <div class="story" id="storyBox">
         <div class="title_andcloseBtn">
           <h3>🌵 The Story !</h3>
@@ -186,19 +199,6 @@
 
         <div onclick="openFullscreen()">
           <img class="fullscreen" src="img/fullscreen.png" alt="" width="28" />
-        </div>
-      </div>
-
-      <div class="canvas-wrapper">
-        <canvas class="canvas" id="canvas" width="720" height="480" style="display: none"></canvas>
-
-        <div class="mobile_hidden" id="mobile_hidden">
-          <img id="muteIcon_mobile" class="bottons" src="img/volume.png" width="24" alt="" width="28" onclick="toggleMuteMobile()" />
-
-          <img id="btn-left" class="bottons" src="img/left runing.png" alt="" />
-          <img id="btn-right" class="bottons" src="img/right-arrow (2).png" alt="" />
-          <img id="btn-space" class="bottons" src="img/arrow-up.png" alt="" />
-          <img id="btn-bottle" class="bottons" src="img/throwSybol.png" alt="" />
         </div>
       </div>
     </main>

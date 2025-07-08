@@ -100,7 +100,9 @@ function startGame() {
   }
 
   document.getElementById('llcover').style.display = 'none';
-  document.getElementById('canvas').style.display = 'block';
+  document.getElementById('canvas-wrapper').style.display = 'flex';
+  document.getElementById('canvas').style.display = 'flex';
+
   SoundManager.play(this.backgroundSound);
 
   init();

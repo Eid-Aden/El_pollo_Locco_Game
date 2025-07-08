@@ -26,25 +26,6 @@
   box-sizing: border-box;
 }
 
-/* body {
-  min-height: 100vh;
-  font-family: 'zabars' serif;
-  font-weight: 400;
-  background-image: url('../img/coverImg/africa.jpg');
-  background-repeat: no-repeat;
-  background-position: center center;
-  background-size: cover;
-  background-attachment: fixed;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  position: relative;
-  overflow-x: hidden;
-  overflow-y: hidden;
-  background-attachment: scroll;
-}
- */
-
 html,
 body {
   height: 100%;
@@ -123,7 +104,7 @@ main {
   right: 0;
   z-index: 3;
   position: absolute;
-  bottom: 10px;
+  bottom: 0;
 }
 
 .overlay {
@@ -186,20 +167,6 @@ h1 {
   margin-bottom: 20px;
   font-weight: bold;
 }
-/* main {
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  flex-direction: column;
-  min-height: 100vh;
-} */
-/* main {
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  flex-direction: column;
-  min-height: 100vh;
-} */
 
 .game-window {
   background: linear-gradient(to top, #ffa726, #81d4fa);
@@ -294,8 +261,9 @@ header {
 @media only screen and (max-width: 900px) {
   .allcover {
     width: 60%;
-    height: 100%;
+    height: auto;
     margin: 3px;
+    padding: 5px;
   }
 
   .button-row button {
@@ -323,15 +291,15 @@ header {
   display: none;
 }
 
-@media (max-width: 1000px) {
+@media (max-width: 1100px) {
   .mobile_hidden {
     display: flex;
     justify-content: space-between;
     padding: 4px;
   }
   .bottons {
-    width: 20px;
-    height: 18px;
+    width: 30px;
+    height: 24px;
   }
 
   h1 {
