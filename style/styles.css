@@ -149,7 +149,7 @@ main {
 .allcover {
   margin-top: 20px;
   position: relative;
-  background: #f8e4b4;
+  background: transparent;
   border-radius: 20px;
   padding: 30px;
   max-width: 700px;
@@ -263,7 +263,7 @@ header {
     width: 60%;
     height: auto;
     margin: 3px;
-    padding: 5px;
+    padding: 10px;
   }
 
   .button-row button {

@@ -16,9 +16,9 @@ function openFullscreen() {
   if (canvas.requestFullscreen) {
     canvas.requestFullscreen();
   } else if (canvas.webkitRequestFullscreen) {
-    canvas.webkitRequestFullscreen(); // für Safari
+    canvas.webkitRequestFullscreen();
   } else if (canvas.msRequestFullscreen) {
-    canvas.msRequestFullscreen(); // für ältere IE-Versionen
+    canvas.msRequestFullscreen();
   }
 }
 
@@ -86,6 +86,8 @@ function toggleMuteMobile() {
 }
 
 function startGame() {
+  SoundManager.initFromStorage();
+
   MobileControls();
   if (world && typeof world.stopAllIntervals === 'function') {
     world.stopAllIntervals();

@@ -24,6 +24,7 @@ class SoundManager {
    */
   static muteAll() {
     this.isMuted = true;
+    localStorage.setItem('soundMuted', 'true');
     this.pauseAll();
   }
 
@@ -32,6 +33,7 @@ class SoundManager {
    */
   static unmuteAll() {
     this.isMuted = false;
+    localStorage.setItem('soundMuted', 'false');
   }
 
   /**
@@ -45,17 +47,12 @@ class SoundManager {
   }
 
   /**
-   * Pauses and resets all registered sounds.
-   */
-
-  /**
    * Pauses and resets all registered sounds safely.
    */
   static pauseAll() {
     this.sounds.forEach((sound) => {
       if (sound && typeof sound.pause === 'function') {
         try {
-          // Nur pausieren, wenn der Sound gerade läuft oder bereit ist
           if (!sound.paused && sound.readyState >= 2) {
             sound.pause();
             sound.currentTime = 0;
@@ -67,18 +64,8 @@ class SoundManager {
     });
   }
 
-  /* static pauseAll() {
-    this.sounds.forEach((sound) => {
-      if (sound && typeof sound.pause === 'function') {
-        try {
-          if (!sound.paused) {
-            sound.pause();
-            sound.currentTime = 0;
-          }
-        } catch (e) {
-          console.warn('Error stopping sound:', e);
-        }
-      }
-    });
-  } */
+  static initFromStorage() {
+    const savedMute = localStorage.getItem('soundMuted');
+    this.isMuted = savedMute === 'true';
+  }
 }

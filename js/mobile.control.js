@@ -19,7 +19,7 @@ function MobileControls() {
 
 function checkOrientation() {
   const isPortrait = window.innerHeight > window.innerWidth;
-  const isSmallDevice = window.innerWidth <= 1024; // max Breite für Handys und kleine Tablets
+  const isSmallDevice = window.innerWidth <= 1024;
 
   const hint = document.getElementById('rotateHint');
 
