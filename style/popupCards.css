@@ -381,7 +381,7 @@
   height: 100%;
   background: linear-gradient(to bottom, #87ceeb 0%, #db8f67 100%);
 }
-#.gameover-image {
+.gameover-image {
   width: 720px;
   height: 100%;
 }

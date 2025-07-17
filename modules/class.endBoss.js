@@ -91,13 +91,85 @@ class EndBoss extends MovableObjects {
   /**
    * Initializes behavior loops: movement after delay and attack loop.
    */
-  animate() {
-    setTimeout(() => {
-      this.startMovementLoop();
-    }, 15000);
 
+  animate() {
+    this.startMovementLoop();
     this.startAttackLoop();
+    this.startPositionCheckLoop();
   }
+
+  /**
+   * Begins a loop to check character position each frame.
+   * @private
+   */
+  startPositionCheckLoop() {
+    this._positionCheckInterval = setInterval(() => this.checkPosition(), 1000 / 60);
+  }
+
+  /**
+   * Stops the position checking loop.
+   * @private
+   */
+  stopPositionCheckLoop() {
+    clearInterval(this._positionCheckInterval);
+  }
+
+  /**
+   * Verifies character position relative to the boss and handles collisions.
+   * @private
+   */
+  checkPosition() {
+    const character = this.world.character;
+    if (!character || this.world.gameOver || this.isDead) {
+      this.stopPositionCheckLoop();
+      return;
+    }
+    this.handleSideCollision(character);
+    this.handleBehindCollision(character);
+  }
+
+  /**
+   * Inflicts damage when character is beside the boss.
+   * @param {Character} character - The player character
+   * @private
+   */
+  handleSideCollision(character) {
+    const SIDE_DISTANCE = 100;
+    const DAMAGE_AMOUNT = 8;
+    const dx = character.x - this.x;
+
+    if (Math.abs(dx) < SIDE_DISTANCE) {
+      character.energy = Math.max(0, character.energy - DAMAGE_AMOUNT);
+      this.world.statusbar.setPercentage(character.energy);
+      if (character.energy === 0) {
+        this.processGameOver(character);
+      }
+    }
+  }
+
+  /**
+   * Prevents character from moving behind the boss and triggers game over.
+   * @param {Character} character - The player character
+   * @private
+   */
+  handleBehindCollision(character) {
+    if (character.x > this.x + this.width) {
+      character.x = this.x + this.width;
+      this.processGameOver(character);
+    }
+  }
+
+  /**
+   * Stops loops, kills the character, and shows the game over overlay.
+   * @param {Character} character - The player character
+   * @private
+   */
+  processGameOver(character) {
+    this.stopPositionCheckLoop();
+    this.killCharacterImmediately(character);
+    document.getElementById('gameOverEndBos').style.display = 'block';
+  }
+
   /**
    * Determines if the EndBoss should approach the character.
    * @returns {boolean} True if distance to character > 100px
@@ -208,7 +280,7 @@ class EndBoss extends MovableObjects {
    * @param {Character} character
    */
   reduceCharacterEnergy(character) {
-    character.energy -= 3;
+    character.energy -= 8;
     if (character.energy < 0) character.energy = 0;
   }
 
