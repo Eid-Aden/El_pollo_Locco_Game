@@ -39,6 +39,7 @@
       <div class="swapYourPhone" id="rotateHint">
         <img src="img/swapYourPhone.gif" alt="" />
       </div>
+
       <div class="allcover" id="llcover">
         <div class="game-window">
           <img src="img/9_intro_outro_screens/start/startscreen_1.png" alt="" />
@@ -51,16 +52,40 @@
           <button onclick="toggleBox('impresseum')">Impresseum</button>
         </div>
       </div>
-      <div class="canvas-wrapper" style="display: none" id="canvas-wrapper">
-        <canvas class="canvas" id="canvas" width="720" height="480"></canvas>
 
-        <div class="mobile_hidden" id="mobile_hidden">
-          <img id="muteIcon_mobile" class="bottons" src="img/volume.png" width="24" alt="" width="28" onclick="toggleMuteMobile()" />
+      <div id="youWinOverlay" class="winn-overlay" style="display: none">
+        <div class="endScreenWinn">
+          <img id="youWinImage" src="img/You won, you lost/You win B.png" alt="" />
+          <div class="restart-winCard" id="restart-winCard">
+            <img src="img/restart.png" alt="Restart" class="restart-icon" onclick="restartGame()" />
+            <img src="img/home-button.png" alt="Home Icon" class="homeIcon" onclick="goToHome()" />
+          </div>
+        </div>
+      </div>
 
-          <img id="btn-left" class="bottons" src="img/left runing.png" alt="" />
-          <img id="btn-right" class="bottons" src="img/right-arrow (2).png" alt="" />
-          <img id="btn-space" class="bottons" src="img/arrow-up.png" alt="" />
-          <img id="btn-bottle" class="bottons" src="img/throwSybol.png" alt="" />
+      <div class="conOne">
+        <div class="restart-overlay" style="display: none" id="restart-overlayNone">
+          <div class="endScreen">
+            <img id="gameOverImg" class="gameOverImg" src="img/9_intro_outro_screens/game_over/game over!.png" />
+
+            <div class="restart-button" id="restart-button">
+              <img src="img/restart.png" alt="Restart" class="restart-icon" onclick="restartGame()" />
+              <img src="img/home-button.png" alt="Home Icon" class="homeIcon" onclick="goToHome()" />
+            </div>
+          </div>
+        </div>
+
+        <div class="canvas-wrapper" style="display: none" id="canvas-wrapper">
+          <canvas class="canvas" id="canvas" width="720" height="480"></canvas>
+
+          <div class="mobile_hidden" id="mobile_hidden">
+            <img id="muteIcon_mobile" class="bottons" src="img/volume.png" width="24" alt="" width="28" onclick="toggleMuteMobile()" />
+
+            <img id="btn-left" class="bottons" src="img/left runing.png" alt="" draggable="false" />
+            <img id="btn-right" class="bottons" src="img/right-arrow (2).png" alt="" draggable="false" />
+            <img id="btn-space" class="bottons" src="img/arrow-up.png" alt="" draggable="false" />
+            <img id="btn-bottle" class="bottons" src="img/throwSybol.png" alt="" draggable="false" />
+          </div>
         </div>
       </div>
 
@@ -157,34 +182,13 @@
         </p>
       </div>
 
-      <div id="gameOverEndBos" class="restart-overlay" style="display: none">
-        <div class="restart-gameover">
+      <div id="gameOverEndBos" class="endBoss-overlay" style="display: none">
+        <div class="endBossEndscreen">
           <img src="img/9_intro_outro_screens/game_over/game over!.png" alt="" class="gameover-image" />
 
           <div class="restart-button">
             <img src="img/restart.png" alt="Restart" class="restart-icon" onclick="startGame()" />
-            <img src="img/home_icon.png" class="homeIcon" onclick="restartGame() " />
-          </div>
-        </div>
-      </div>
-
-      <div id="restartBtn" onclick="startGame()" class="restart-overlay" style="display: none">
-        <div class="restart-gameover">
-          <img src="img/9_intro_outro_screens/game_over/game over!.png" alt="" class="gameover-image" />
-
-          <div class="restart-button">
-            <img src="img/restart.png" alt="Restart" class="restart-icon" />
-            <img src="img/home_icon.png" alt="Home Icon" class="homeIcon" onclick="restartGame()" />
-          </div>
-        </div>
-      </div>
-      <div id="youWin" onclick="startGame()" class="overlay-winImg" style="display: none">
-        <div class="restart-container">
-          <img src="img/You won, you lost/You win B.png" alt="" class="win_image" />
-
-          <div class="restart-button">
-            <img src="img/restart.png" alt="Restart" class="restart-icon" />
-            <img src="img/home_icon.png" alt="Home Icon" class="homeIcon" onclick="restartGame()" />
+            <img src="img/home-button.png" class="homeIcon" onclick="goToHome()" />
           </div>
         </div>
       </div>
@@ -192,11 +196,9 @@
       <div id="game_over" onclick="startGame()"></div>
       <button onclick="closeFullscreen()" id="exitFullscreenBtn" style="display: none">Vollbild aus</button>
 
-      <div class="fullscreen_for_disktop" id="soundMute" onclick="toggleMute()">
-        <img id="muteIcon_desktop" src="img/volume.png" width="24" alt="" width="28" />
-        <div>
-          <img src="img/home_icon.png" alt="Home Icon" class="homeIcon" onclick="restartGame()" />
-        </div>
+      <div class="fullscreen_for_disktop" id="soundMute">
+        <img id="muteIcon_desktop" src="img/volume.png" width="24" alt="" width="28" onclick="toggleMute()" />
+        <div></div>
 
         <div onclick="openFullscreen()">
           <img class="fullscreen" src="img/fullscreen.png" alt="" width="28" />

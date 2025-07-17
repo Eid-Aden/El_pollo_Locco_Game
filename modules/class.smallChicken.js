@@ -3,7 +3,7 @@
  * Inherits movement and animation logic from MovableObjects.
  */
 class SmallChicken extends MovableObjects {
-  y = 360;
+  y = 400;
   width = 60;
   height = 80;
   speed = 1;

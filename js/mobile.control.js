@@ -1,3 +1,7 @@
+/* window.addEventListener('load', MobileControls);
+
+*/
+
 function MobileControls() {
   const buttons = [
     { id: 'btn-left', key: 'LEFT' },
@@ -7,15 +11,19 @@ function MobileControls() {
   ];
 
   buttons.forEach(({ id, key }) => {
-    const controlBnt = document.getElementById(id);
-    controlBnt.addEventListener('touchstart', () => (keyboard[key] = true));
-    controlBnt.addEventListener('touchend', () => (keyboard[key] = false));
+    const controlBtn = document.getElementById(id);
+
+    controlBtn.addEventListener('touchstart', (e) => {
+      e.preventDefault(); // verhindert das lange Tippen-Menü
+      keyboard[key] = true;
+    });
+
+    controlBtn.addEventListener('touchend', (e) => {
+      e.preventDefault();
+      keyboard[key] = false;
+    });
   });
 }
-
-/* window.addEventListener('load', MobileControls);
-
-*/
 
 function checkOrientation() {
   const isPortrait = window.innerHeight > window.innerWidth;

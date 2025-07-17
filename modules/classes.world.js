@@ -2,9 +2,14 @@
  * The World class handles the entire game environment, including character control,
  * enemy logic, collision detection, collectible tracking, and drawing everything to the canvas.
  */
+/**
+ * Represents a throwable object like a salsa bottle.
+ * Inherits from MovableObjects and includes throw behavior.
+ */
 
 class World {
   character = new Character();
+
   statusbar = new Statusbar();
   statusEndBoss = new StatusBarEndBos();
   bottle = new Bottles();
@@ -22,6 +27,7 @@ class World {
   bossHits = 0;
   lastThrowTime = 0;
   throwCooldown = 500;
+  groundLevel = 360; // Ground level for character and objects
 
   ctx;
   canvas;
@@ -109,8 +115,14 @@ class World {
     const now = new Date().getTime();
     if (this.keyboard.D && this.collectedBottles > 0 && now - this.lastThrowTime > this.throwCooldown) {
       let offsetX = this.character.otherDirection ? -50 : 50;
-      let bottle = new ThrowableObjects(this.character.x + offsetX, this.character.y + 15);
-      bottle.otherDirection = this.character.otherDirection;
+
+      let bottle = new ThrowableObjects(
+        this.character.x + offsetX,
+        this.character.y + this.character.height / 2,
+        this.character.otherDirection,
+        this
+      );
+      bottle.world = this;
       this.throwableObjects.push(bottle);
       this.collectedBottles--;
       this.bottle.setPercentage(this.collectedBottles, this.totalBottles);
@@ -206,7 +218,7 @@ class World {
   killEndBoss() {
     this.endboss.isDead = true;
     this.endboss.loadImage(this.endboss.deadImage[0]);
-    document.getElementById('youWin').style.display = 'block';
+    document.getElementById('youWinOverlay').style.display = 'flex';
     this.gameOver = true;
     this.stopAllIntervals();
     SoundManager.pauseAll();
@@ -302,7 +314,11 @@ class World {
    * Displays game over screen, stops game and sounds.
    */
   triggerGameOver() {
-    document.getElementById('restartBtn').style.display = 'block';
+    // Zeige das ganze GameOver-Overlay
+    /* document.querySelector('.restart-overlay').style.display = 'flex'; */
+    document.getElementById('restart-overlayNone').style.display = 'flex';
+    document.getElementById('gameOverImg').style.display = 'block';
+    document.getElementById('restart-button').style.display = 'flex';
     this.gameOver = true;
     this.stopAllIntervals();
     this.stopAllEnemies();
@@ -340,7 +356,6 @@ class World {
       let chicken = new Chicken();
       chicken.x = this.x;
       chicken.world = this;
-
       this.level.enamies.push(chicken);
     }
   }
@@ -357,6 +372,7 @@ class World {
       this.level.enamies.push(small_chicken);
     }
   }
+
   /**
    * Adds collectible bottles to the map at random positions.
    */
@@ -458,6 +474,7 @@ class World {
     this.drawBackground();
     this.drawFixedUI();
     this.drawGameObjects();
+    this.throwableObjects.forEach((bottle) => bottle.update());
     this.requestNextFrame();
   }
   /**

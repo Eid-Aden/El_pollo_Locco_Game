@@ -93,8 +93,10 @@ function startGame() {
     world.stopAllIntervals();
   }
 
-  document.getElementById('restartBtn').style.display = 'none';
-  document.getElementById('youWin').style.display = 'none';
+  document.getElementById('gameOverImg').style.display = 'none';
+  document.getElementById('youWinOverlay').style.display = 'none';
+  document.getElementById('restart-overlayNone').style.display = 'none';
+
   document.getElementById('gameOverEndBos').style.display = 'none';
 
   if (window.innerWidth > 878) {
@@ -104,14 +106,16 @@ function startGame() {
   document.getElementById('llcover').style.display = 'none';
   document.getElementById('canvas-wrapper').style.display = 'flex';
   document.getElementById('canvas').style.display = 'flex';
-
-  SoundManager.play(this.backgroundSound);
-
   init();
+  setTimeout(() => {
+    // ... dann Hintergrundsound abspielen
+    SoundManager.play(world.backgroundSound);
+  }, 200);
 }
 
 function restartGame() {
-  location.reload();
+  startGame();
+  document.getElementById('restart-button').style.display = 'none';
 }
 
 function toggleBox(boxId) {
@@ -134,4 +138,22 @@ function toggleBox(boxId) {
     selectedBox.classList.remove('show');
     setTimeout(() => (selectedBox.style.display = 'none'), 500);
   }
+}
+
+function goToHome() {
+  if (world && typeof world.stopAllIntervals === 'function') {
+    world.stopAllIntervals();
+  }
+
+  document.getElementById('canvas-wrapper').style.display = 'none';
+  document.getElementById('canvas').style.display = 'none';
+  document.getElementById('youWinOverlay').style.display = 'none';
+  document.getElementById('gameOverEndBos').style.display = 'none';
+
+  document.querySelector('.restart-overlay').style.display = 'none';
+  document.getElementById('gameOverImg').style.display = 'none';
+
+  document.getElementById('llcover').style.display = 'block';
+
+  SoundManager.pauseAll();
 }

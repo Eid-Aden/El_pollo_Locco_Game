@@ -4,16 +4,16 @@
  */
 class Character extends MovableObjects {
   /** @type {number} Ground level Y position for collision */
-  groundLevel = 180;
+  groundLevel = 200;
   y = 160;
-  speed = 20;
+  speed = 15;
   speedY = 0;
-  width = 200;
-  height = 280;
+  width = 190;
+  height = 260;
   isSleeping = false;
 
   /** @type {Object} Collision offset for precise hitbox */
-  offset = { top: 20, right: 20, bottom: 0, left: 20 };
+  offset = { top: 12, right: 10, bottom: 0, left: 8 };
 
   /** @type {string[]} Walking animation frames */
   walkingImage = [
@@ -78,16 +78,9 @@ class Character extends MovableObjects {
     'img/2_character_pepe/1_idle/long_idle/I-20.png',
   ];
   world;
-  /** @type {HTMLAudioElement} Footstep/running sound */
   walkingSound = new Audio('audio/running.mp3');
-
-  /** @type {HTMLAudioElement} Hurt sound effect */
   hurtSound = new Audio('audio/hurt.mp3');
-
-  /** @type {HTMLAudioElement} Death sound effect */
   deadSound = new Audio('audio/Dead.mp3');
-
-  /** @type {HTMLAudioElement} Snoring sound while idle too long */
   soundSnore = new Audio('audio/snore.mp3');
 
   /**
@@ -273,7 +266,7 @@ class Character extends MovableObjects {
     const characterBottom = this.y + this.height - this.offset.bottom;
     const characterTop = this.y + this.offset.top;
     const enemyTop = enemy.y + enemy.offset.top;
-    const isVerticalCollision = characterBottom >= enemyTop && characterTop < enemyTop + 10;
+    const isVerticalCollision = characterBottom >= enemyTop && characterTop < enemyTop + 5;
     const isHorizontalOverlap =
       this.x + this.width - this.offset.right > enemy.x + enemy.offset.left && this.x + this.offset.left < enemy.x + enemy.width - enemy.offset.right;
 

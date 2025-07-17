@@ -3,7 +3,8 @@
  * Inherits from MovableObjects.
  */
 class Chicken extends MovableObjects {
-  y = 360;
+  y = 390;
+
   width = 60;
   height = 80;
   speed = 1;
@@ -15,17 +16,14 @@ class Chicken extends MovableObjects {
     left: 10,
   };
 
-  /** @type {string[]} Walking animation frames */
   walkingImage = [
     'img/3_enemies_chicken/chicken_normal/1_walk/1_w.png',
     'img/3_enemies_chicken/chicken_normal/1_walk/2_w.png',
     'img/3_enemies_chicken/chicken_normal/1_walk/3_w.png',
   ];
 
-  /** @type {string[]} Image shown when chicken is dead */
   deadImage = ['img/3_enemies_chicken/chicken_normal/2_dead/dead.png'];
 
-  /** @type {HTMLAudioElement} Sound played when chicken clucks */
   walkingSound = new Audio('audio/chickenSound.mp3');
 
   /**
@@ -33,6 +31,7 @@ class Chicken extends MovableObjects {
    */
   constructor() {
     super();
+
     this.loadImage('img/3_enemies_chicken/chicken_normal/1_walk/1_w.png');
     this.loadImage(this.deadImage);
     this.x = 2000 + Math.random() * 500;

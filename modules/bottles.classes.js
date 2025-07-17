@@ -6,7 +6,7 @@ class BottleGround extends MovableObjects {
     super().loadImage('img/6_salsa_bottle/2_salsa_bottle_on_ground.png');
     this.x = x;
     this.y = y;
-    this.width = 40;
+    this.width = 100;
     this.height = 60;
 
     this.offset = {

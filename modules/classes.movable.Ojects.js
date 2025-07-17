@@ -8,7 +8,7 @@ class MovableObjects extends DrawableObj {
   y = 60;
   groundLevel = 220;
   img;
-  width = 150;
+  width = 120;
   height = 100;
   speed = 0.12;
   speedY = 0;
@@ -59,12 +59,7 @@ class MovableObjects extends DrawableObj {
    */
 
   isColliding(mo) {
-    return (
-      this.x + this.width > mo.x &&
-      this.x < mo.x + mo.width &&
-      this.y + this.height > mo.y &&
-      this.y < mo.y + mo.height
-    );
+    return this.x + this.width > mo.x && this.x < mo.x + mo.width && this.y + this.height > mo.y && this.y < mo.y + mo.height;
   }
 
   /**
@@ -98,7 +93,7 @@ class MovableObjects extends DrawableObj {
   }
 
   jump() {
-    this.speedY = 35;
+    this.speedY = 20;
   }
 
   /**

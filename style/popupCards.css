@@ -1,23 +1,16 @@
-/*  Styling For Winners */
-/* body {
-  overflow-x: hidden;
-} */
-/* Overlay-Styling für Gewinnbildschirm */
-/* Overlay über das ganze Spiel */
 .overlay-winImg {
   position: fixed;
   top: 0;
   left: 0;
   width: 100vw;
   height: 100vh;
-  background-color: rgba(0, 0, 0, 0.7); /* dunkler Hintergrund */
+  background-color: rgba(0, 0, 0, 0.5);
+  z-index: 300;
   display: flex;
   justify-content: center;
   align-items: center;
-  z-index: 99;
 }
 
-/* Container in der Mitte */
 .restart-container {
   display: flex;
   justify-content: center;
@@ -34,15 +27,6 @@
   margin: 0 auto;
 }
 
-/* Gewinnbild */
-.win_image {
-  width: 50%;
-  height: auto;
-  border-radius: 10px;
-  object-fit: contain;
-}
-
-/* Ende */
 .restart-overlay {
   position: fixed;
   top: 0;
@@ -51,15 +35,17 @@
   height: 100vh;
   background-color: rgba(0, 0, 0, 0.5);
   z-index: 300;
-
   display: flex;
   justify-content: center;
   align-items: center;
 }
 
 .restart-gameover {
-  position: relative;
-  display: inline-block;
+  display: flex;
+  justify-content: center;
+  width: 100%;
+  height: 100;
+  background: linear-gradient(to bottom, #87ceeb 0%, #db8f67 100%);
 }
 
 .gameover-image {
@@ -71,14 +57,13 @@
 }
 
 .restart-button {
-  width: 20%;
+  width: 35%;
   position: absolute;
   top: 30%;
-  left: 50%;
+  left: 40%;
   transform: translate(-20%, -20%);
-
-  background-color: #edf6f9;
-  border: 2px solid #edf6f9;
+  background: transparent;
+  border: 1px solid rgba(255, 140, 0, 0.555);
   border-radius: 4px;
   padding: 5px;
   cursor: pointer;
@@ -88,16 +73,26 @@
   align-items: center;
 }
 .restart-button:hover {
-  background-color: #caf0f8;
+  background: #ffa8264b;
 }
 .restart-icon:hover {
   padding: 3px;
-  border: 1px solid #0077cc;
+  border: 1px solid orangered;
   border-radius: 2px;
+  background: #ffa726;
 }
 
 .restart-icon {
-  width: 24px;
+  width: 40px;
+  background-color: transparent;
+  border: none;
+  border-radius: 25%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  box-shadow: 0 4px rgba(0, 0, 0, 0.2);
+  cursor: pointer;
+  transition: transform 0.1s, background 0.2s;
 }
 
 .story {
@@ -257,15 +252,15 @@
 }
 
 .homeIcon {
-  width: 24px;
+  width: 40px;
   border-radius: 3px;
   padding: 3px;
   cursor: pointer;
 }
 .homeIcon:hover {
   padding: 3px;
-  border: solid 2px #0077cc;
-  background-color: #caf0f8;
+  border: solid 2px orangered;
+  background-color: orange;
 }
 
 @media (max-width: 900px) {
@@ -295,4 +290,98 @@
   .story {
     top: 0;
   }
+}
+
+#youWinImage {
+  width: 160px;
+  height: auto;
+}
+
+.endBoss-overlay {
+  position: fixed;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  background-color: rgba(0, 0, 0, 0.5);
+  z-index: 999;
+}
+
+.endBossEndscreen {
+  background: linear-gradient(to bottom, #87ceeb 0%, #db8f67 100%);
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  border-radius: 8px;
+
+  height: 100%;
+}
+
+.winn-overlay {
+  position: fixed;
+  inset: 0;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+
+  background-color: rgba(0, 0, 0, 0.5);
+  z-index: 999;
+}
+
+.endScreen {
+  /*  background: linear-gradient(to bottom, #87ceeb 0%, #db8f67 100%); */
+  background: transparent;
+  width: 720px;
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+
+  border-radius: 8px;
+  margin: 0;
+  /*  padding: 20px; */
+  box-shadow: 0 0 15px rgba(0, 0, 0, 0.3);
+  -webkit-backdrop-filter: blur(10px);
+  backdrop-filter: blur(10px);
+}
+.endScreenWinn {
+  background: linear-gradient(to bottom, #87ceeb 0%, #db8f67 100%);
+
+  width: 720px;
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+
+  border-radius: 8px;
+  margin: 0;
+  padding: 20px;
+  box-shadow: 0 0 15px rgba(0, 0, 0, 0.3);
+  -webkit-backdrop-filter: blur(10px);
+  backdrop-filter: blur(10px);
+}
+
+.restart-winCard {
+  width: 50%;
+  display: flex;
+  justify-content: space-around;
+  margin-top: 20px;
+  padding: 10px;
+  background: transparent;
+  border: 1px solid rgba(255, 140, 0, 0.555);
+  border-radius: 4px;
+  cursor: pointer;
+  transition: background-color 0.2s;
+}
+
+.gameOverImg {
+  width: 720px;
+  height: 100%;
+  background: linear-gradient(to bottom, #87ceeb 0%, #db8f67 100%);
+}
+#.gameover-image {
+  width: 720px;
+  height: 100%;
 }
