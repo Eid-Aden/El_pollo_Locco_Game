@@ -3,11 +3,10 @@
  * Inherits movement and animation logic from MovableObjects.
  */
 class SmallChicken extends MovableObjects {
-  y = 400;
-  width = 60;
-  height = 80;
+  y = 355;
+  width = 70;
+  height = 70;
   speed = 1;
-
   offset = {
     top: 10,
     right: 10,
@@ -74,6 +73,10 @@ class SmallChicken extends MovableObjects {
     this.setStoppableInterval(() => {
       if (this.world?.gameOver || this.isDead || this.world?.endboss?.isDead) return;
       this.movLeft();
+      if (this.x < -100 && this.world) {
+        this.stopAllIntervals();
+        this.world.countEscapedChicken(this);
+      }
     }, 1000 / 60);
   }
 
@@ -83,7 +86,6 @@ class SmallChicken extends MovableObjects {
   animateCharacter() {
     this.setStoppableInterval(() => {
       if (this.world?.gameOver) return;
-
       if (!this.isDead) {
         this.playAnimation(this.walkingImage);
       } else {

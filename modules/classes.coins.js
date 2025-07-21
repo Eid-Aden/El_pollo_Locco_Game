@@ -3,10 +3,7 @@
  * Inherits from MovableObjects.
  */
 class Coin extends MovableObjects {
-  /** @type {number} Width of the coin image in pixels */
   width = 100;
-
-  /** @type {number} Height of the coin image in pixels */
   height = 100;
 
   /**
@@ -15,11 +12,7 @@ class Coin extends MovableObjects {
    */
   constructor() {
     super().loadImage('img/8_coin/coin_1.png');
-
-    // Starting Y position on the ground
-    this.y = 360;
-
-    // Random X position between 1500 and 2400
+    this.y = 150;
     this.x = 1500 + Math.random() * 900;
   }
 }

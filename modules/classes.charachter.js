@@ -4,16 +4,16 @@
  */
 class Character extends MovableObjects {
   /** @type {number} Ground level Y position for collision */
-  groundLevel = 200;
-  y = 160;
+  groundLevel = 155;
+  y = 155;
   speed = 15;
   speedY = 0;
   width = 190;
-  height = 260;
+  height = 280;
   isSleeping = false;
 
   /** @type {Object} Collision offset for precise hitbox */
-  offset = { top: 12, right: 10, bottom: 0, left: 8 };
+  offset = { top: 120, right: 30, bottom: 30, left: 30 };
 
   /** @type {string[]} Walking animation frames */
   walkingImage = [
@@ -48,7 +48,11 @@ class Character extends MovableObjects {
   ];
 
   /** @type {string[]} Hurt animation frames */
-  walkingHurt = ['img/2_character_pepe/4_hurt/H-41.png', 'img/2_character_pepe/4_hurt/H-42.png', 'img/2_character_pepe/4_hurt/H-43.png'];
+  walkingHurt = [
+    'img/2_character_pepe/4_hurt/H-41.png',
+    'img/2_character_pepe/4_hurt/H-42.png',
+    'img/2_character_pepe/4_hurt/H-43.png',
+  ];
 
   /** @type {string[]} Idle animation frames */
   idleImg = [
@@ -238,7 +242,7 @@ class Character extends MovableObjects {
   }
 
   handleIdleAnimation() {
-    const idleTime = (Date.now() - this.lastMoveTime) / 1000;
+    const idleTime = (Date.now() - this.lastMoveTime) / 500;
 
     if (this.world.keyboard.RIGHT || this.world.keyboard.LEFT) {
       this.playAnimation(this.walkingImage);
@@ -262,14 +266,17 @@ class Character extends MovableObjects {
    * @param {MovableObjects} enemy - The enemy to check collision with.
    * @returns {boolean}
    */
+
   isJumpingOnEnemy(enemy) {
     const characterBottom = this.y + this.height - this.offset.bottom;
-    const characterTop = this.y + this.offset.top;
     const enemyTop = enemy.y + enemy.offset.top;
-    const isVerticalCollision = characterBottom >= enemyTop && characterTop < enemyTop + 5;
-    const isHorizontalOverlap =
-      this.x + this.width - this.offset.right > enemy.x + enemy.offset.left && this.x + this.offset.left < enemy.x + enemy.width - enemy.offset.right;
 
-    return isVerticalCollision && isHorizontalOverlap;
+    const isFalling = this.speedY < 0;
+    const isAbove = characterBottom <= enemyTop + 15; // etwas Toleranz
+    const isHorizontalOverlap =
+      this.x + this.width - this.offset.right > enemy.x + enemy.offset.left &&
+      this.x + this.offset.left < enemy.x + enemy.width - enemy.offset.right;
+
+    return isAbove && isFalling && isHorizontalOverlap;
   }
 }

@@ -6,7 +6,6 @@
  * Handles animation states (walk, alert, attack, hurt, dead),
  * movement logic, and damage system when attacking the character.
  */
-
 class EndBoss extends MovableObjects {
   offset = {
     top: 0,
@@ -15,14 +14,18 @@ class EndBoss extends MovableObjects {
     left: 0,
   };
   energy = 100;
-
-  width = 350;
+  width = 150;
   height = 430;
   y = 50;
+  speed = 0.5;
 
   intervalIds = [];
   /** @type {string[]} Walking animation image paths */
-  walkingImage = ['img/4_enemie_boss_chicken/1_walk/G1.png', 'img/4_enemie_boss_chicken/1_walk/G2.png', 'img/4_enemie_boss_chicken/1_walk/G3.png'];
+  walkingImage = [
+    'img/4_enemie_boss_chicken/1_walk/G1.png',
+    'img/4_enemie_boss_chicken/1_walk/G2.png',
+    'img/4_enemie_boss_chicken/1_walk/G3.png',
+  ];
   /** @type {string[]} Alert animation image paths */
   alertImage = [
     'img/4_enemie_boss_chicken/2_alert/G5.png',
@@ -46,9 +49,17 @@ class EndBoss extends MovableObjects {
     'img/4_enemie_boss_chicken/3_attack/G20.png',
   ];
   /** @type {string[]} Hurt animation image paths */
-  hurtImage = ['img/4_enemie_boss_chicken/4_hurt/G21.png', 'img/4_enemie_boss_chicken/4_hurt/G22.png', 'img/4_enemie_boss_chicken/4_hurt/G23.png'];
+  hurtImage = [
+    'img/4_enemie_boss_chicken/4_hurt/G21.png',
+    'img/4_enemie_boss_chicken/4_hurt/G22.png',
+    'img/4_enemie_boss_chicken/4_hurt/G23.png',
+  ];
   /** @type {string[]} Death animation image paths */
-  deadImage = ['img/4_enemie_boss_chicken/5_dead/G24.png', 'img/4_enemie_boss_chicken/5_dead/G25.png', 'img/4_enemie_boss_chicken/5_dead/G26.png'];
+  deadImage = [
+    'img/4_enemie_boss_chicken/5_dead/G24.png',
+    'img/4_enemie_boss_chicken/5_dead/G25.png',
+    'img/4_enemie_boss_chicken/5_dead/G26.png',
+  ];
   /**
    * Constructs the EndBoss object.
    * Initializes all images and starts animations.
@@ -56,11 +67,9 @@ class EndBoss extends MovableObjects {
   constructor() {
     super();
     this.x = 3000;
-    this.speed = 0.8 + Math.random() * 0.3;
-
+    this.speed = 0.02 + Math.random() * 0.065;
     this.isDead = false;
     this.energy = 100;
-
     this.loadImage(this.walkingImage[0]);
     this.loadImages(this.walkingImage);
     this.loadImages(this.attackImage);
@@ -137,7 +146,6 @@ class EndBoss extends MovableObjects {
     const SIDE_DISTANCE = 100;
     const DAMAGE_AMOUNT = 8;
     const dx = character.x - this.x;
-
     if (Math.abs(dx) < SIDE_DISTANCE) {
       character.energy = Math.max(0, character.energy - DAMAGE_AMOUNT);
       this.world.statusbar.setPercentage(character.energy);
@@ -167,7 +175,12 @@ class EndBoss extends MovableObjects {
   processGameOver(character) {
     this.stopPositionCheckLoop();
     this.killCharacterImmediately(character);
-    document.getElementById('gameOverEndBos').style.display = 'block';
+    /*  document.getElementById('gameOverEndBos').style.display = 'block'; */
+    character.playAnimation(character.walkingDead);
+    setTimeout(() => {
+      document.getElementById('gameOverEndBos').style.display = 'block';
+      this.world.gameOver = true;
+    }, 2000);
   }
 
   /**
@@ -177,7 +190,6 @@ class EndBoss extends MovableObjects {
   shouldMoveTowardsCharacter() {
     const character = this.world.character;
     const distance = Math.abs(this.x - character.x);
-
     return distance > 100;
   }
   /**
@@ -217,10 +229,11 @@ class EndBoss extends MovableObjects {
    * @param {number} distance - Distance to the character
    */
   handleCharacterAttack(character, distance) {
-    if (distance < 400) {
+    if (distance < 350) {
+      this.speed = 0.8;
       this.playAlertAndAttackAnimation(character, distance);
     } else {
-      this.playAnimation(this.attackImage);
+      this.playAnimation(this.walkingImage);
     }
   }
   /**
@@ -231,6 +244,7 @@ class EndBoss extends MovableObjects {
   playAlertAndAttackAnimation(character, distance) {
     this.playAnimation(this.alertImage);
     if (distance < 300) {
+      this.speed = 0.7;
       this.playAnimation(this.attackImage);
       this.inflictDamageToCharacter(character);
     }
@@ -240,17 +254,23 @@ class EndBoss extends MovableObjects {
    * Instantly kills the character and ends the game.
    * @param {Character} character
    */
+
   killCharacterImmediately(character) {
     if (!character.isDead) {
       character.energy = 0;
       character.isDead = true;
-      this.world.gameOver = true;
       this.stopAllIntervals();
       this.world.stopAllIntervals();
       this.world.statusbar.setPercentage(0);
       character.playAnimation(character.walkingDead);
-      document.getElementById('gameOverEndBos').style.display = 'block';
       SoundManager.pauseAll();
+      /*   document.getElementById('gameOverEndBos').style.display = 'block'; */
+
+      character.playAnimation(character.walkingDead);
+      setTimeout(() => {
+        document.getElementById('gameOverEndBos').style.display = 'block';
+        this.world.gameOver = true;
+      }, 2000);
     }
   }
 
@@ -262,12 +282,9 @@ class EndBoss extends MovableObjects {
 
   inflictDamageToCharacter(character) {
     character.isSleeping = false;
-
     if (character.energy <= 0) return;
-
     this.reduceCharacterEnergy(character);
     this.updateStatusbar();
-
     if (character.energy <= 0) {
       this.handleCharacterDeath(character);
     } else {
@@ -280,7 +297,7 @@ class EndBoss extends MovableObjects {
    * @param {Character} character
    */
   reduceCharacterEnergy(character) {
-    character.energy -= 8;
+    character.energy -= 3;
     if (character.energy < 0) character.energy = 0;
   }
 
@@ -300,9 +317,13 @@ class EndBoss extends MovableObjects {
     this.world.gameOver = true;
     this.stopAllIntervals();
     this.world.stopAllIntervals();
-    character.playAnimation(character.walkingDead);
-    document.getElementById('gameOverEndBos').style.display = 'block';
+
     SoundManager.pauseAll();
+    character.playAnimation(character.walkingDead);
+    setTimeout(() => {
+      document.getElementById('gameOverEndBos').style.display = 'block';
+      this.world.gameOver = true;
+    }, 2000);
   }
 
   /**

@@ -2,14 +2,8 @@
  * The World class handles the entire game environment, including character control,
  * enemy logic, collision detection, collectible tracking, and drawing everything to the canvas.
  */
-/**
- * Represents a throwable object like a salsa bottle.
- * Inherits from MovableObjects and includes throw behavior.
- */
-
 class World {
   character = new Character();
-
   statusbar = new Statusbar();
   statusEndBoss = new StatusBarEndBos();
   bottle = new Bottles();
@@ -27,8 +21,8 @@ class World {
   bossHits = 0;
   lastThrowTime = 0;
   throwCooldown = 500;
-  groundLevel = 360; // Ground level for character and objects
-
+  groundLevel = 360;
+  escapedChickens = 0;
   ctx;
   canvas;
   keyboard;
@@ -80,12 +74,11 @@ class World {
     this.backgroundSound.volume = 0.3;
     SoundManager.register(this.backgroundSound);
     this.showBossStatus = false;
-
+    this.renderer = new WorldRenderer(this, canvas);
     setTimeout(() => {
       this.showBossStatus = true;
     }, 9000);
   }
-
   /**
    * Assigns the world instance to the character so it can access shared game logic.
    */
@@ -106,6 +99,20 @@ class World {
       this.checkBottleHitsChickens();
     }, 100);
   }
+  countEscapedChicken(chicken) {
+    this.escapedChickens++;
+    this.removeChicken(chicken);
+    if (this.escapedChickens >= 4) {
+      this.triggerGameOver();
+    }
+  }
+
+  removeChicken(chicken) {
+    const index = this.level.enamies.indexOf(chicken);
+    if (index > -1) {
+      this.level.enamies.splice(index, 1);
+    }
+  }
 
   /**
    * Handles bottle throwing when the 'D' key is pressed and cooldown is over.
@@ -114,8 +121,9 @@ class World {
   checkThrowableObjects() {
     const now = new Date().getTime();
     if (this.keyboard.D && this.collectedBottles > 0 && now - this.lastThrowTime > this.throwCooldown) {
+      this.character.stopSnore();
+      this.character.lastMoveTime = Date.now();
       let offsetX = this.character.otherDirection ? -50 : 50;
-
       let bottle = new ThrowableObjects(
         this.character.x + offsetX,
         this.character.y + this.character.height / 2,
@@ -137,7 +145,6 @@ class World {
   isBottleColissionBoss() {
     this.throwableObjects.forEach((bottle, index) => {
       let distance = Math.abs(this.endboss.x - this.character.x);
-
       if (distance <= 500 && this.isBottleHittingBoss(bottle)) {
         this.handleBottleHit(bottle, index);
       }
@@ -217,12 +224,15 @@ class World {
    */
   killEndBoss() {
     this.endboss.isDead = true;
-    this.endboss.loadImage(this.endboss.deadImage[0]);
-    document.getElementById('youWinOverlay').style.display = 'flex';
     this.gameOver = true;
     this.stopAllIntervals();
     SoundManager.pauseAll();
     this.stopAllEnemies();
+
+    this.endboss.playAnimation(this.endboss.deadImage);
+    setTimeout(() => {
+      document.getElementById('youWinOverlay').style.display = 'flex';
+    }, 2000);
   }
   /**
    * Stops all enemies’ movement and logic intervals.
@@ -254,20 +264,24 @@ class World {
       } else {
         this.character.hit();
         this.statusbar.setPercentage(this.character.energy);
+        this.character.stopSnore();
+        this.character.lastMoveTime = Date.now();
       }
     });
   }
+
   /**
    * Handles the collision between character and chicken.
    * @param {Enemy} enemy
    */
   handleChickenCollision(enemy) {
-    if (this.isEnemyHitFromAbove(enemy)) {
+    if (this.character.isJumpingOnEnemy(enemy)) {
       this.killEnemy(enemy);
     } else if (!enemy.isDead) {
       this.handleCharacterHit();
     }
   }
+
   /**
    * Checks if the character is jumping on an enemy.
    * @param {Enemy} enemy
@@ -282,7 +296,7 @@ class World {
    */
   killEnemy(enemy) {
     SoundManager.play(this.chickenSound);
-    this.character.speedY = 5;
+
     enemy.isDead = true;
     this.setChickensDeadImages(enemy);
     this.removeEnemyAfterDelay(enemy);
@@ -305,9 +319,14 @@ class World {
   handleCharacterHit() {
     this.character.hit();
     this.statusbar.setPercentage(this.character.energy);
-
+    this.character.stopSnore();
+    this.character.lastMoveTime = Date.now();
     if (this.character.energy === 0) {
-      this.triggerGameOver();
+      this.character.playAnimation(this.character.walkingDead);
+
+      setTimeout(() => {
+        this.triggerGameOver();
+      }, 5000);
     }
   }
   /**
@@ -350,9 +369,9 @@ class World {
    * Adds regular chickens to the game world at random positions.
    */
   addChicken() {
-    for (let i = 0; i < 6; i++) {
+    for (let i = 0; i < 5; i++) {
       this.x = 2500 + Math.random() * 800;
-      this.speed = 0.12 + Math.random() * 0.25;
+      this.speed = 2 + Math.random() * 0.9;
       let chicken = new Chicken();
       chicken.x = this.x;
       chicken.world = this;
@@ -364,8 +383,8 @@ class World {
    */
   addSmallChicken() {
     for (let i = 0; i < 5; i++) {
-      this.x = 2000 + Math.random() * 500;
-      this.speed = 0.12 + Math.random() * 0.25;
+      this.x = 600 + Math.random() * 1200;
+      this.speed = 0.45 + Math.random() * 0.25;
       let small_chicken = new SmallChicken();
       small_chicken.x = this.x;
       small_chicken.world = this;
@@ -379,7 +398,7 @@ class World {
   addBottles() {
     for (let i = 0; i < this.totalBottles; i++) {
       let x = 500 + Math.random() * 2500;
-      let y = 380;
+      let y = 400;
       let bottle = new BottleGround();
       bottle.x = x;
       bottle.y = y;

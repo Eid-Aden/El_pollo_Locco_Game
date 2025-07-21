@@ -3,17 +3,17 @@
  * Inherits from MovableObjects.
  */
 class Chicken extends MovableObjects {
-  y = 390;
+  y = 355;
 
-  width = 60;
-  height = 80;
+  width = 70;
+  height = 70;
   speed = 1;
 
   offset = {
-    top: 10,
-    right: 10,
-    bottom: 10,
-    left: 10,
+    top: 120,
+    right: 30,
+    bottom: 30,
+    left: 30,
   };
 
   walkingImage = [
@@ -34,12 +34,11 @@ class Chicken extends MovableObjects {
 
     this.loadImage('img/3_enemies_chicken/chicken_normal/1_walk/1_w.png');
     this.loadImage(this.deadImage);
-    this.x = 2000 + Math.random() * 500;
-    this.speed = 2 + Math.random() * 0.5;
+    this.x = 2000 + Math.random() * 700;
+    this.speed = 0.18 + Math.random() * 0.5;
     this.loadImages(this.walkingImage);
     this.animate();
     this.isDead = false;
-
     SoundManager.register(this.walkingSound);
   }
 
@@ -86,6 +85,12 @@ class Chicken extends MovableObjects {
     this.setStoppableInterval(() => {
       if (this.world?.gameOver || this.isDead) return;
       this.movLeft();
+      if (this.x < -100 && this.world) {
+        this.stopAllIntervals();
+        this.world.countEscapedChicken(this);
+
+        console.log('Chicken escaped! Total escaped:', this.world.escapedChickens);
+      }
     }, 1000 / 60);
   }
 

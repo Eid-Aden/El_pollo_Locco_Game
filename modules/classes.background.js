@@ -3,10 +3,7 @@
  * Inherits from MovableObjects.
  */
 class Background extends MovableObjects {
-  /** @type {number} Width of the background image */
   width = 720;
-
-  /** @type {number} Height of the background image */
   height = 480;
 
   /**
@@ -18,6 +15,6 @@ class Background extends MovableObjects {
     super();
     this.loadImage(pathImage);
     this.x = x;
-    this.y = 480 - this.height; // Align with bottom of canvas
+    this.y = 480 - this.height;
   }
 }

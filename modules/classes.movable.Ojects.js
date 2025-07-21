@@ -28,7 +28,6 @@ class MovableObjects extends DrawableObj {
         this.y -= this.speedY;
         this.speedY -= this.accelaration;
       }
-
       if (this.y >= this.groundLevel) {
         this.y = this.groundLevel;
         this.speedY = 0;
@@ -59,7 +58,9 @@ class MovableObjects extends DrawableObj {
    */
 
   isColliding(mo) {
-    return this.x + this.width > mo.x && this.x < mo.x + mo.width && this.y + this.height > mo.y && this.y < mo.y + mo.height;
+    return (
+      this.x + this.width > mo.x && this.x < mo.x + mo.width && this.y + this.height > mo.y && this.y < mo.y + mo.height
+    );
   }
 
   /**
