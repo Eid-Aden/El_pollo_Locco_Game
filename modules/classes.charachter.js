@@ -7,7 +7,7 @@ class Character extends MovableObjects {
   groundLevel = 60;
   y = 155;
   speed = 5;
-  width = 120;
+  width = 110;
   height = 380;
   isSleeping = false;
 

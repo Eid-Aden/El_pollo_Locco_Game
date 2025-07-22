@@ -142,7 +142,6 @@ function showMainGameUI() {
   if (window.innerWidth > 878) {
     document.getElementById('soundMute').style.display = 'flex';
   }
-
   document.getElementById('llcover').style.display = 'none';
   document.getElementById('canvas-wrapper').style.display = 'flex';
   document.getElementById('canvas').style.display = 'flex';
@@ -222,7 +221,6 @@ function goToHome() {
   if (world && typeof world.stopAllIntervals === 'function') {
     world.stopAllIntervals();
   }
-
   document.getElementById('canvas-wrapper').style.display = 'none';
   document.getElementById('canvas').style.display = 'none';
   document.getElementById('youWinOverlay').style.display = 'none';

@@ -15,8 +15,8 @@ class EndBoss extends MovableObjects {
   };
   energy = 100;
   width = 150;
-  height = 430;
-  y = 50;
+  height = 400;
+  y = 70;
   speed = 0.5;
 
   intervalIds = [];
@@ -203,26 +203,37 @@ class EndBoss extends MovableObjects {
       }
     }, 1000 / 60);
   }
+
   /**
-   * Starts attack animation loop that checks character proximity.
+   * Starts the interval loop for enemy attack behavior.
    */
   startAttackLoop() {
     this.setStoppableInterval(() => {
-      if (this.world?.gameOver || this.isDead) return;
-      if (this.isDead) {
-        this.loadImage(this.deadImage[0]);
-        return;
-      }
-      if (!this.world?.character) {
-        this.playAnimation(this.walkingImage);
-        return;
-      }
+      if (this.shouldSkipAttackLoop()) return;
       const character = this.world.character;
       const distance = Math.abs(this.x - character.x);
-
       this.handleCharacterAttack(character, distance);
     }, 200);
   }
+
+  /**
+   * Checks game conditions and updates animation or image if needed.
+   *
+   * @returns {boolean} True if attack loop should be skipped this cycle.
+   */
+  shouldSkipAttackLoop() {
+    if (this.world?.gameOver) return true;
+    if (this.isDead) {
+      this.loadImage(this.deadImage[0]);
+      return true;
+    }
+    if (!this.world?.character) {
+      this.playAnimation(this.walkingImage);
+      return true;
+    }
+    return false;
+  }
+
   /**
    * Handles EndBoss behavior depending on distance to character.
    * @param {Character} character - The main character
@@ -243,32 +254,59 @@ class EndBoss extends MovableObjects {
    */
   playAlertAndAttackAnimation(character, distance) {
     this.playAnimation(this.alertImage);
-    if (distance < 100) {
-      this.speed = 1;
-      this.playAnimation(this.attackImage);
-      this.inflictDamageToCharacter(character);
+    setTimeout(() => {
+      if (distance < 100) {
+        this.speed = 1;
+        this.playAnimation(this.attackImage);
+        this.inflictDamageToCharacter(character);
+      }
+    }, 150);
+  }
+
+  /**
+   * Immediately kills the character and triggers the game over sequence.
+   * Splits logic for better readability and maintainability.
+   *
+   * @param {Character} character - The character to be killed.
+   */
+  killCharacterImmediately(character) {
+    if (!character.isDead) {
+      this.markCharacterAsDead(character);
+      this.handleGameOverUI();
     }
   }
 
   /**
-   * Instantly kills the character and ends the game.
-   * @param {Character} character
+   * Marks the given character as dead:
+   * - Sets energy to 0
+   * - Stops all intervals
+   * - Updates UI
+   * - Plays death animation
+   * - Pauses all sounds
+   *
+   * @param {Character} character - The character to be marked as dead.
    */
-  killCharacterImmediately(character) {
-    if (!character.isDead) {
-      character.energy = 0;
-      character.isDead = true;
-      this.stopAllIntervals();
-      this.world.stopAllIntervals();
-      this.world.statusbar.setPercentage(0);
-      character.playAnimation(character.walkingDead);
-      SoundManager.pauseAll();
-      character.playAnimation(character.walkingDead);
-      setTimeout(() => {
-        document.getElementById('gameOverEndBos').style.display = 'block';
-        this.world.gameOver = true;
-      }, 2000);
-    }
+  markCharacterAsDead(character) {
+    character.energy = 0;
+    character.isDead = true;
+    this.stopAllIntervals();
+    this.world.stopAllIntervals();
+    this.world.statusbar.setPercentage(0);
+    character.playAnimation(character.walkingDead);
+    SoundManager.pauseAll();
+  }
+
+  /**
+   * Handles the delayed game over user interface:
+   * - Waits 2 seconds
+   * - Displays the "game over" overlay
+   * - Sets the game state to over
+   */
+  handleGameOverUI() {
+    setTimeout(() => {
+      document.getElementById('gameOverEndBos').style.display = 'block';
+      this.world.gameOver = true;
+    }, 2000);
   }
 
   /**

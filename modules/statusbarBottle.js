@@ -13,6 +13,8 @@ class Bottles extends DrawableObj {
   ];
 
   percentage = 0;
+  collectedBottles = 0;
+  totalBottles = 10;
 
   /**
    * Creates an instance of the Bottles class.
@@ -28,8 +30,7 @@ class Bottles extends DrawableObj {
 
     this.collectedBottles = 0;
     this.totalBottles = 10;
-
-    this.setPercentage(0);
+    this.setPercentage(0, this.totalBottles);
   }
 
   /**
@@ -69,5 +70,46 @@ class Bottles extends DrawableObj {
     if (percentage >= 40) return 2;
     if (percentage >= 20) return 1;
     return 0;
+  }
+
+  addBottles(world) {
+    for (let i = 0; i < this.totalBottles; i++) {
+      let x = 500 + Math.random() * 2500;
+      let y = 385;
+      let bottle = new BottleGround();
+      bottle.x = x;
+      bottle.y = y;
+      world.bottles.push(bottle); // ← speichert die Flaschen in world.bottles
+    }
+  }
+
+  checkCollectBottles(world, bottle) {
+    for (let i = world.bottles.length - 1; i >= 0; i--) {
+      let bottle = world.bottles[i];
+      if (world.character.isColliding(bottle)) {
+        world.bottles.splice(i, 1);
+        world.collectedBottles++;
+        world.bottle.setPercentage(world.collectedBottles, world.totalBottles);
+      }
+    }
+  }
+
+  removeBottle(world, bottle) {
+    let index = world.bottles.indexOf(bottle);
+    if (index > -1) {
+      world.bottles.splice(index, 1);
+      this.setPercentage(this.collectedBottles, this.totalBottles);
+    }
+  }
+
+  /**
+   * Draws the collected bottles text on the canvas.
+   */
+  drawBottleBarText(ctx) {
+    ctx.font = '12px Arial';
+    ctx.fillStyle = 'black';
+    ctx.textAlign = 'left';
+    ctx.textBaseline = 'top';
+    ctx.fillText(`${this.collectedBottles} / ${this.totalBottles}`, 250, 110);
   }
 }

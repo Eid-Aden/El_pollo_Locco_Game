@@ -61,11 +61,11 @@ class World {
     this.endboss = new EndBoss();
     this.endboss.world = this;
     this.level.enamies.push(this.endboss);
-    this.draw();
+    /*   this.draw(); */
     this.setWorld();
     this.run();
-    this.addBottles();
-    this.addCoins();
+    this.bottle.addBottles(this);
+    this.coin.addCoins(this);
     this.addChicken();
     this.addSmallChicken();
     SoundManager.register(this.brokenBottle);
@@ -74,6 +74,9 @@ class World {
     this.backgroundSound.volume = 0.3;
     SoundManager.register(this.backgroundSound);
     this.showBossStatus = false;
+
+    this.renderer = new WorldRenderer(this, this.canvas);
+    this.renderer.drawLoop();
     setTimeout(() => {
       this.showBossStatus = true;
     }, 9000);
@@ -92,8 +95,8 @@ class World {
     this.setStoppableInterval(() => {
       this.checkThrowableObjects();
       this.checkCollisions();
-      this.checkCollectBottles();
-      this.checkCollectCoins();
+      this.bottle.checkCollectBottles(this);
+      this.coin.checkCollectCoins(this);
       this.isBottleColissionBoss();
       this.checkBottleHitsChickens();
     }, 100);
@@ -144,7 +147,6 @@ class World {
       this.lastThrowTime = now;
     }
   }
-
   /**
    * Checks if any thrown bottles hit the EndBoss.
    */
@@ -177,7 +179,7 @@ class World {
         if ((enemy instanceof Chicken || enemy instanceof SmallChicken) && !enemy.isDead && bottle.isColliding(enemy)) {
           let distance = Math.abs(this.character.x - enemy.x);
           if (distance < 300) {
-            this.bottleSplash(bottle);
+            this.bottle.bottleSplash(bottle);
             SoundManager.play(this.brokenBottle);
             this.removeBottleAfterDelay(bottleIndex);
             this.killEnemy(enemy);
@@ -193,7 +195,7 @@ class World {
    */
   handleBottleHit(bottle, index) {
     SoundManager.play(this.brokenBottle);
-    this.bottleSplash(bottle);
+    bottle.showSplash();
     this.removeBottleAfterDelay(index);
     this.reduceBossEnergy(15);
     this.statusEndBoss.setPercentage(this.endboss.energy);
@@ -246,13 +248,7 @@ class World {
       }
     });
   }
-  /**
-   * Replaces the bottle image with the splash image.
-   * @param {ThrowableObjects} bottle
-   */
-  bottleSplash(bottle) {
-    bottle.loadImage('img/6_salsa_bottle/bottle_rotation/bottle_splash/3_bottle_splash.png');
-  }
+
   /**
    * Checks for collisions between the character and all enemies.
    */
@@ -323,7 +319,6 @@ class World {
     this.character.lastMoveTime = Date.now();
     if (this.character.energy === 0) {
       this.character.playAnimation(this.character.walkingDead);
-
       setTimeout(() => {
         this.triggerGameOver();
       }, 5000);
@@ -390,207 +385,5 @@ class World {
       small_chicken.world = this;
       this.level.enamies.push(small_chicken);
     }
-  }
-  /**
-   * Adds collectible bottles to the map at random positions.
-   */
-  addBottles() {
-    for (let i = 0; i < this.totalBottles; i++) {
-      let x = 500 + Math.random() * 2500;
-      let y = 385;
-      let bottle = new BottleGround();
-      bottle.x = x;
-      bottle.y = y;
-      this.bottles.push(bottle);
-    }
-  }
-  /**
-   * Checks if character collects bottles and updates the bottle bar.
-   */
-  checkCollectBottles() {
-    this.bottles.forEach((bottle, index) => {
-      if (this.character.isColliding(bottle)) {
-        this.bottles.splice(index, 1);
-        this.collectedBottles++;
-        this.bottle.setPercentage(this.collectedBottles, this.totalBottles);
-      }
-    });
-  }
-  /**
-   * Removes a specific bottle from the world.
-   * @param {BottleGround} bottle
-   */
-  removeBottles(bottle) {
-    let index = this.bottles.indexOf(bottle);
-    if (index > -1) {
-      this.bottles.splice(index, 1);
-      this.bottle.setPercentage(this.collectedBottles, this.totalBottles);
-    }
-  }
-  /**
-   * Draws the collected bottles text on the canvas.
-   */
-  drawBottleBarText() {
-    this.ctx.font = '12px Arial';
-    this.ctx.fillStyle = 'black';
-    this.ctx.textAlign = 'left';
-    this.ctx.textBaseline = 'top';
-    this.ctx.fillText(`${this.collectedBottles} / ${this.totalBottles}`, 250, 110);
-  }
-  /**
-   * Adds collectible coins to the map at fixed positions.
-   */
-  addCoins() {
-    for (let i = 0; i < this.totalCoins; i++) {
-      let x = 300 + i * 100;
-      let y = 380;
-      let coin = new Coin();
-      coin.x = x;
-      coin.y = y;
-      this.coins.push(coin);
-    }
-  }
-  /**
-   * Checks if character collects coins and updates the coin bar.
-   */
-  checkCollectCoins() {
-    for (let i = this.coins.length - 1; i >= 0; i--) {
-      let coin = this.coins[i];
-      if (this.character.isColliding(coin)) {
-        this.coins.splice(i, 1);
-        this.collectedCoin++;
-        this.coin.setPercentage(this.collectedCoin, this.totalCoins);
-      }
-    }
-  }
-  /**
-   * Removes a specific coin from the world.
-   * @param {Coin} coin
-   */
-  reomvetCoin(coin) {
-    let index = this.coins.indexOf(coin);
-    if (index > -1) {
-      this.coins.splice(index, 1);
-      this.coins.setPercentage(5 - this.coins.length, 5);
-    }
-  }
-  /**
-   * Draws the collected coins text on the canvas.
-   */
-  drawCoinsText() {
-    this.ctx.font = '12px Arial';
-    this.ctx.fillStyle = 'black';
-    this.ctx.textAlign = 'left';
-    this.ctx.textBaseline = 'top';
-    this.ctx.fillText(`${this.collectedCoin} / ${this.totalCoins}`, 250, 70);
-  }
-  /**
-   * Main draw function. Clears canvas and draws all game elements.
-   */
-  draw() {
-    this.clearCanvas();
-    this.drawBackground();
-    this.drawClouds();
-    this.drawFixedUI();
-    this.drawGameObjects();
-    this.throwableObjects.forEach((bottle) => bottle.update());
-    this.requestNextFrame();
-  }
-
-  /**
-   * Clears the entire canvas.
-   */
-  clearCanvas() {
-    this.ctx.clearRect(0, 0, canvas.width, canvas.height);
-  }
-  /**
-   * Draws background objects with camera offset.
-   */
-  drawBackground() {
-    this.ctx.translate(this.camara_x, 0);
-    this.addObjectsToMap(this.level.backgrounds);
-    this.ctx.translate(-this.camara_x, 0);
-  }
-  /**
-   * Draws cloud objects with camera offset.
-   */
-  drawClouds() {
-    this.ctx.translate(this.camara_x, 0);
-    this.addObjectsToMap(this.level.clouds);
-    this.ctx.translate(-this.camara_x, 0);
-  }
-  /**
-   * Draws fixed UI elements like status bars and icons.
-   */
-  drawFixedUI() {
-    this.addToMap(this.statusbar);
-    if (this.showBossStatus) {
-      this.addToMap(this.statusEndBoss);
-    }
-    this.addToMap(this.bottle);
-    this.addToMap(this.coin);
-  }
-  /**
-   * Draws all dynamic game objects affected by camera movement.
-   */
-  drawGameObjects() {
-    this.ctx.translate(this.camara_x, 0);
-    /*  this.addObjectsToMap(this.level.clouds); */
-    this.addObjectsToMap(this.coins);
-    this.addObjectsToMap(this.bottles);
-    this.addToMap(this.character);
-    this.addObjectsToMap(this.level.enamies);
-    this.addObjectsToMap(this.throwableObjects);
-    this.ctx.translate(-this.camara_x, 0);
-  }
-  /**
-   * Requests the next animation frame to keep the draw loop going.
-   */
-  requestNextFrame() {
-    requestAnimationFrame(() => {
-      this.draw();
-      this.drawBottleBarText();
-      this.drawCoinsText();
-    });
-  }
-  /**
-   * Adds multiple objects to the canvas by calling addToMap.
-   * @param {Array<DrawableObject>} objects
-   */
-  addObjectsToMap(objects) {
-    objects.forEach((o) => {
-      this.addToMap(o);
-    });
-  }
-  /**
-   * Draws a single object to the canvas, handles flipping if needed.
-   * @param {DrawableObject} mo
-   */
-  addToMap(mo) {
-    if (mo.otherDirection) {
-      this.flipImage(mo);
-    }
-    mo.draw(this.ctx);
-    if (mo.otherDirection) {
-      this.flipBack(mo);
-    }
-  }
-  /**
-   * Flips the image horizontally for mirrored rendering.
-   * @param {DrawableObject} mo
-   */
-  flipImage(mo) {
-    this.ctx.save();
-    this.ctx.translate(mo.width, 0);
-    this.ctx.scale(-1, 1);
-    mo.x = mo.x * -1;
-  }
-  /**
-   * Restores canvas transformation after flipping.
-   * @param {DrawableObject} mo
-   */
-  flipBack(mo) {
-    mo.x = mo.x * -1;
-    this.ctx.restore();
   }
 }

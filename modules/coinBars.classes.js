@@ -16,6 +16,7 @@ class Coinbar extends DrawableObj {
 
   /** @type {number} Current fill percentage of the coin bar */
   percentage = 100;
+  coins = [];
 
   /**
    * Initializes the coin bar UI element.
@@ -30,6 +31,7 @@ class Coinbar extends DrawableObj {
     this.totalCoins = 10;
     this.collectedCoins = 0;
     this.setPercentage(0, 10);
+    this.coins = [];
   }
 
   /**
@@ -66,5 +68,52 @@ class Coinbar extends DrawableObj {
     } else {
       return 0;
     }
+  }
+
+  addCoins(world) {
+    for (let i = 0; i < this.totalCoins; i++) {
+      let x = 200 + i * 100;
+      let y = 350;
+      let coin = new Coin();
+      coin.x = x;
+      coin.y = y;
+      world.coins.push(coin);
+    }
+  }
+  /**
+   * Checks if character collects coins and updates the coin bar.
+   */
+  checkCollectCoins(world) {
+    for (let i = world.coins.length - 1; i >= 0; i--) {
+      let coin = world.coins[i];
+      if (world.character.isColliding(coin)) {
+        world.coins.splice(i, 1);
+        this.collectedCoins++;
+        this.setPercentage(this.collectedCoins, this.totalCoins);
+      }
+    }
+  }
+
+  /**
+   * 
+   * 
+   
+   * Removes a specific coin from the world.
+   * @param {Coin} coin
+   */
+  reomvetCoin(coin) {
+    let index = this.coins.indexOf(coin);
+    if (index > -1) {
+      this.coins.splice(index, 1);
+      this.coins.setPercentage(5 - this.coins.length, 5);
+    }
+  }
+
+  drawCoinsText(ctx) {
+    ctx.font = '12px Arial';
+    ctx.fillStyle = 'black';
+    ctx.textAlign = 'left';
+    ctx.textBaseline = 'top';
+    ctx.fillText(`${this.collectedCoins} / ${this.totalCoins}`, 250, 70);
   }
 }

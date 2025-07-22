@@ -124,4 +124,12 @@ class ThrowableObjects extends MovableObjects {
       }
     }, 1000 / 25);
   }
+
+  /**
+   * Replaces the bottle image with the splash image.
+   * @param {ThrowableObjects} bottle
+   */
+  showSplash() {
+    this.loadImage('img/6_salsa_bottle/bottle_rotation/bottle_splash/3_bottle_splash.png');
+  }
 }

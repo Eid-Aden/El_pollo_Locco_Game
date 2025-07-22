@@ -16,15 +16,12 @@ function MobileControls() {
     { id: 'btn-space', key: 'SPACE' },
     { id: 'btn-bottle', key: 'D' },
   ];
-
   buttons.forEach(({ id, key }) => {
     const controlBtn = document.getElementById(id);
-
     controlBtn.addEventListener('touchstart', (e) => {
       e.preventDefault();
       keyboard[key] = true;
     });
-
     controlBtn.addEventListener('touchend', (e) => {
       e.preventDefault();
       keyboard[key] = false;
