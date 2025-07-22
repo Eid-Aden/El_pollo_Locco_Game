@@ -37,9 +37,21 @@ class Bottles extends DrawableObj {
    * @param {number} collectedBottles - The number of bottles collected by the player.
    * @param {number} totalBottles - The total number of bottles available in the level.
    */
-  setPercentage(collectedBottles) {
+  /*   setPercentage(collectedBottles) {
     this.collectedBottles = collectedBottles;
     let path = this.BollteIMAGES[this.bottleBar()];
+    this.img = this.imageCache[path];
+  } */
+
+  setPercentage(collectedBottles, totalBottles) {
+    this.collectedBottles = collectedBottles;
+    this.totalBottles = totalBottles;
+
+    let percentage = (collectedBottles / totalBottles) * 100;
+    this.percentage = percentage;
+
+    let index = this.resolveImageIndexFromPercentage(percentage);
+    let path = this.BollteIMAGES[index];
     this.img = this.imageCache[path];
   }
 
@@ -49,5 +61,13 @@ class Bottles extends DrawableObj {
    */
   bottleBar() {
     return Math.min(5, Math.max(0, this.collectedBottles));
+  }
+  resolveImageIndexFromPercentage(percentage) {
+    if (percentage >= 100) return 5;
+    if (percentage >= 80) return 4;
+    if (percentage >= 60) return 3;
+    if (percentage >= 40) return 2;
+    if (percentage >= 20) return 1;
+    return 0;
   }
 }

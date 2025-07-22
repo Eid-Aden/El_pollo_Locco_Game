@@ -21,7 +21,14 @@ class ThrowableObjects extends MovableObjects {
     'img/6_salsa_bottle/bottle_rotation/bottle_splash/5_bottle_splash.png',
     'img/6_salsa_bottle/bottle_rotation/bottle_splash/6_bottle_splash.png',
   ];
-
+  /**
+   * Represents a throwable object like a salsa bottle.
+   * Inherits from MovableObjects and includes throw behavior.
+   * @param {*} x
+   * @param {*} y
+   * @param {*} otherDirection
+   * @param {*} world
+   */
   constructor(x, y, otherDirection, world) {
     super();
     this.x = x;
@@ -30,14 +37,11 @@ class ThrowableObjects extends MovableObjects {
     this.world = world;
     this.width = 80;
     this.height = 100;
-
     this.speedY = -5 + Math.random() * 1;
     this.gravity = 0.2;
     this.throwSpeed = 8;
     this.groundLevel = 460;
-
     this.hasExploded = false;
-
     this.loadImage(this.Image_RotationBottle[0]);
     this.loadImages(this.Image_RotationBottle);
     this.loadImages(this.image_splashBottle);

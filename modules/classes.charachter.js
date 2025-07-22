@@ -4,17 +4,20 @@
  */
 class Character extends MovableObjects {
   /** @type {number} Ground level Y position for collision */
-  groundLevel = 155;
+  groundLevel = 60;
   y = 155;
-  speed = 15;
-  speedY = 0;
-  width = 190;
-  height = 280;
+  speed = 5;
+  width = 120;
+  height = 380;
   isSleeping = false;
 
   /** @type {Object} Collision offset for precise hitbox */
-  offset = { top: 120, right: 30, bottom: 30, left: 30 };
-
+  offset = {
+    top: 120,
+    right: 30,
+    bottom: 25,
+    left: 30,
+  };
   /** @type {string[]} Walking animation frames */
   walkingImage = [
     'img/2_character_pepe/2_walk/W-22.png',
@@ -100,7 +103,6 @@ class Character extends MovableObjects {
     this.loadImages(this.walkingHurt);
     this.loadImages(this.idleImg);
     this.loadImages(this.longIdleImg);
-
     SoundManager.register(this.walkingSound);
     SoundManager.register(this.hurtSound);
     SoundManager.register(this.deadSound);
@@ -222,12 +224,20 @@ class Character extends MovableObjects {
     }, 50);
   }
 
+  /**
+   * Plays the character's death animation and resets sleep state.
+   * Used when the character is defeated or dies.
+   */
   handleDeathAnimation() {
     this.playAnimation(this.walkingDead);
     this.stopSnore();
     this.isSleeping = false;
   }
 
+  /**
+   * Plays the hurt animation and sound when the character takes damage.
+   * Also ensures the character wakes up if sleeping.
+   */
   handleHurtAnimation() {
     this.playAnimation(this.walkingHurt);
     SoundManager.play(this.hurtSound);
@@ -235,12 +245,22 @@ class Character extends MovableObjects {
     this.isSleeping = false;
   }
 
+  /**
+   * Plays the jump animation when the character jumps.
+   * Also stops the snore sound and resets sleep status.
+   */
   handleJumpAnimation() {
     this.playAnimation(this.walkingJumping);
     this.stopSnore();
     this.isSleeping = false;
   }
 
+  /**
+   * Handles idle animations based on time since last movement.
+   * - Shows normal idle if idle time is short.
+   * - Plays long idle (sleep) animation and sound after extended inactivity.
+   * - Resumes walk animation if user presses left or right.
+   */
   handleIdleAnimation() {
     const idleTime = (Date.now() - this.lastMoveTime) / 500;
 
@@ -266,7 +286,6 @@ class Character extends MovableObjects {
    * @param {MovableObjects} enemy - The enemy to check collision with.
    * @returns {boolean}
    */
-
   isJumpingOnEnemy(enemy) {
     const characterBottom = this.y + this.height - this.offset.bottom;
     const enemyTop = enemy.y + enemy.offset.top;
@@ -276,7 +295,6 @@ class Character extends MovableObjects {
     const isHorizontalOverlap =
       this.x + this.width - this.offset.right > enemy.x + enemy.offset.left &&
       this.x + this.offset.left < enemy.x + enemy.width - enemy.offset.right;
-
     return isAbove && isFalling && isHorizontalOverlap;
   }
 }

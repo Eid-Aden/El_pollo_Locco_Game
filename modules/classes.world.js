@@ -74,7 +74,6 @@ class World {
     this.backgroundSound.volume = 0.3;
     SoundManager.register(this.backgroundSound);
     this.showBossStatus = false;
-    this.renderer = new WorldRenderer(this, canvas);
     setTimeout(() => {
       this.showBossStatus = true;
     }, 9000);
@@ -99,6 +98,10 @@ class World {
       this.checkBottleHitsChickens();
     }, 100);
   }
+  /**
+   * Counts escaped chickens and triggers game over if 4 or more escape.
+   * @param {Chicken|SmallChicken} chicken - The chicken that escaped.
+   */
   countEscapedChicken(chicken) {
     this.escapedChickens++;
     this.removeChicken(chicken);
@@ -107,6 +110,10 @@ class World {
     }
   }
 
+  /**
+   * Removes a chicken from the level.
+   * @param {Chicken|SmallChicken} chicken - The chicken to remove.
+   */
   removeChicken(chicken) {
     const index = this.level.enamies.indexOf(chicken);
     if (index > -1) {
@@ -159,7 +166,6 @@ class World {
   isBottleHittingBoss(bottle) {
     return this.endboss && bottle.isColliding(this.endboss);
   }
-
   /**
    * Checks if any bottle hits a chicken (Chicken or SmallChicken)
    * that is within 300px from the character.
@@ -180,7 +186,6 @@ class World {
       });
     });
   }
-
   /**
    * Handles the logic when a bottle hits the EndBoss.
    * @param {ThrowableObjects} bottle
@@ -192,7 +197,6 @@ class World {
     this.removeBottleAfterDelay(index);
     this.reduceBossEnergy(15);
     this.statusEndBoss.setPercentage(this.endboss.energy);
-
     if (this.endboss.energy <= 0) {
       this.killEndBoss();
     } else {
@@ -218,7 +222,6 @@ class World {
       this.endboss.energy = 0;
     }
   }
-
   /**
    * Executes when the EndBoss dies: shows win screen, stops game.
    */
@@ -228,7 +231,6 @@ class World {
     this.stopAllIntervals();
     SoundManager.pauseAll();
     this.stopAllEnemies();
-
     this.endboss.playAnimation(this.endboss.deadImage);
     setTimeout(() => {
       document.getElementById('youWinOverlay').style.display = 'flex';
@@ -244,7 +246,6 @@ class World {
       }
     });
   }
-
   /**
    * Replaces the bottle image with the splash image.
    * @param {ThrowableObjects} bottle
@@ -258,7 +259,6 @@ class World {
   checkCollisions() {
     this.level.enamies.forEach((enemy) => {
       if (!this.character.isColliding(enemy)) return;
-
       if (enemy instanceof Chicken || enemy instanceof SmallChicken) {
         this.handleChickenCollision(enemy);
       } else {
@@ -281,7 +281,6 @@ class World {
       this.handleCharacterHit();
     }
   }
-
   /**
    * Checks if the character is jumping on an enemy.
    * @param {Enemy} enemy
@@ -291,12 +290,13 @@ class World {
     return this.character.isJumpingOnEnemy(enemy) && this.character.speedY < 0 && !enemy.isDead;
   }
   /**
+   * 
+   
    * Kills the enemy and applies bounce effect to the character.
    * @param {Enemy} enemy
    */
   killEnemy(enemy) {
     SoundManager.play(this.chickenSound);
-
     enemy.isDead = true;
     this.setChickensDeadImages(enemy);
     this.removeEnemyAfterDelay(enemy);
@@ -311,7 +311,7 @@ class World {
       if (index > -1) {
         this.level.enamies.splice(index, 1);
       }
-    }, 1000);
+    }, 500);
   }
   /**
    * Applies damage to the character. Ends game if energy reaches zero.
@@ -391,14 +391,13 @@ class World {
       this.level.enamies.push(small_chicken);
     }
   }
-
   /**
    * Adds collectible bottles to the map at random positions.
    */
   addBottles() {
     for (let i = 0; i < this.totalBottles; i++) {
       let x = 500 + Math.random() * 2500;
-      let y = 400;
+      let y = 385;
       let bottle = new BottleGround();
       bottle.x = x;
       bottle.y = y;
@@ -491,11 +490,13 @@ class World {
   draw() {
     this.clearCanvas();
     this.drawBackground();
+    this.drawClouds();
     this.drawFixedUI();
     this.drawGameObjects();
     this.throwableObjects.forEach((bottle) => bottle.update());
     this.requestNextFrame();
   }
+
   /**
    * Clears the entire canvas.
    */
@@ -508,6 +509,14 @@ class World {
   drawBackground() {
     this.ctx.translate(this.camara_x, 0);
     this.addObjectsToMap(this.level.backgrounds);
+    this.ctx.translate(-this.camara_x, 0);
+  }
+  /**
+   * Draws cloud objects with camera offset.
+   */
+  drawClouds() {
+    this.ctx.translate(this.camara_x, 0);
+    this.addObjectsToMap(this.level.clouds);
     this.ctx.translate(-this.camara_x, 0);
   }
   /**
@@ -526,10 +535,10 @@ class World {
    */
   drawGameObjects() {
     this.ctx.translate(this.camara_x, 0);
+    /*  this.addObjectsToMap(this.level.clouds); */
     this.addObjectsToMap(this.coins);
     this.addObjectsToMap(this.bottles);
     this.addToMap(this.character);
-    this.addObjectsToMap(this.level.clouds);
     this.addObjectsToMap(this.level.enamies);
     this.addObjectsToMap(this.throwableObjects);
     this.ctx.translate(-this.camara_x, 0);
@@ -562,7 +571,6 @@ class World {
       this.flipImage(mo);
     }
     mo.draw(this.ctx);
-
     if (mo.otherDirection) {
       this.flipBack(mo);
     }

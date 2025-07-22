@@ -9,13 +9,9 @@ class Chicken extends MovableObjects {
   height = 70;
   speed = 1;
 
-  offset = {
-    top: 120,
-    right: 30,
-    bottom: 30,
-    left: 30,
-  };
-
+  /** @type {boolean} Indicates if the chicken is dead */
+  isDead = false;
+  /** @type {string[]} Walking animation frames */
   walkingImage = [
     'img/3_enemies_chicken/chicken_normal/1_walk/1_w.png',
     'img/3_enemies_chicken/chicken_normal/1_walk/2_w.png',

@@ -243,8 +243,8 @@ class EndBoss extends MovableObjects {
    */
   playAlertAndAttackAnimation(character, distance) {
     this.playAnimation(this.alertImage);
-    if (distance < 300) {
-      this.speed = 0.7;
+    if (distance < 100) {
+      this.speed = 1;
       this.playAnimation(this.attackImage);
       this.inflictDamageToCharacter(character);
     }
@@ -254,7 +254,6 @@ class EndBoss extends MovableObjects {
    * Instantly kills the character and ends the game.
    * @param {Character} character
    */
-
   killCharacterImmediately(character) {
     if (!character.isDead) {
       character.energy = 0;
@@ -264,8 +263,6 @@ class EndBoss extends MovableObjects {
       this.world.statusbar.setPercentage(0);
       character.playAnimation(character.walkingDead);
       SoundManager.pauseAll();
-      /*   document.getElementById('gameOverEndBos').style.display = 'block'; */
-
       character.playAnimation(character.walkingDead);
       setTimeout(() => {
         document.getElementById('gameOverEndBos').style.display = 'block';
@@ -279,7 +276,6 @@ class EndBoss extends MovableObjects {
    * Updates UI and stops game if the character dies.
    * @param {Character} character
    */
-
   inflictDamageToCharacter(character) {
     character.isSleeping = false;
     if (character.energy <= 0) return;
@@ -317,7 +313,6 @@ class EndBoss extends MovableObjects {
     this.world.gameOver = true;
     this.stopAllIntervals();
     this.world.stopAllIntervals();
-
     SoundManager.pauseAll();
     character.playAnimation(character.walkingDead);
     setTimeout(() => {

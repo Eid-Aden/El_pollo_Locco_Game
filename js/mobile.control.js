@@ -1,7 +1,14 @@
-/* window.addEventListener('load', MobileControls);
-
-*/
-
+/**
+ * Initializes mobile touch controls for movement and actions.
+ * Binds `touchstart` and `touchend` events to on-screen buttons,
+ * and maps them to the `keyboard` object used for input handling.
+ *
+ * Buttons:
+ * - 'btn-left' → LEFT
+ * - 'btn-right' → RIGHT
+ * - 'btn-space' → SPACE (jump)
+ * - 'btn-bottle' → D (throw)
+ */
 function MobileControls() {
   const buttons = [
     { id: 'btn-left', key: 'LEFT' },
@@ -14,7 +21,7 @@ function MobileControls() {
     const controlBtn = document.getElementById(id);
 
     controlBtn.addEventListener('touchstart', (e) => {
-      e.preventDefault(); // verhindert das lange Tippen-Menü
+      e.preventDefault();
       keyboard[key] = true;
     });
 
@@ -25,6 +32,13 @@ function MobileControls() {
   });
 }
 
+/**
+ * Checks the screen orientation and device size to determine
+ * whether the rotate hint should be shown.
+ *
+ * - Shows the hint if the device is small (≤1024px width) and in portrait mode.
+ * - Hides the hint otherwise.
+ */
 function checkOrientation() {
   const isPortrait = window.innerHeight > window.innerWidth;
   const isSmallDevice = window.innerWidth <= 1024;
@@ -38,6 +52,10 @@ function checkOrientation() {
   }
 }
 
+/***
+ * Initializes mobile controls and orientation check on page load.
+ */
 window.addEventListener('resize', checkOrientation);
 window.addEventListener('orientationchange', checkOrientation);
+
 window.addEventListener('load', checkOrientation);

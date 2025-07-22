@@ -63,7 +63,9 @@ class SoundManager {
       }
     });
   }
-
+  /**
+   * Initializes the sound manager from local storage settings.
+   */
   static initFromStorage() {
     const savedMute = localStorage.getItem('soundMuted');
     this.isMuted = savedMute === 'true';

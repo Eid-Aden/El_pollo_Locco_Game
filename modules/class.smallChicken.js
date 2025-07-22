@@ -7,13 +7,7 @@ class SmallChicken extends MovableObjects {
   width = 70;
   height = 70;
   speed = 1;
-  offset = {
-    top: 10,
-    right: 10,
-    bottom: 10,
-    left: 10,
-  };
-
+  isDead = false;
   /** @type {string[]} Walking animation frames */
   walkingImage = [
     'img/3_enemies_chicken/chicken_small/1_walk/1_w.png',
