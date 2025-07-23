@@ -106,4 +106,18 @@ class MovableObjects extends DrawableObj {
       this.lastHurt = Date.now();
     }
   }
+  /**
+   * Calculates the distance between two movable objects.
+   * @param {MovableObjects} obj1
+   * @param {MovableObjects} obj2
+   * @returns {number}
+   */
+  static getDistance(obj1, obj2) {
+    let centerX1 = obj1.x + obj1.width / 2;
+    let centerY1 = obj1.y + obj1.height / 2;
+    let centerX2 = obj2.x + obj2.width / 2;
+    let centerY2 = obj2.y + obj2.height / 2;
+
+    return Math.sqrt(Math.pow(centerX1 - centerX2, 2) + Math.pow(centerY1 - centerY2, 2));
+  }
 }

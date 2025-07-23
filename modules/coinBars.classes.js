@@ -69,11 +69,14 @@ class Coinbar extends DrawableObj {
       return 0;
     }
   }
-
+  /**
+   * Adds coins to the world.
+   * @param {*} world
+   */
   addCoins(world) {
     for (let i = 0; i < this.totalCoins; i++) {
-      let x = 200 + i * 100;
-      let y = 350;
+      let x = 500 + i * 200;
+      let y = 100;
       let coin = new Coin();
       coin.x = x;
       coin.y = y;
@@ -81,12 +84,15 @@ class Coinbar extends DrawableObj {
     }
   }
   /**
-   * Checks if character collects coins and updates the coin bar.
+   * Checks for coin collection and updates the coin bar.
+   * @param {*} world
    */
   checkCollectCoins(world) {
     for (let i = world.coins.length - 1; i >= 0; i--) {
       let coin = world.coins[i];
-      if (world.character.isColliding(coin)) {
+
+      let distance = MovableObjects.getDistance(world.character, coin);
+      if (distance < 40) {
         world.coins.splice(i, 1);
         this.collectedCoins++;
         this.setPercentage(this.collectedCoins, this.totalCoins);
@@ -95,9 +101,7 @@ class Coinbar extends DrawableObj {
   }
 
   /**
-   * 
-   * 
-   
+   *
    * Removes a specific coin from the world.
    * @param {Coin} coin
    */
@@ -108,7 +112,10 @@ class Coinbar extends DrawableObj {
       this.coins.setPercentage(5 - this.coins.length, 5);
     }
   }
-
+  /**
+   * Draws the collected coins text on the canvas.
+   * @param {*} ctx
+   */
   drawCoinsText(ctx) {
     ctx.font = '12px Arial';
     ctx.fillStyle = 'black';

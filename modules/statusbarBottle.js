@@ -71,7 +71,10 @@ class Bottles extends DrawableObj {
     if (percentage >= 20) return 1;
     return 0;
   }
-
+  /**
+   * Adds bottles to the world.
+   * @param {*} world
+   */
   addBottles(world) {
     for (let i = 0; i < this.totalBottles; i++) {
       let x = 500 + Math.random() * 2500;
@@ -82,7 +85,11 @@ class Bottles extends DrawableObj {
       world.bottles.push(bottle); // ← speichert die Flaschen in world.bottles
     }
   }
-
+  /**
+   * Checks for bottle collection and updates the bottle bar.
+   * @param {*} world
+   * @param {*} bottle
+   */
   checkCollectBottles(world, bottle) {
     for (let i = world.bottles.length - 1; i >= 0; i--) {
       let bottle = world.bottles[i];
@@ -93,7 +100,11 @@ class Bottles extends DrawableObj {
       }
     }
   }
-
+  /**
+   * Removes a specific bottle from the world.
+   * @param {*} world
+   * @param {*} bottle
+   */
   removeBottle(world, bottle) {
     let index = world.bottles.indexOf(bottle);
     if (index > -1) {
