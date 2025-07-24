@@ -3,8 +3,10 @@
  * Inherits from DrawableObj.
  */
 class Statusbar extends DrawableObj {
-  /** @type {string[]} Image paths representing different health levels */
-  IMAGES = [
+  /**
+   * @type {string[]} Array of health bar image paths (0% to 100%)
+   */
+  IMAGES_STATUSBAR_HEALTH = [
     'img/7_statusbars/1_statusbar/2_statusbar_health/blue/0.png',
     'img/7_statusbars/1_statusbar/2_statusbar_health/blue/20.png',
     'img/7_statusbars/1_statusbar/2_statusbar_health/blue/40.png',
@@ -13,42 +15,51 @@ class Statusbar extends DrawableObj {
     'img/7_statusbars/1_statusbar/2_statusbar_health/blue/100.png',
   ];
 
-  /** @type {number} Current health percentage (0–100) */
-  percentage = 100;
+  /** @type {number} Current health level (0–5) */
+  health = 5;
 
-  /**
-   * Initializes the status bar with default position and full health.
-   */
   constructor() {
     super();
-    this.loadImages(this.IMAGES);
+    this.loadImages(this.IMAGES_STATUSBAR_HEALTH);
     this.x = 50;
     this.y = 0;
     this.height = 50;
     this.width = 250;
-    this.setPercentage(100);
+    this.img = this.getCurrentHealthImage();
   }
 
   /**
-   * Updates the status bar based on current percentage.
-   * @param {number} percentages - New health value (0–100).
+   * Updates the health bar based on the character's energy (0–100).
+   * @param {number} energy - The current energy value of the character.
    */
-  setPercentage(percentages) {
-    this.percentage = percentages;
-    const path = this.IMAGES[this.resolveImageIndex()];
-    this.img = this.imageCache[path];
+  updateHealthBar(energy) {
+    if (energy > 80) {
+      this.health = 5;
+    } else if (energy > 60) {
+      this.health = 4;
+    } else if (energy > 40) {
+      this.health = 3;
+    } else if (energy > 20) {
+      this.health = 2;
+    } else if (energy > 0) {
+      this.health = 1;
+    } else {
+      this.health = 0;
+    }
+
+    this.img = this.getCurrentHealthImage();
   }
 
   /**
-   * Determines which image index to use based on current percentage.
-   * @returns {number} Index of the image in the IMAGES array.
+   * Returns the current image object for the health bar.
+   * @returns {HTMLImageElement|null} The cached image for current health level.
    */
-  resolveImageIndex() {
-    if (this.percentage === 100) return 5;
-    if (this.percentage > 80) return 4;
-    if (this.percentage > 60) return 3;
-    if (this.percentage > 40) return 2;
-    if (this.percentage > 20) return 1;
-    return 0;
+  getCurrentHealthImage() {
+    if (this.health === undefined || this.health === null) {
+      this.health = 5;
+    }
+    const index = Math.max(0, Math.min(5, this.health));
+    const imagePath = this.IMAGES_STATUSBAR_HEALTH[index];
+    return this.imageCache[imagePath] || null;
   }
 }

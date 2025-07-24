@@ -64,6 +64,17 @@
         </div>
       </div>
 
+      <div id="restart-overlayNone" class="restart-overlay" style="display: none">
+        <div class="endScreen">
+          <img id="gameOverImg" class="gameOverImg" src="img/9_intro_outro_screens/game_over/game over!.png" />
+
+          <div class="restart-button" id="restart-button">
+            <img src="img/restart.png" alt="Restart" class="restart-icon" onclick="restartGame()" />
+            <img src="img/home-button.png" alt="Home Icon" class="homeIcon" onclick="goToHome()" />
+          </div>
+        </div>
+      </div>
+
       <div class="conOne">
         <div class="restart-overlay" style="display: none" id="restart-overlayNone">
           <div class="endScreen">
@@ -77,23 +88,22 @@
         </div>
 
         <div class="canvas-wrapper" style="display: none" id="canvas-wrapper">
-          <canvas class="canvas" id="canvas" width="720" height="480"></canvas>
+          <div>
+            <div class="fullscreen_for_disktop" id="soundMute">
+              <img id="muteIcon_desktop" src="img/volume.png" width="24" alt="" width="28" onclick=" toggleMute()" />
+              <div></div>
 
-          <div class="mobile_hidden" id="mobile_hidden">
-            <img
-              id="muteIcon_mobile"
-              class="bottons"
-              src="img/volume.png"
-              width="24"
-              alt=""
-              width="28"
-              onclick="toggleMuteMobile()"
-            />
-
-            <img id="btn-left" class="bottons" src="img/left runing.png" alt="" draggable="false" />
-            <img id="btn-right" class="bottons" src="img/right-arrow (2).png" alt="" draggable="false" />
-            <img id="btn-space" class="bottons" src="img/arrow-up.png" alt="" draggable="false" />
-            <img id="btn-bottle" class="bottons" src="img/throwSybol.png" alt="" draggable="false" />
+              <div onclick="openFullscreen()">
+                <img class="fullscreen" src="img/fullscreen.png" alt="" width="28" />
+              </div>
+            </div>
+            <canvas class="canvas" id="canvas" width="720" height="480"></canvas>
+            <div class="mobile_hidden" id="mobile_hidden">
+              <img id="btn-left" class="bottons" src="img/left runing.png" alt="" draggable="false" />
+              <img id="btn-right" class="bottons" src="img/right-arrow (2).png" alt="" draggable="false" />
+              <img id="btn-space" class="bottons" src="img/arrow-up.png" alt="" draggable="false" />
+              <img id="btn-bottle" class="bottons" src="img/throwSybol.png" alt="" draggable="false" />
+            </div>
           </div>
         </div>
       </div>
@@ -193,28 +203,8 @@
         </p>
       </div>
 
-      <div id="gameOverEndBos" class="endBoss-overlay" style="display: none">
-        <div class="endBossEndscreen">
-          <img src="img/9_intro_outro_screens/game_over/game over!.png" alt="" class="gameover-image" />
-
-          <div class="restart-button">
-            <img src="img/restart.png" alt="Restart" class="restart-icon" onclick="startGame()" />
-            <img src="img/home-button.png" class="homeIcon" onclick="goToHome()" />
-          </div>
-        </div>
-      </div>
-
       <div id="game_over" onclick="startGame()"></div>
       <button onclick="closeFullscreen()" id="exitFullscreenBtn" style="display: none">Vollbild aus</button>
-
-      <div class="fullscreen_for_disktop" id="soundMute">
-        <img id="muteIcon_desktop" src="img/volume.png" width="24" alt="" width="28" onclick="toggleMute()" />
-        <div></div>
-
-        <div onclick="openFullscreen()">
-          <img class="fullscreen" src="img/fullscreen.png" alt="" width="28" />
-        </div>
-      </div>
     </main>
   </body>
 </html>

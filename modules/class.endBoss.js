@@ -148,7 +148,8 @@ class EndBoss extends MovableObjects {
     const dx = character.x - this.x;
     if (Math.abs(dx) < SIDE_DISTANCE) {
       character.energy = Math.max(0, character.energy - DAMAGE_AMOUNT);
-      this.world.statusbar.setPercentage(character.energy);
+      /*       this.world.statusbar.setPercentage(character.energy); */
+      this.world.statusbar.updateHealthBar(character.energy);
       if (character.energy === 0) {
         this.processGameOver(character);
       }
@@ -178,7 +179,8 @@ class EndBoss extends MovableObjects {
     /*  document.getElementById('gameOverEndBos').style.display = 'block'; */
     character.playAnimation(character.walkingDead);
     setTimeout(() => {
-      document.getElementById('gameOverEndBos').style.display = 'block';
+      document.getElementById('restart-overlayNone').style.display = 'flex';
+      document.getElementById('gameOverImg').style.display = 'block';
       this.world.gameOver = true;
     }, 2000);
   }
@@ -304,7 +306,8 @@ class EndBoss extends MovableObjects {
    */
   handleGameOverUI() {
     setTimeout(() => {
-      document.getElementById('gameOverEndBos').style.display = 'block';
+      document.getElementById('restart-overlayNone').style.display = 'flex';
+      document.getElementById('gameOverImg').style.display = 'block';
       this.world.gameOver = true;
     }, 2000);
   }

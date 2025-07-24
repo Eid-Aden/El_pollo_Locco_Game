@@ -259,7 +259,7 @@ class World {
         this.handleChickenCollision(enemy);
       } else {
         this.character.hit();
-        this.statusbar.setPercentage(this.character.energy);
+        this.statusbar.updateHealthBar(this.character.energy);
         this.character.stopSnore();
         this.character.lastMoveTime = Date.now();
       }
@@ -312,24 +312,27 @@ class World {
   /**
    * Applies damage to the character. Ends game if energy reaches zero.
    */
+
   handleCharacterHit() {
     this.character.hit();
-    this.statusbar.setPercentage(this.character.energy);
+    this.statusbar.updateHealthBar(this.character.energy);
     this.character.stopSnore();
     this.character.lastMoveTime = Date.now();
-    if (this.character.energy === 0) {
+
+    if (this.character.energy <= 1) {
+      this.character.energy = 0;
       this.character.playAnimation(this.character.walkingDead);
       setTimeout(() => {
         this.triggerGameOver();
-      }, 5000);
+      }, 2000);
     }
   }
+
   /**
    * Displays game over screen, stops game and sounds.
    */
   triggerGameOver() {
-    // Zeige das ganze GameOver-Overlay
-    /* document.querySelector('.restart-overlay').style.display = 'flex'; */
+    document.querySelector('.restart-overlay').style.display = 'flex';
     document.getElementById('restart-overlayNone').style.display = 'flex';
     document.getElementById('gameOverImg').style.display = 'block';
     document.getElementById('restart-button').style.display = 'flex';

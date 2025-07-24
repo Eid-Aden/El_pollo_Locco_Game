@@ -81,23 +81,6 @@ function toggleMute() {
 }
 
 /**
- * Toggles the sound state (mute/unmute) for mobile view.
- * - Changes the mute icon specifically for mobile UI.
- * - Uses SoundManager to control global audio playback.
- */
-function toggleMuteMobile() {
-  const iconMobile = document.getElementById('muteIcon_mobile');
-
-  if (SoundManager.isMuted) {
-    SoundManager.unmuteAll();
-    iconMobile.src = 'img/volume.png';
-  } else {
-    SoundManager.muteAll();
-    iconMobile.src = 'img/mute.png';
-  }
-}
-
-/**
  * Starts the game by resetting UI, enabling controls, initializing world state,
  * and playing background sound.
  */
@@ -129,10 +112,8 @@ function stopPreviousGameIfRunning() {
  * Hides all overlay elements (like Game Over or Win screens).
  */
 function resetGameUI() {
-  document.getElementById('gameOverImg').style.display = 'none';
   document.getElementById('youWinOverlay').style.display = 'none';
   document.getElementById('restart-overlayNone').style.display = 'none';
-  document.getElementById('gameOverEndBos').style.display = 'none';
 }
 
 /**
@@ -224,11 +205,8 @@ function goToHome() {
   document.getElementById('canvas-wrapper').style.display = 'none';
   document.getElementById('canvas').style.display = 'none';
   document.getElementById('youWinOverlay').style.display = 'none';
-  document.getElementById('gameOverEndBos').style.display = 'none';
-
   document.querySelector('.restart-overlay').style.display = 'none';
   document.getElementById('gameOverImg').style.display = 'none';
-
   document.getElementById('llcover').style.display = 'block';
 
   SoundManager.pauseAll();

@@ -78,7 +78,7 @@ class Bottles extends DrawableObj {
   addBottles(world) {
     for (let i = 0; i < this.totalBottles; i++) {
       let x = 500 + Math.random() * 2500;
-      let y = 385;
+      let y = 395;
       let bottle = new BottleGround();
       bottle.x = x;
       bottle.y = y;
@@ -97,6 +97,7 @@ class Bottles extends DrawableObj {
         world.bottles.splice(i, 1);
         world.collectedBottles++;
         world.bottle.setPercentage(world.collectedBottles, world.totalBottles);
+        SoundManager.play(world.character.brokenBottle);
       }
     }
   }

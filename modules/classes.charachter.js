@@ -10,6 +10,7 @@ class Character extends MovableObjects {
   width = 110;
   height = 380;
   isSleeping = false;
+  lastHitTime = 0;
 
   /** @type {Object} Collision offset for precise hitbox */
   offset = {
@@ -20,9 +21,11 @@ class Character extends MovableObjects {
   };
   /** @type {string[]} Walking animation frames */
   walkingImage = [
+    'img/2_character_pepe/2_walk/W-21.png',
     'img/2_character_pepe/2_walk/W-22.png',
     'img/2_character_pepe/2_walk/W-23.png',
-    'img/2_character_pepe/2_walk/W-26.png',
+    'img/2_character_pepe/2_walk/W-24.png',
+    'img/2_character_pepe/2_walk/W-25.png',
     'img/2_character_pepe/2_walk/W-26.png',
   ];
 
@@ -89,6 +92,7 @@ class Character extends MovableObjects {
   hurtSound = new Audio('audio/hurt.mp3');
   deadSound = new Audio('audio/Dead.mp3');
   soundSnore = new Audio('audio/snore.mp3');
+  brokenBottle = new Audio('audio/broken-bottle.mp3');
 
   /**
    * Creates a new character and loads all animation assets.
@@ -107,6 +111,7 @@ class Character extends MovableObjects {
     SoundManager.register(this.hurtSound);
     SoundManager.register(this.deadSound);
     SoundManager.register(this.soundSnore);
+    SoundManager.register(this.brokenBottle);
 
     this.aplyGravity();
     this.animate();
@@ -170,6 +175,7 @@ class Character extends MovableObjects {
    * Returns true if the game or character is finished.
    * @returns {boolean}
    */
+
   shouldStopGame() {
     if (this.world?.gameOver || this.isDead() || this.world?.endboss?.isDead) {
       this.stopAllIntervals();
@@ -199,6 +205,7 @@ class Character extends MovableObjects {
   handleJump() {
     if (this.world.keyboard.SPACE && !this.isAboveGround()) {
       this.jump();
+      this.speed = 2;
       this.lastMoveTime = Date.now();
     }
   }
@@ -221,7 +228,7 @@ class Character extends MovableObjects {
       } else {
         this.handleIdleAnimation();
       }
-    }, 50);
+    }, 120);
   }
 
   /**
@@ -286,15 +293,16 @@ class Character extends MovableObjects {
    * @param {MovableObjects} enemy - The enemy to check collision with.
    * @returns {boolean}
    */
+
   isJumpingOnEnemy(enemy) {
     const characterBottom = this.y + this.height - this.offset.bottom;
     const enemyTop = enemy.y + enemy.offset.top;
-
     const isFalling = this.speedY < 0;
-    const isAbove = characterBottom <= enemyTop + 15; // etwas Toleranz
+    const isAbove = characterBottom <= enemyTop + 30;
     const isHorizontalOverlap =
       this.x + this.width - this.offset.right > enemy.x + enemy.offset.left &&
       this.x + this.offset.left < enemy.x + enemy.width - enemy.offset.right;
+
     return isAbove && isFalling && isHorizontalOverlap;
   }
 }
