@@ -1,19 +1,24 @@
 /*** Initializes the first level with chickens, clouds, backgrounds, a bottle ground, and coins. */
 
-level1 = new Level(
-  [new Chicken(), new SmallChicken()],
-  [(new Cloud(), new Cloud())],
-  generateBackgrounds(),
-  [new BottleGround()],
-  [new Coin()]
-);
-/**
- * Initializes the first level with chickens, clouds, backgrounds, a bottle ground, and coins.
- */
 function initLevel1() {
+  const chickens = [];
+  const smallChickens = [];
+
+  for (let i = 0; i < 5; i++) {
+    const chicken = new Chicken();
+    chicken.x = 600 + Math.random() * 1000;
+    chickens.push(chicken);
+  }
+
+  for (let i = 0; i < 5; i++) {
+    const smallChicken = new SmallChicken();
+    smallChicken.x = 600 + Math.random() * 1000;
+    smallChickens.push(smallChicken);
+  }
+
   level1 = new Level(
-    [new Chicken(), new Chicken(), new SmallChicken()],
-    [(new Cloud(), new Cloud())],
+    [...chickens, ...smallChickens],
+    [new Cloud(), new Cloud()],
     generateBackgrounds(),
     [new BottleGround()],
     [new Coin()]

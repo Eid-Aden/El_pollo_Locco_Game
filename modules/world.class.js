@@ -34,6 +34,36 @@ class World {
 
   intervalIds = [];
   /**
+   * Creates the world and initializes all components.
+   * @param {HTMLCanvasElement} canvas - The game's drawing canvas.
+   * @param {Object} keyboard - The keyboard input handler.
+   */
+
+  constructor(canvas, keyboard) {
+    this.ctx = canvas.getContext('2d');
+    this.canvas = canvas;
+    this.keyboard = keyboard;
+    this.endboss = new EndBoss();
+    this.endboss.world = this;
+    this.level.enamies.push(this.endboss);
+    this.setWorld();
+    this.run();
+    this.bottle.addBottles(this);
+    this.coin.addCoins(this);
+    SoundManager.register(this.brokenBottle);
+    SoundManager.register(this.chickenSound);
+    this.backgroundSound.loop = true;
+    this.backgroundSound.volume = 0.3;
+    SoundManager.register(this.backgroundSound);
+    this.showBossStatus = false;
+    this.renderer = new WorldRenderer(this, this.canvas);
+    this.renderer.drawLoop();
+    setTimeout(() => {
+      this.showBossStatus = true;
+    }, 9000);
+  }
+
+  /**
    * Creates an interval that can be stopped later using stopAllIntervals().
    * @param {Function} fn
    * @param {number} time
@@ -49,38 +79,7 @@ class World {
     this.intervalIds.forEach(clearInterval);
     this.intervalIds = [];
   }
-  /**
-   * Creates the world and initializes all components.
-   * @param {HTMLCanvasElement} canvas - The game's drawing canvas.
-   * @param {Object} keyboard - The keyboard input handler.
-   */
-  constructor(canvas, keyboard) {
-    this.ctx = canvas.getContext('2d');
-    this.canvas = canvas;
-    this.keyboard = keyboard;
-    this.endboss = new EndBoss();
-    this.endboss.world = this;
-    this.level.enamies.push(this.endboss);
-    /*   this.draw(); */
-    this.setWorld();
-    this.run();
-    this.bottle.addBottles(this);
-    this.coin.addCoins(this);
-    this.addChicken();
-    this.addSmallChicken();
-    SoundManager.register(this.brokenBottle);
-    SoundManager.register(this.chickenSound);
-    this.backgroundSound.loop = true;
-    this.backgroundSound.volume = 0.3;
-    SoundManager.register(this.backgroundSound);
-    this.showBossStatus = false;
 
-    this.renderer = new WorldRenderer(this, this.canvas);
-    this.renderer.drawLoop();
-    setTimeout(() => {
-      this.showBossStatus = true;
-    }, 9000);
-  }
   /**
    * Assigns the world instance to the character so it can access shared game logic.
    */
@@ -168,11 +167,13 @@ class World {
   isBottleHittingBoss(bottle) {
     return this.endboss && bottle.isColliding(this.endboss);
   }
+
   /**
    * Checks if any bottle hits a chicken (Chicken or SmallChicken)
    * that is within 300px from the character.
    * Plays splash animation and removes bottle and chicken on hit.
    */
+
   checkBottleHitsChickens() {
     this.throwableObjects.forEach((bottle, bottleIndex) => {
       this.level.enamies.forEach((enemy) => {
@@ -193,6 +194,7 @@ class World {
    * @param {ThrowableObjects} bottle
    * @param {number} index - Index of the bottle in the array.
    */
+
   handleBottleHit(bottle, index) {
     SoundManager.play(this.brokenBottle);
     bottle.showSplash();
@@ -205,28 +207,34 @@ class World {
       this.endboss.loadImage(this.endboss.hurtImage[0]);
     }
   }
+
   /**
    * Removes the bottle after a short delay.
    * @param {number} index
    */
+
   removeBottleAfterDelay(index) {
     setTimeout(() => {
       this.throwableObjects.splice(index, 1);
     }, 50);
   }
+
   /**
    * Reduces EndBoss's energy by a given amount.
    * @param {number} amount
    */
+
   reduceBossEnergy(amount) {
     this.endboss.energy -= amount;
     if (this.endboss.energy < 0) {
       this.endboss.energy = 0;
     }
   }
+
   /**
    * Executes when the EndBoss dies: shows win screen, stops game.
    */
+
   killEndBoss() {
     this.endboss.isDead = true;
     this.gameOver = true;
@@ -238,9 +246,11 @@ class World {
       document.getElementById('youWinOverlay').style.display = 'flex';
     }, 2000);
   }
+
   /**
    * Stops all enemies’ movement and logic intervals.
    */
+
   stopAllEnemies() {
     this.level.enamies.forEach((enemy) => {
       if (typeof enemy.stopAllIntervals === 'function') {
@@ -252,6 +262,7 @@ class World {
   /**
    * Checks for collisions between the character and all enemies.
    */
+
   checkCollisions() {
     this.level.enamies.forEach((enemy) => {
       if (!this.character.isColliding(enemy)) return;
@@ -270,6 +281,7 @@ class World {
    * Handles the collision between character and chicken.
    * @param {Enemy} enemy
    */
+
   handleChickenCollision(enemy) {
     if (this.character.isJumpingOnEnemy(enemy)) {
       this.killEnemy(enemy);
@@ -277,30 +289,36 @@ class World {
       this.handleCharacterHit();
     }
   }
+
   /**
    * Checks if the character is jumping on an enemy.
    * @param {Enemy} enemy
    * @returns {boolean}
    */
+
   isEnemyHitFromAbove(enemy) {
     return this.character.isJumpingOnEnemy(enemy) && this.character.speedY < 0 && !enemy.isDead;
   }
+
   /**
    * 
    
    * Kills the enemy and applies bounce effect to the character.
    * @param {Enemy} enemy
    */
+
   killEnemy(enemy) {
     SoundManager.play(this.chickenSound);
     enemy.isDead = true;
-    this.setChickensDeadImages(enemy);
+    /*  this.setChickensDeadImages(enemy); */
     this.removeEnemyAfterDelay(enemy);
   }
+
   /**
    * Removes the given enemy after 1 second.
    * @param {Enemy} enemy
    */
+
   removeEnemyAfterDelay(enemy) {
     setTimeout(() => {
       const index = this.level.enamies.indexOf(enemy);
@@ -309,6 +327,7 @@ class World {
       }
     }, 500);
   }
+
   /**
    * Applies damage to the character. Ends game if energy reaches zero.
    */
@@ -318,7 +337,6 @@ class World {
     this.statusbar.updateHealthBar(this.character.energy);
     this.character.stopSnore();
     this.character.lastMoveTime = Date.now();
-
     if (this.character.energy <= 1) {
       this.character.energy = 0;
       this.character.playAnimation(this.character.walkingDead);
@@ -331,6 +349,7 @@ class World {
   /**
    * Displays game over screen, stops game and sounds.
    */
+
   triggerGameOver() {
     document.querySelector('.restart-overlay').style.display = 'flex';
     document.getElementById('restart-overlayNone').style.display = 'flex';
@@ -341,52 +360,16 @@ class World {
     this.stopAllEnemies();
     SoundManager.pauseAll();
   }
+
   /**
    * Stops all enemies’ movement and logic intervals.
    */
+
   stopAllEnemies() {
     this.level.enamies.forEach((enemy) => {
       if (typeof enemy.stopAllIntervals === 'function') {
         enemy.stopAllIntervals();
       }
     });
-  }
-
-  /**
-   * Changes the dead image for small or regular chickens.
-   * @param {Chicken|SmallChicken} chicken
-   */
-  setChickensDeadImages(chicken) {
-    if (chicken instanceof SmallChicken) {
-      chicken.loadImage('img/3_enemies_chicken/chicken_small/2_dead/dead.png');
-    } else {
-      chicken.loadImage('img/3_enemies_chicken/chicken_normal/2_dead/dead.png');
-    }
-  }
-  /**
-   * Adds regular chickens to the game world at random positions.
-   */
-  addChicken() {
-    for (let i = 0; i < 5; i++) {
-      this.x = 2500 + Math.random() * 800;
-      this.speed = 2 + Math.random() * 0.9;
-      let chicken = new Chicken();
-      chicken.x = this.x;
-      chicken.world = this;
-      this.level.enamies.push(chicken);
-    }
-  }
-  /**
-   * Adds small chickens to the game world at random positions.
-   */
-  addSmallChicken() {
-    for (let i = 0; i < 5; i++) {
-      this.x = 600 + Math.random() * 1200;
-      this.speed = 0.45 + Math.random() * 0.25;
-      let small_chicken = new SmallChicken();
-      small_chicken.x = this.x;
-      small_chicken.world = this;
-      this.level.enamies.push(small_chicken);
-    }
   }
 }

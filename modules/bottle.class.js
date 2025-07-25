@@ -6,10 +6,10 @@ class BottleGround extends MovableObjects {
   height = 40;
 
   offset = {
-    top: 5,
-    right: 15,
+    top: 2,
+    right: 40,
     bottom: 5,
-    left: 15,
+    left: 40,
   };
 
   y = 380;
