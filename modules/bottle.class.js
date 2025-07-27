@@ -2,8 +2,8 @@
  */
 
 class BottleGround extends MovableObjects {
-  width = 100;
-  height = 100;
+  width = 80;
+  height = 50;
 
   offset = {
     top: 2,

@@ -7,6 +7,55 @@ let world;
 /** @type {Keyboard} The global keyboard input object */
 let keyboard = new Keyboard();
 
+const allImages = [
+  // Background
+  'img/5_background/layers/air.png',
+  'img/5_background/layers/1_first_layer/1.png',
+  'img/5_background/layers/1_first_layer/2.png',
+  'img/5_background/layers/2_second_layer/1.png',
+  'img/5_background/layers/2_second_layer/2.png',
+  'img/5_background/layers/3_third_layer/1.png',
+  'img/5_background/layers/3_third_layer/2.png',
+  'img/5_background/layers/1_first_layer/full.png',
+  'img/5_background/layers/2_second_layer/full.png',
+  'img/5_background/layers/3_third_layer/full.png',
+
+  // Clouds
+  'img/5_background/layers/4_clouds/1.png',
+
+  // Chicken normal
+  'img/3_enemies_chicken/chicken_normal/1_walk/1_w.png',
+  'img/3_enemies_chicken/chicken_normal/1_walk/2_w.png',
+  'img/3_enemies_chicken/chicken_normal/1_walk/3_w.png',
+
+  // Small Chicken
+  'img/3_enemies_chicken/chicken_small/1_walk/1_w.png',
+  'img/3_enemies_chicken/chicken_small/1_walk/2_w.png',
+  'img/3_enemies_chicken/chicken_small/1_walk/3_w.png',
+
+  // Bottle
+  'img/6_salsa_bottle/salsa_bottle.png',
+
+  // Coins
+  'img/8_coin/coin_1.png',
+  'img/8_coin/coin_2.png',
+];
+
+/**
+ * Preload-Funktion
+ */
+function preloadImages(imagePaths) {
+  return Promise.all(
+    imagePaths.map((src) => {
+      return new Promise((resolve) => {
+        const img = new Image();
+        img.src = src;
+        img.onload = () => resolve(img);
+      });
+    })
+  );
+}
+
 /**
  * Initializes the game:
  * - Loads level 1
@@ -15,13 +64,25 @@ let keyboard = new Keyboard();
  * - Starts background sound
  */
 
-function init() {
-  initLevel1();
+async function init() {
   canvas = document.getElementById('canvas');
-  world = new World(canvas, keyboard);
+  const ctx = canvas.getContext('2d');
 
-  SoundManager.initFromStorage();
+  // Zeige das HTML-Ladebild
+  document.getElementById('loadingScreen').style.display = 'flex';
+
+  // Warte 2 Sekunden
+  await new Promise((resolve) => setTimeout(resolve, 500));
+
+  // Lade Bilder vor
+  await preloadImages(allImages);
+
+  // Initialisiere Spiel
+  initLevel1();
+  world = new World(canvas, keyboard);
   SoundManager.play(world.backgroundSound);
+  // Verstecke Ladebild
+  document.getElementById('loadingScreen').style.display = 'none';
 }
 
 /**
@@ -87,19 +148,17 @@ function toggleMute() {
  * Starts the game by resetting UI, enabling controls, initializing world state,
  * and playing background sound.
  */
-function startGame() {
+
+async function startGame() {
   SoundManager.initFromStorage();
   MobileControls();
   stopPreviousGameIfRunning();
   resetGameUI();
   showMainGameUI();
 
-  init();
+  await init(); // <-- warte, bis alles geladen ist!
 
-  // Slight delay to avoid overlapping with init sound setup
-  setTimeout(() => {
-    SoundManager.play(world.backgroundSound);
-  }, 200);
+  SoundManager.play(world.backgroundSound);
 }
 
 /**

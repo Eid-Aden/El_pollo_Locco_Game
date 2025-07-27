@@ -30,6 +30,8 @@ class World {
   brokenBottle = new Audio('audio/broken-bottle.mp3');
   chickenSound = new Audio('audio/chickenSound.mp3');
   backgroundSound = new Audio('audio/game-background-sound.mp3');
+  endbossAlarm = new Audio('audio/BossAlarm.mp3');
+
   gameOver = false;
 
   intervalIds = [];
@@ -50,10 +52,12 @@ class World {
     this.run();
     this.bottle.addBottles(this);
     this.coin.addCoins(this);
-    SoundManager.register(this.brokenBottle);
-    SoundManager.register(this.chickenSound);
     this.backgroundSound.loop = true;
     this.backgroundSound.volume = 0.3;
+    SoundManager.register(this.brokenBottle);
+    SoundManager.register(this.chickenSound);
+    SoundManager.register(this.endbossAlarm);
+
     SoundManager.register(this.backgroundSound);
     this.showBossStatus = false;
     this.renderer = new WorldRenderer(this, this.canvas);
@@ -241,7 +245,9 @@ class World {
     this.stopAllIntervals();
     SoundManager.pauseAll();
     this.stopAllEnemies();
+    SoundManager.play(this.endbossAlarm);
     this.endboss.playAnimation(this.endboss.deadImage);
+
     setTimeout(() => {
       document.getElementById('youWinOverlay').style.display = 'flex';
     }, 2000);
