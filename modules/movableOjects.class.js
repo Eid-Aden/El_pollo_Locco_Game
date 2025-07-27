@@ -9,7 +9,7 @@ class MovableObjects extends DrawableObj {
   groundLevel = 220;
   width = 120;
   height = 100;
-  speed = 0.12;
+  speed = 1;
   speedY = 0;
   accelaration = 2;
   otherDirection = false;

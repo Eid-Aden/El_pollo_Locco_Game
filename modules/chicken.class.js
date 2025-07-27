@@ -31,7 +31,7 @@ class Chicken extends MovableObjects {
     this.loadImage(this.walkingImage[0]);
     this.loadImages(this.walkingImage);
     this.x = 600 + Math.random() * 2700;
-    this.speed = 0.2 + Math.random() * 0.5;
+    this.speed = 0.8 + Math.random() * 0.5;
     SoundManager.register(this.walkingSound);
     this.animate();
   }

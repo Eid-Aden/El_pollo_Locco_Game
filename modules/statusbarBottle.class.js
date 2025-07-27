@@ -78,7 +78,7 @@ class Bottles extends DrawableObj {
   addBottles(world) {
     for (let i = 0; i < this.totalBottles; i++) {
       let x = 500 + Math.random() * 2500;
-      let y = 390;
+      let y = 385;
       let bottle = new BottleGround();
       bottle.x = x;
       bottle.y = y;

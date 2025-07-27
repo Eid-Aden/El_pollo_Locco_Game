@@ -8,14 +8,14 @@ class Character extends MovableObjects {
   y = 155;
   speed = 10;
   width = 110;
-  height = 380;
+  height = 385;
   isSleeping = false;
   lastHitTime = 0;
 
   /** @type {Object} Collision offset for precise hitbox */
   offset = {
     top: 120,
-    bottom: 20,
+    bottom: 15,
     right: 40,
     left: 40,
   };
@@ -205,7 +205,7 @@ class Character extends MovableObjects {
   handleJump() {
     if (this.world.keyboard.SPACE && !this.isAboveGround()) {
       this.jump();
-      this.speed = 2;
+      this.speed = 4;
       this.lastMoveTime = Date.now();
     }
   }
@@ -302,7 +302,6 @@ class Character extends MovableObjects {
     const isHorizontalOverlap =
       this.x + this.width - this.offset.right > enemy.x + enemy.offset.left &&
       this.x + this.offset.left < enemy.x + enemy.width - enemy.offset.right;
-
     return isAbove && isFalling && isHorizontalOverlap;
   }
 }

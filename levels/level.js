@@ -4,7 +4,7 @@ function initLevel1() {
   const chickens = [];
   const smallChickens = [];
 
-  for (let i = 0; i < 5; i++) {
+  for (let i = 0; i < 4; i++) {
     const chicken = new Chicken();
     chickens.push(chicken);
   }

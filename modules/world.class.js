@@ -102,18 +102,36 @@ class World {
       this.coin.checkCollectCoins(this);
       this.isBottleColissionBoss();
       this.checkBottleHitsChickens();
+      this.checkEscapedChickens();
     }, 100);
   }
   /**
-   * Counts escaped chickens and triggers game over if 4 or more escape.
-   * @param {Chicken|SmallChicken} chicken - The chicken that escaped.
+   * Increases the counter for escaped chickens and ends the game if needed.
+   * @param {Chicken|SmallChicken} chicken - The escaping chicken.
    */
   countEscapedChicken(chicken) {
+    chicken.isEscaped = true;
     this.escapedChickens++;
     this.removeChicken(chicken);
     if (this.escapedChickens >= 4) {
       this.triggerGameOver();
     }
+  }
+
+  /**
+   * Checks all chickens if they've escaped the screen.
+   */
+  checkEscapedChickens() {
+    this.level.enamies.forEach((enemy) => {
+      const hasEscaped =
+        (enemy instanceof Chicken || enemy instanceof SmallChicken) &&
+        !enemy.isDead &&
+        !enemy.isEscaped &&
+        enemy.x + enemy.width < 0;
+      if (hasEscaped) {
+        this.countEscapedChicken(enemy);
+      }
+    });
   }
 
   /**
@@ -245,7 +263,7 @@ class World {
     this.stopAllIntervals();
     SoundManager.pauseAll();
     this.stopAllEnemies();
-    SoundManager.play(this.endbossAlarm);
+    fSoundManager.play(this.endbossAlarm);
     this.endboss.playAnimation(this.endboss.deadImage);
 
     setTimeout(() => {
