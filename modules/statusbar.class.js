@@ -60,6 +60,6 @@ class Statusbar extends DrawableObj {
     }
     const index = Math.max(0, Math.min(5, this.health));
     const imagePath = this.IMAGES_STATUSBAR_HEALTH[index];
-    return this.imageCache[imagePath] || null;
+    return DrawableObj.globalImageCache[imagePath] || null;
   }
 }

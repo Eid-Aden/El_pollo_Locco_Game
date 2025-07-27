@@ -45,7 +45,7 @@ class Coinbar extends DrawableObj {
     this.percentage = (this.collectedCoins / this.totalCoins) * 100;
 
     const path = this.IMAGES[this.coinsBar()];
-    this.img = this.imageCache[path];
+    this.img = DrawableObj.globalImageCache[path];
   }
 
   /**

@@ -6,13 +6,11 @@ function initLevel1() {
 
   for (let i = 0; i < 5; i++) {
     const chicken = new Chicken();
-    chicken.x = 600 + Math.random() * 1000;
     chickens.push(chicken);
   }
 
   for (let i = 0; i < 5; i++) {
     const smallChicken = new SmallChicken();
-    smallChicken.x = 600 + Math.random() * 1000;
     smallChickens.push(smallChicken);
   }
 

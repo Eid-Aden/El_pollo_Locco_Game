@@ -8,16 +8,18 @@
  */
 class EndBoss extends MovableObjects {
   offset = {
-    top: 0,
-    right: 0,
-    bottom: 0,
-    left: 0,
+    top: 90,
+    bottom: 40,
+    left: 35,
+    right: 35,
   };
+
   energy = 100;
   width = 150;
-  height = 400;
-  y = 70;
+  height = 350;
+  y = 110;
   speed = 0.5;
+  hurtSound = new Audio('audio/deadcharacter.mp3');
 
   intervalIds = [];
   /** @type {string[]} Walking animation image paths */
@@ -67,7 +69,7 @@ class EndBoss extends MovableObjects {
   constructor() {
     super();
     this.x = 3000;
-    this.speed = 0.02 + Math.random() * 0.065;
+    this.speed = 0.05 + Math.random() * 0.05;
     this.isDead = false;
     this.energy = 100;
     this.loadImage(this.walkingImage[0]);
@@ -77,6 +79,7 @@ class EndBoss extends MovableObjects {
     this.loadImages(this.hurtImage);
     this.loadImages(this.deadImage);
     this.playAnimation(this.alertImage);
+    SoundManager.register(this.hurtSound);
     this.animate();
   }
 
@@ -144,14 +147,18 @@ class EndBoss extends MovableObjects {
    */
   handleSideCollision(character) {
     const SIDE_DISTANCE = 100;
-    const DAMAGE_AMOUNT = 8;
+    const DAMAGE_AMOUNT = 3;
     const dx = character.x - this.x;
     if (Math.abs(dx) < SIDE_DISTANCE) {
       character.energy = Math.max(0, character.energy - DAMAGE_AMOUNT);
-      /*       this.world.statusbar.setPercentage(character.energy); */
+      SoundManager.play(this.hurtSound);
+      character.playAnimation(character.walkingDead);
       this.world.statusbar.updateHealthBar(character.energy);
       if (character.energy === 0) {
-        this.processGameOver(character);
+        setTimeout(() => {
+          this.processGameOver(character);
+          SoundManager.pauseAll();
+        }, 500);
       }
     }
   }
@@ -176,13 +183,13 @@ class EndBoss extends MovableObjects {
   processGameOver(character) {
     this.stopPositionCheckLoop();
     this.killCharacterImmediately(character);
-    /*  document.getElementById('gameOverEndBos').style.display = 'block'; */
     character.playAnimation(character.walkingDead);
     setTimeout(() => {
       document.getElementById('restart-overlayNone').style.display = 'flex';
+      document.getElementById('restart-button').style.display = 'flex';
       document.getElementById('gameOverImg').style.display = 'block';
       this.world.gameOver = true;
-    }, 2000);
+    }, 1000);
   }
 
   /**
@@ -242,8 +249,13 @@ class EndBoss extends MovableObjects {
    * @param {number} distance - Distance to the character
    */
   handleCharacterAttack(character, distance) {
-    if (distance < 350) {
-      this.speed = 0.8;
+    if (distance < 300) {
+      setTimeout(() => {
+        this.playAnimation(this.alertImage);
+      }, 100);
+    }
+    if (distance < 250) {
+      this.speed = 2;
       this.playAlertAndAttackAnimation(character, distance);
     } else {
       this.playAnimation(this.walkingImage);
@@ -255,14 +267,14 @@ class EndBoss extends MovableObjects {
    * @param {number} distance
    */
   playAlertAndAttackAnimation(character, distance) {
-    this.playAnimation(this.alertImage);
+    this.playAnimation(this.walkingImage);
     setTimeout(() => {
       if (distance < 100) {
         this.speed = 1;
         this.playAnimation(this.attackImage);
         this.inflictDamageToCharacter(character);
       }
-    }, 150);
+    }, 300);
   }
 
   /**
@@ -275,6 +287,7 @@ class EndBoss extends MovableObjects {
     if (!character.isDead) {
       this.markCharacterAsDead(character);
       this.handleGameOverUI();
+      SoundManager.pauseAll();
     }
   }
 
@@ -295,21 +308,6 @@ class EndBoss extends MovableObjects {
     this.world.stopAllIntervals();
     this.world.statusbar.setPercentage(0);
     character.playAnimation(character.walkingDead);
-    SoundManager.pauseAll();
-  }
-
-  /**
-   * Handles the delayed game over user interface:
-   * - Waits 2 seconds
-   * - Displays the "game over" overlay
-   * - Sets the game state to over
-   */
-  handleGameOverUI() {
-    setTimeout(() => {
-      document.getElementById('restart-overlayNone').style.display = 'flex';
-      document.getElementById('gameOverImg').style.display = 'block';
-      this.world.gameOver = true;
-    }, 2000);
   }
 
   /**
@@ -342,24 +340,29 @@ class EndBoss extends MovableObjects {
    * Updates the character status bar in the UI.
    */
   updateStatusbar() {
-    this.world.statusbar.setPercentage(this.world.character.energy);
+    this.world.statusbar.updateHealthBar(this.world.character.energy);
   }
 
   /**
    * Handles all logic when the character dies.
    * @param {Character} character
    */
+
   handleCharacterDeath(character) {
-    character.isDead = true;
-    this.world.gameOver = true;
     this.stopAllIntervals();
     this.world.stopAllIntervals();
     SoundManager.pauseAll();
+
+    character.isDead = true;
+    character.energy = 0;
+    this.world.statusbar.setPercentage(0);
     character.playAnimation(character.walkingDead);
+
     setTimeout(() => {
-      document.getElementById('gameOverEndBos').style.display = 'block';
       this.world.gameOver = true;
-    }, 2000);
+      document.getElementById('restart-overlayNone').style.display = 'flex';
+      document.getElementById('gameOverImg').style.display = 'block';
+    }, 1000); // 1 Sekunde warten
   }
 
   /**

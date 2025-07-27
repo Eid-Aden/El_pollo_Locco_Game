@@ -1,11 +1,11 @@
 /**
- * Represents a throwable object like a salsa bottle.
- * Inherits from MovableObjects and includes throw behavior.
+ * Represents a throwable salsa bottle object.
+ * Inherits from MovableObjects and handles throw physics and animations.
  */
-
 class ThrowableObjects extends MovableObjects {
   offset = { top: 5, right: 15, bottom: 5, left: 15 };
 
+  /** @type {string[]} Bottle rotation animation image paths */
   Image_RotationBottle = [
     'img/6_salsa_bottle/bottle_rotation/1_bottle_rotation.png',
     'img/6_salsa_bottle/bottle_rotation/2_bottle_rotation.png',
@@ -13,6 +13,7 @@ class ThrowableObjects extends MovableObjects {
     'img/6_salsa_bottle/bottle_rotation/4_bottle_rotation.png',
   ];
 
+  /** @type {string[]} Splash animation image paths */
   image_splashBottle = [
     'img/6_salsa_bottle/bottle_rotation/bottle_splash/1_bottle_splash.png',
     'img/6_salsa_bottle/bottle_rotation/bottle_splash/2_bottle_splash.png',
@@ -21,13 +22,13 @@ class ThrowableObjects extends MovableObjects {
     'img/6_salsa_bottle/bottle_rotation/bottle_splash/5_bottle_splash.png',
     'img/6_salsa_bottle/bottle_rotation/bottle_splash/6_bottle_splash.png',
   ];
+
   /**
-   * Represents a throwable object like a salsa bottle.
-   * Inherits from MovableObjects and includes throw behavior.
-   * @param {*} x
-   * @param {*} y
-   * @param {*} otherDirection
-   * @param {*} world
+   * Creates a new throwable object instance and initiates image loading.
+   * @param {number} x - Initial X position
+   * @param {number} y - Initial Y position
+   * @param {boolean} otherDirection - Whether the throw is to the left
+   * @param {World} world - Reference to the game world
    */
   constructor(x, y, otherDirection, world) {
     super();
@@ -37,21 +38,21 @@ class ThrowableObjects extends MovableObjects {
     this.world = world;
     this.width = 80;
     this.height = 100;
-    this.speedY = -5 + Math.random() * 1;
+    this.speedY = -5 + Math.random();
     this.gravity = 0.2;
     this.throwSpeed = 8;
     this.groundLevel = 460;
     this.hasExploded = false;
+
     this.loadImage(this.Image_RotationBottle[0]);
     this.loadImages(this.Image_RotationBottle);
     this.loadImages(this.image_splashBottle);
 
-    this.playBottleRotation();
+    setTimeout(() => this.playBottleRotation(), 100);
   }
 
   /**
-   * Wird bei jedem Frame im World-Loop aufgerufen.
-   * Bewegt die Flasche und prüft, ob sie den Boden trifft.
+   * Called in the game loop. Moves the bottle and checks ground impact.
    */
   update() {
     if (this.hasExploded) return;
@@ -59,11 +60,7 @@ class ThrowableObjects extends MovableObjects {
     this.y += this.speedY;
     this.speedY += this.gravity;
 
-    if (this.otherDirection) {
-      this.x -= this.throwSpeed;
-    } else {
-      this.x += this.throwSpeed;
-    }
+    this.x += this.otherDirection ? -this.throwSpeed : this.throwSpeed;
 
     if (this.x > 3000 || this.x < -200) {
       this.removeFromWorld();
@@ -71,29 +68,35 @@ class ThrowableObjects extends MovableObjects {
 
     if (this.isOnGround()) {
       this.hasExploded = true;
-      setTimeout(() => {
-        this.playSplashAnimation();
-      }, 100);
+      setTimeout(() => this.playSplashAnimation(), 100);
     }
   }
 
   /**
-   * Gibt true zurück, wenn Flasche Boden erreicht hat.
+   * Checks if the bottle has reached the ground.
+   * @returns {boolean}
    */
   isOnGround() {
     return this.y + this.height >= this.groundLevel;
   }
 
   /**
-   * Animation beim Aufprall mit Bildwechseln.
+   * Plays the splash animation frame by frame when the bottle hits the ground.
    */
   playSplashAnimation() {
     let i = 0;
     const splashInterval = setInterval(() => {
-      if (i < this.image_splashBottle.length) {
-        this.img = this.imageCache[this.image_splashBottle[i]];
+      const path = this.image_splashBottle[i];
+      const img = DrawableObj.globalImageCache[path];
+
+      if (img) {
+        this.img = img;
         i++;
       } else {
+        console.warn('Splash image not loaded:', path);
+      }
+
+      if (i >= this.image_splashBottle.length) {
         clearInterval(splashInterval);
         this.removeFromWorld();
       }
@@ -101,7 +104,27 @@ class ThrowableObjects extends MovableObjects {
   }
 
   /**
-   * Entfernt die Flasche aus der Welt.
+   * Rotates the bottle using animation frames while flying through the air.
+   */
+  playBottleRotation() {
+    let i = 0;
+    this.rotationInterval = setInterval(() => {
+      if (!this.hasExploded) {
+        const path = this.Image_RotationBottle[i];
+        const img = DrawableObj.globalImageCache[path];
+
+        if (img) {
+          this.img = img;
+          i = (i + 1) % this.Image_RotationBottle.length;
+        }
+      } else {
+        clearInterval(this.rotationInterval);
+      }
+    }, 1000 / 25);
+  }
+
+  /**
+   * Removes this object from the world's list of throwable objects.
    */
   removeFromWorld() {
     const index = this.world.throwableObjects.indexOf(this);
@@ -111,23 +134,7 @@ class ThrowableObjects extends MovableObjects {
   }
 
   /**
-   * Dreht die Flasche während des Wurfs.
-   */
-  playBottleRotation() {
-    let i = 0;
-    this.rotationInterval = setInterval(() => {
-      if (!this.hasExploded) {
-        this.img = this.imageCache[this.Image_RotationBottle[i]];
-        i = (i + 1) % this.Image_RotationBottle.length;
-      } else {
-        clearInterval(this.rotationInterval);
-      }
-    }, 1000 / 25);
-  }
-
-  /**
-   * Replaces the bottle image with the splash image.
-   * @param {ThrowableObjects} bottle
+   * Optional: Immediately switch to a fixed splash image.
    */
   showSplash() {
     this.loadImage('img/6_salsa_bottle/bottle_rotation/bottle_splash/3_bottle_splash.png');

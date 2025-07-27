@@ -1,48 +1,52 @@
 /**
- * Base class for all drawable objects in the game.
- * Handles image loading and drawing on canvas.
+ * Base class for all drawable game objects.
+ * Handles position, size, image drawing, and image caching.
  */
 class DrawableObj {
   x = 200;
   y = 60;
-  img;
-  height = 100;
   width = 150;
-  /** @type {number} Index of current animation frame */
+  height = 100;
+  img;
   currentImage = 0;
 
-  /** @type {Object.<string, HTMLImageElement>} Cached images for animation */
-  imageCache = {};
+  /** Global image cache for all loaded images */
+  static globalImageCache = {};
 
   /**
-   * Loads a single image.
+   * Loads a single image and caches it globally.
    * @param {string} path - Path to the image file.
    */
   loadImage(path) {
-    this.img = new Image();
-    this.img.src = path;
-  }
-
-  /**
-   * Draws the image on the canvas at the current position and size.
-   * @param {CanvasRenderingContext2D} ctx - Canvas 2D context.
-   */
-
-  draw(ctx) {
-    if (this.img && this.img.complete && this.img.naturalWidth > 0) {
-      ctx.drawImage(this.img, this.x, this.y, this.width, this.height);
+    if (!DrawableObj.globalImageCache[path]) {
+      const img = new Image();
+      img.src = path;
+      DrawableObj.globalImageCache[path] = img;
     }
+    this.img = DrawableObj.globalImageCache[path];
   }
 
   /**
-   * Loads multiple images and stores them in the cache.
+   * Loads multiple images into the global cache.
    * @param {string[]} arr - Array of image paths.
    */
   loadImages(arr) {
     arr.forEach((path) => {
-      const img = new Image();
-      img.src = path;
-      this.imageCache[path] = img;
+      if (!DrawableObj.globalImageCache[path]) {
+        const img = new Image();
+        img.src = path;
+        DrawableObj.globalImageCache[path] = img;
+      }
     });
+  }
+
+  /**
+   * Draws the current image to the canvas.
+   * @param {CanvasRenderingContext2D} ctx - Canvas 2D context.
+   */
+  draw(ctx) {
+    if (this.img && this.img.complete && this.img.naturalWidth > 0) {
+      ctx.drawImage(this.img, this.x, this.y, this.width, this.height);
+    }
   }
 }

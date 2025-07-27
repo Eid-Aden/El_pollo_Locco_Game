@@ -53,7 +53,7 @@ class Bottles extends DrawableObj {
 
     let index = this.resolveImageIndexFromPercentage(percentage);
     let path = this.BollteIMAGES[index];
-    this.img = this.imageCache[path];
+    this.img = DrawableObj.globalImageCache[path];
   }
 
   /**
@@ -78,7 +78,7 @@ class Bottles extends DrawableObj {
   addBottles(world) {
     for (let i = 0; i < this.totalBottles; i++) {
       let x = 500 + Math.random() * 2500;
-      let y = 395;
+      let y = 340;
       let bottle = new BottleGround();
       bottle.x = x;
       bottle.y = y;

@@ -6,7 +6,7 @@ class Character extends MovableObjects {
   /** @type {number} Ground level Y position for collision */
   groundLevel = 60;
   y = 155;
-  speed = 5;
+  speed = 10;
   width = 110;
   height = 380;
   isSleeping = false;
@@ -15,10 +15,11 @@ class Character extends MovableObjects {
   /** @type {Object} Collision offset for precise hitbox */
   offset = {
     top: 120,
-    right: 30,
-    bottom: 25,
-    left: 30,
+    bottom: 20,
+    right: 40,
+    left: 40,
   };
+
   /** @type {string[]} Walking animation frames */
   walkingImage = [
     'img/2_character_pepe/2_walk/W-21.png',
@@ -99,7 +100,6 @@ class Character extends MovableObjects {
    */
   constructor() {
     super();
-
     this.loadImage(this.idleImg[0]);
     this.loadImages(this.walkingImage);
     this.loadImages(this.walkingJumping);

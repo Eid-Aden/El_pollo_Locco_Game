@@ -14,10 +14,13 @@ let keyboard = new Keyboard();
  * - Creates a new World instance with canvas and keyboard
  * - Starts background sound
  */
+
 function init() {
   initLevel1();
   canvas = document.getElementById('canvas');
   world = new World(canvas, keyboard);
+
+  SoundManager.initFromStorage();
   SoundManager.play(world.backgroundSound);
 }
 
@@ -208,6 +211,5 @@ function goToHome() {
   document.querySelector('.restart-overlay').style.display = 'none';
   document.getElementById('gameOverImg').style.display = 'none';
   document.getElementById('llcover').style.display = 'block';
-
   SoundManager.pauseAll();
 }

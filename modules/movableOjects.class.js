@@ -1,13 +1,12 @@
 /**
- * Base class for all movable game objects like characters, enemies, and items.
- * Handles movement, gravity, collisions, and animations.
+ * Base class for all movable objects in the game.
+ * Adds movement, gravity, collision, and animation logic.
  */
 class MovableObjects extends DrawableObj {
   offset = { top: 0, right: 0, bottom: 0, left: 0 };
   x = 180;
   y = 60;
   groundLevel = 220;
-  img;
   width = 120;
   height = 100;
   speed = 0.12;
@@ -16,11 +15,10 @@ class MovableObjects extends DrawableObj {
   otherDirection = false;
   energy = 100;
   lastHurt = 0;
-  imageCache = {};
   currentImage = 0;
 
   /**
-   * Applies gravity to the object.
+   * Applies gravity to the object by adjusting vertical position in intervals.
    */
   aplyGravity() {
     setInterval(() => {
@@ -36,7 +34,7 @@ class MovableObjects extends DrawableObj {
   }
 
   /**
-   * Checks if the object is above the ground.
+   * Checks if the object is above the ground level.
    */
   isAboveGround() {
     if (this instanceof ThrowableObjects) return true;
@@ -52,16 +50,9 @@ class MovableObjects extends DrawableObj {
   }
 
   /**
-   * Checks if this object is colliding with another.
-   * @param {MovableObjects} mo - Other object to check collision with.
-   * @returns {boolean}
+   * Checks collision with another object using AABB logic.
+   * @param {MovableObjects} mo - The object to check against
    */
-
-  /* isColliding(mo) {
-    return (
-      this.x + this.width > mo.x && this.x < mo.x + mo.width && this.y + this.height > mo.y && this.y < mo.y + mo.height
-    );
-  } */
   isColliding(mo) {
     return (
       this.x + this.width - this.offset.right > mo.x + mo.offset.left &&
@@ -72,24 +63,12 @@ class MovableObjects extends DrawableObj {
   }
 
   /**
-   * Loads multiple images into cache.
-   * @param {string[]} arr - Array of image paths.
-   */
-  loadImages(arr) {
-    arr.forEach((path) => {
-      const img = new Image();
-      img.src = path;
-      this.imageCache[path] = img;
-    });
-  }
-
-  /**
-   * Plays an animation by cycling through cached images.
-   * @param {string[]} images - Animation frame paths.
+   * Plays a frame-based animation using globally cached images.
+   * @param {string[]} images - Image paths
    */
   playAnimation(images) {
     const i = this.currentImage % images.length;
-    this.img = this.imageCache[images[i]];
+    this.img = DrawableObj.globalImageCache[images[i]];
     this.currentImage++;
   }
 
@@ -106,7 +85,7 @@ class MovableObjects extends DrawableObj {
   }
 
   /**
-   * Reduces energy when hit.
+   * Reduces energy and marks object as hurt.
    */
   hit() {
     this.energy = Math.max(0, this.energy - 1);
@@ -114,18 +93,15 @@ class MovableObjects extends DrawableObj {
       this.lastHurt = Date.now();
     }
   }
+
   /**
-   * Calculates the distance between two movable objects.
-   * @param {MovableObjects} obj1
-   * @param {MovableObjects} obj2
-   * @returns {number}
+   * Calculates distance between two objects (center to center).
    */
   static getDistance(obj1, obj2) {
-    let centerX1 = obj1.x + obj1.width / 2;
-    let centerY1 = obj1.y + obj1.height / 2;
-    let centerX2 = obj2.x + obj2.width / 2;
-    let centerY2 = obj2.y + obj2.height / 2;
-
-    return Math.sqrt(Math.pow(centerX1 - centerX2, 2) + Math.pow(centerY1 - centerY2, 2));
+    const centerX1 = obj1.x + obj1.width / 2;
+    const centerY1 = obj1.y + obj1.height / 2;
+    const centerX2 = obj2.x + obj2.width / 2;
+    const centerY2 = obj2.y + obj2.height / 2;
+    return Math.hypot(centerX1 - centerX2, centerY1 - centerY2);
   }
 }
