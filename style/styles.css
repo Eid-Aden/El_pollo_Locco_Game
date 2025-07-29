@@ -79,17 +79,17 @@ main {
   margin-top: 20px;
   position: relative;
 }
+
 .canvas {
-  position: relative;
-  background: black;
-  border-radius: 5px;
-  z-index: 1;
-  margin: 0 auto;
   width: 100%;
   max-width: 720px;
   aspect-ratio: 3 / 2;
   height: auto;
+  background: black;
+  border-radius: 5px;
+  margin: 0 auto;
   position: relative;
+  z-index: 1;
 }
 
 .mobile_hidden {
@@ -281,11 +281,11 @@ h1 {
   }
 }
 
-@media only screen and (max-width: 900px) {
+@media only screen and (max-width: 920px) {
   .canvas {
-    width: 100%;
-    height: 300px;
+    height: auto;
     aspect-ratio: unset;
+    height: 300px;
   }
 }
 
@@ -312,12 +312,6 @@ h1 {
   }
 }
 
-/* @media (max-width: 1500px) {
-  .fullscreen_for_disktop {
-    display: none !important;
-  }
-} */
-
 .mobile_hidden {
   display: none;
 }
@@ -336,4 +330,54 @@ h1 {
   h1 {
     display: none;
   }
+}
+.hollcontainer {
+  background-image: url('../img/coverImg/africa.jpg');
+  background-repeat: no-repeat;
+  background-position: center center;
+  background-size: cover;
+  position: absolute;
+  top: 0;
+  bottom: 0;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  width: 100%;
+  z-index: 777;
+  min-height: 100vh;
+}
+.sconderContainer {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  background: linear-gradient(to bottom, #87ceeb 0%, #db8f67 100%);
+  width: 720px;
+  height: 480px;
+  border-radius: 12px;
+}
+
+.winnCard {
+  background-image: url('../img/coverImg/africa.jpg');
+  background-repeat: no-repeat;
+  background-position: center center;
+  background-size: cover;
+  position: absolute;
+  top: 0;
+  bottom: 0;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  width: 100%;
+  z-index: 777;
+  min-height: 100vh;
+}
+
+.winnerBox {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  background: linear-gradient(to bottom, #87ceeb 0%, #db8f67 100%);
+  width: 720px;
+  height: 480px;
+  border-radius: 12px;
 }

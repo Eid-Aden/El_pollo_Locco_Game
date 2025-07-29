@@ -27,19 +27,6 @@
   margin: 0 auto;
 }
 
-.restart-overlay {
-  position: fixed;
-  top: 0;
-  left: 0;
-  width: 100vw;
-  height: 100vh;
-  background-color: rgba(0, 0, 0, 0.5);
-  z-index: 300;
-  display: flex;
-  justify-content: center;
-  align-items: center;
-}
-
 .restart-gameover {
   display: flex;
   justify-content: center;
@@ -276,6 +263,12 @@
   }
 }
 @media (max-width: 900px) {
+  .restart-overlay {
+    width: 100%;
+    min-height: 100%;
+  }
+}
+@media (max-width: 900px) {
   .impressum {
     height: 100vh;
     width: 50%;
@@ -316,7 +309,7 @@
   z-index: 999;
 }
 
-.endScreen {
+/* .endScreen {
   background: transparent;
   width: 720px;
   height: 100%;
@@ -329,7 +322,7 @@
   box-shadow: 0 0 15px rgba(0, 0, 0, 0.3);
   -webkit-backdrop-filter: blur(10px);
   backdrop-filter: blur(10px);
-}
+} */
 
 .endScreenWinn {
   background: linear-gradient(to bottom, #87ceeb 0%, #db8f67 100%);
@@ -348,10 +341,23 @@
   backdrop-filter: blur(10px);
 }
 
+.restart-overlay {
+  top: 20px;
+  position: absolute;
+  z-index: 9000;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+
+  aspect-ratio: 3 / 2;
+  height: auto;
+}
+
 .gameOverImg {
-  width: 720px;
-  height: 100%;
-  background: linear-gradient(to bottom, #87ceeb 0%, #db8f67 100%);
+  position: relative;
+  max-height: 500px;
+  width: 300px;
+  border-radius: 12px;
 }
 
 .restart-winCard {

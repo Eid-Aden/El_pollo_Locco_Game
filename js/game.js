@@ -64,7 +64,7 @@ function preloadImages(imagePaths) {
  * - Starts background sound
  */
 
-async function init() {
+/* async function init() {
   canvas = document.getElementById('canvas');
   const ctx = canvas.getContext('2d');
 
@@ -82,6 +82,25 @@ async function init() {
   world = new World(canvas, keyboard);
   SoundManager.play(world.backgroundSound);
   // Verstecke Ladebild
+  document.getElementById('loadingScreen').style.display = 'none';
+} */
+
+async function init() {
+  canvas = document.getElementById('canvas');
+  const ctx = canvas.getContext('2d');
+
+  document.getElementById('loadingScreen').style.display = 'flex';
+  await new Promise((resolve) => setTimeout(resolve, 500));
+  await preloadImages(allImages);
+
+  initLevel1();
+  world = new World(canvas, keyboard);
+
+  // 🎵 Hintergrundmusik nur abspielen, wenn nicht gemutet:
+  if (!SoundManager.isMuted) {
+    SoundManager.play(world.backgroundSound);
+  }
+
   document.getElementById('loadingScreen').style.display = 'none';
 }
 
@@ -132,15 +151,24 @@ window.addEventListener('keyup', (e) => {
  * - Changes the mute icon based on the current sound state.
  * - Uses SoundManager to control global audio playback.
  */
-function toggleMute() {
-  const icon = document.getElementById('muteIcon_desktop');
 
+function toggleMute() {
   if (SoundManager.isMuted) {
-    SoundManager.unmuteAll();
-    icon.src = 'img/volume.png';
+    SoundManager.unmuteAll(); // <- Hintergrundmusik wird automatisch wieder gestartet
   } else {
     SoundManager.muteAll();
+  }
+  updateMuteIcon(); // Optional: aktualisiert das Lautsprecher-Symbol
+}
+
+function updateMuteIcon() {
+  const icon = document.getElementById('muteIcon_desktop');
+  if (!icon) return;
+
+  if (SoundManager.isMuted) {
     icon.src = 'img/mute.png';
+  } else {
+    icon.src = 'img/volume.png';
   }
 }
 
@@ -150,15 +178,15 @@ function toggleMute() {
  */
 
 async function startGame() {
-  SoundManager.initFromStorage();
+  SoundManager.initFromStorage(); // Mute-Zustand aus localStorage laden
+  updateMuteIcon(); // Icon anpassen (neu hinzufügen, siehe unten)
+
   MobileControls();
   stopPreviousGameIfRunning();
   resetGameUI();
   showMainGameUI();
 
-  await init(); // <-- warte, bis alles geladen ist!
-
-  SoundManager.play(world.backgroundSound);
+  await init(); // Hintergrundmusik wird dort gestartet (aber nur wenn nicht gemutet)
 }
 
 /**
@@ -267,7 +295,7 @@ function goToHome() {
   document.getElementById('canvas-wrapper').style.display = 'none';
   document.getElementById('canvas').style.display = 'none';
   document.getElementById('youWinOverlay').style.display = 'none';
-  document.querySelector('.restart-overlay').style.display = 'none';
+  document.querySelector('.hollcontainer').style.display = 'none';
   document.getElementById('gameOverImg').style.display = 'none';
   document.getElementById('llcover').style.display = 'block';
   SoundManager.pauseAll();

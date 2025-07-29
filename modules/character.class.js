@@ -89,11 +89,12 @@ class Character extends MovableObjects {
     'img/2_character_pepe/1_idle/long_idle/I-20.png',
   ];
   world;
-  walkingSound = new Audio('audio/running.mp3');
+  /*  walkingSound = new Audio('audio/running.mp3'); */
   hurtSound = new Audio('audio/hurt.mp3');
   deadSound = new Audio('audio/Dead.mp3');
   soundSnore = new Audio('audio/snore.mp3');
   brokenBottle = new Audio('audio/broken-bottle.mp3');
+  isWalkingSoundPlaying = false;
 
   /**
    * Creates a new character and loads all animation assets.
@@ -107,12 +108,10 @@ class Character extends MovableObjects {
     this.loadImages(this.walkingHurt);
     this.loadImages(this.idleImg);
     this.loadImages(this.longIdleImg);
-    SoundManager.register(this.walkingSound);
     SoundManager.register(this.hurtSound);
     SoundManager.register(this.deadSound);
     SoundManager.register(this.soundSnore);
     SoundManager.register(this.brokenBottle);
-
     this.aplyGravity();
     this.animate();
     this.lastMoveTime = Date.now();
@@ -188,7 +187,7 @@ class Character extends MovableObjects {
     if (this.world.keyboard.RIGHT && this.x < this.world.level.levelEnd_x) {
       this.moveRight();
       this.otherDirection = false;
-      SoundManager.play(this.walkingSound);
+      /*  SoundManager.play(this.walkingSound); */
       this.lastMoveTime = Date.now();
     }
   }
@@ -197,7 +196,6 @@ class Character extends MovableObjects {
     if (this.world.keyboard.LEFT && this.x > 0) {
       this.movLeft();
       this.otherDirection = true;
-      SoundManager.play(this.walkingSound);
       this.lastMoveTime = Date.now();
     }
   }

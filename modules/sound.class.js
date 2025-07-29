@@ -1,17 +1,28 @@
 /**
- * Global sound controller for managing all game audio.
- * Provides mute, unmute, play, and pause functionalities for registered sounds.
+ * @class SoundManager
+ * @description
+ * Global controller for all game audio. Provides methods to register,
+ * play, pause, mute, and unmute audio elements in a unified way.
  */
 class SoundManager {
-  /** @type {Audio[]} List of registered audio elements */
+  /**
+   * @type {Audio[]}
+   * @private
+   * Collection of all registered Audio instances.
+   */
   static sounds = [];
 
-  /** @type {boolean} Flag indicating whether all sounds are muted */
+  /**
+   * @type {boolean}
+   * @private
+   * Flag indicating whether all sounds are currently muted.
+   */
   static isMuted = false;
 
   /**
-   * Registers a sound to be controlled by the SoundManager.
-   * @param {Audio} sound - The audio object to register.
+   * Register an Audio instance for global control.
+   *
+   * @param {Audio} sound - The Audio object to register.
    */
   static register(sound) {
     if (sound instanceof Audio) {
@@ -20,7 +31,10 @@ class SoundManager {
   }
 
   /**
-   * Mutes all registered sounds and stops any playing audio.
+   * Mute all registered sounds and reset playback positions.
+   *
+   * @example
+   * SoundManager.muteAll();
    */
   static muteAll() {
     this.isMuted = true;
@@ -29,45 +43,68 @@ class SoundManager {
   }
 
   /**
-   * Unmutes the SoundManager, allowing sounds to be played again.
+   * Unmute all sounds and resume background music if available.
+   *
+   * @example
+   * SoundManager.unmuteAll();
    */
   static unmuteAll() {
     this.isMuted = false;
     localStorage.setItem('soundMuted', 'false');
+    this.resumeBackgroundMusic();
   }
 
   /**
-   * Plays a sound if not muted.
-   * @param {Audio} sound - The audio object to play.
+   * Play or restart a specific sound if not muted.
+   * If the sound is already playing, its playback will reset to the start.
+   *
+   * @param {Audio} sound - The Audio object to play.
    */
   static play(sound) {
-    if (!this.isMuted && sound instanceof Audio) {
+    if (this.isMuted || !(sound instanceof Audio)) return;
+
+    // Restart if already playing, otherwise start fresh
+    if (!sound.paused) {
+      sound.currentTime = 0;
+    } else {
       sound.play();
     }
   }
 
   /**
-   * Pauses and resets all registered sounds safely.
+   * Pause and reset all registered sounds.
+   *
+   * @example
+   * SoundManager.pauseAll();
    */
   static pauseAll() {
-    this.sounds.forEach((sound) => {
-      if (sound && typeof sound.pause === 'function') {
-        try {
-          if (!sound.paused && sound.readyState >= 2) {
-            sound.pause();
-            sound.currentTime = 0;
-          }
-        } catch (e) {
-          console.warn('Error stopping sound:', e);
-        }
+    this.sounds.forEach((s) => {
+      if (!s.paused && s.readyState >= 2) {
+        s.pause();
+        s.currentTime = 0;
       }
     });
   }
+
   /**
-   * Initializes the sound manager from local storage settings.
+   * Initialize mute state from localStorage.
+   * Reads the 'soundMuted' key and applies it on load.
+   *
+   * @example
+   * SoundManager.initFromStorage();
    */
   static initFromStorage() {
-    const savedMute = localStorage.getItem('soundMuted');
-    this.isMuted = savedMute === 'true';
+    this.isMuted = localStorage.getItem('soundMuted') === 'true';
+  }
+
+  /**
+   * Resume background music if it was previously registered.
+   * Looks for an Audio whose src contains 'game-background-sound'.
+   */
+  static resumeBackgroundMusic() {
+    const bg = this.sounds.find((s) => typeof s.src === 'string' && s.src.includes('game-background-sound'));
+    if (bg && bg.paused) {
+      bg.play();
+    }
   }
 }

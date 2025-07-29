@@ -263,7 +263,7 @@ class World {
     this.stopAllIntervals();
     SoundManager.pauseAll();
     this.stopAllEnemies();
-    fSoundManager.play(this.endbossAlarm);
+    SoundManager.play(this.endbossAlarm);
     this.endboss.playAnimation(this.endboss.deadImage);
 
     setTimeout(() => {
@@ -332,9 +332,17 @@ class World {
    */
 
   killEnemy(enemy) {
+    // 1. Einen kurzen Beep starten
     SoundManager.play(this.chickenSound);
+
+    // 2. Nach 200 ms stoppen und zurücksetzen
+    setTimeout(() => {
+      this.chickenSound.pause();
+      this.chickenSound.currentTime = 0;
+    }, 400);
+
+    // 3. Rest deines Codes
     enemy.isDead = true;
-    /*  this.setChickensDeadImages(enemy); */
     this.removeEnemyAfterDelay(enemy);
   }
 
@@ -375,7 +383,7 @@ class World {
    */
 
   triggerGameOver() {
-    document.querySelector('.restart-overlay').style.display = 'flex';
+    document.querySelector('.hollcontainer').style.display = 'flex';
     document.getElementById('restart-overlayNone').style.display = 'flex';
     document.getElementById('gameOverImg').style.display = 'block';
     document.getElementById('restart-button').style.display = 'flex';

@@ -96,15 +96,14 @@ class Chicken extends MovableObjects {
   markAsDead() {
     if (!this.isDead) {
       this.isDead = true;
-      this.deadImageLoaded = false; // reset for animateCharacter
-      this.stopAllIntervals(); // optional: sofort anhalten
+      this.deadImageLoaded = false;
+      this.stopAllIntervals();
     }
   }
 
-  /**
-   * Optional: plays sound
+  /* luck() {
+    setTimeout(() => {
+      SoundManager.play(this.walkingSound);
+    }, 60);
    */
-  cluck() {
-    SoundManager.play(this.walkingSound);
-  }
 }

@@ -12,7 +12,7 @@
     <script src="modules/movableOjects.class.js"></script>
     <script src="modules/cloud.class.js"></script>
     <script src="modules/statusbar.class.js"></script>
-    <script src="modules/statusbarEndBoss.class.js"></script>
+    <script src="modules/statusbarendboss.class.js"></script>
     <script src="modules/bottle.class.js"></script>
     <script src="modules/statusbarBottle.class.js"></script>
     <script src="modules/coins.class.js"></script>
@@ -24,9 +24,9 @@
     <script src="modules/keybaord.class.js"></script>
     <script src="modules/level.class.js"></script>
     <script src="modules/background.class.js"></script>
-    <script src="modules/charachter.class.js"></script>
+    <script src="modules/character.class.js"></script>
     <script src="modules/throwableObjects.class.js"></script>
-    <script src="modules/endBoss.class.js"></script>
+    <script src="modules/endboss.class.js"></script>
     <script src="modules/sound.class.js"></script>
     <script src="levels/level.js"></script>
     <script src="js/game.js"></script>
@@ -53,38 +53,32 @@
         </div>
       </div>
 
-      <div id="youWinOverlay" class="winn-overlay" style="display: none">
-        <div class="endScreenWinn">
-          <img id="youWinImage" src="img/You won, you lost/You win B.png" alt="" />
-          <div class="restart-winCard" id="restart-winCard">
-            <img src="img/restart.png" alt="Restart" class="restart-icon" onclick="restartGame()" />
-            <img src="img/home-button.png" alt="Home Icon" class="homeIcon" onclick="goToHome()" />
+      <div class="winnCard" id="youWinOverlay" style="display: none">
+        <div class="winnerBox">
+          <div class="endScreenWinn">
+            <img id="youWinImage" src="img/You won, you lost/You win B.png" alt="" />
+            <div class="restart-winCard" id="restart-winCard">
+              <img src="img/restart.png" alt="Restart" class="restart-icon" onclick="restartGame()" />
+              <img src="img/home-button.png" alt="Home Icon" class="homeIcon" onclick="goToHome()" />
+            </div>
           </div>
         </div>
       </div>
 
-      <div id="restart-overlayNone" class="restart-overlay" style="display: none">
-        <div class="endScreen">
-          <img id="gameOverImg" class="gameOverImg" src="img/9_intro_outro_screens/game_over/game over!.png" />
-          <div class="restart-button" id="restart-button">
-            <img src="img/restart.png" alt="Restart" class="restart-icon" onclick="restartGame()" />
-            <img src="img/home-button.png" alt="Home Icon" class="homeIcon" onclick="goToHome()" />
-          </div>
-        </div>
-      </div>
-
-      <div class="conOne">
-        <div class="restart-overlay" style="display: none" id="restart-overlayNoneContent">
+      <!-- Test -->
+      <div class="hollcontainer" id="restart-overlayNone" style="display: none">
+        <div class="sconderContainer">
           <div class="endScreen">
-            <img id="gameOverImg" class="gameOverImg" src="img/9_intro_outro_screens/game_over/game over!.png" />
-
+            <img id="gameOverImg" class="gameOverImg" src="img/gaveOverWithoutBackrgoundColor.png" />
             <div class="restart-button" id="restart-button">
               <img src="img/restart.png" alt="Restart" class="restart-icon" onclick="restartGame()" />
               <img src="img/home-button.png" alt="Home Icon" class="homeIcon" onclick="goToHome()" />
             </div>
           </div>
         </div>
+      </div>
 
+      <div class="conOne">
         <div class="canvas-wrapper" style="display: none" id="canvas-wrapper">
           <div>
             <div id="loadingScreen">
@@ -93,6 +87,7 @@
                 <p>Loading...</p>
               </div>
             </div>
+
             <div class="fullscreen_for_disktop" id="soundMute">
               <img id="muteIcon_desktop" src="img/volume.png" width="24" alt="" width="28" onclick=" toggleMute()" />
               <div></div>
@@ -101,7 +96,7 @@
                 <img class="fullscreen" src="img/fullscreen.png" alt="" width="28" />
               </div>
             </div>
-            <canvas class="canvas" id="canvas" width="720" height="480"></canvas>
+            <canvas class="canvas" id="canvas" width="720" height="480px"></canvas>
             <div class="mobile_hidden" id="mobile_hidden">
               <img id="btn-left" class="bottons" src="img/left runing.png" alt="" draggable="false" />
               <img id="btn-right" class="bottons" src="img/right-arrow (2).png" alt="" draggable="false" />
