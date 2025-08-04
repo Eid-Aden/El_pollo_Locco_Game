@@ -31,9 +31,7 @@ class World {
   chickenSound = new Audio('audio/chickenSound.mp3');
   backgroundSound = new Audio('audio/game-background-sound.mp3');
   endbossAlarm = new Audio('audio/BossAlarm.mp3');
-
   gameOver = false;
-
   intervalIds = [];
   /**
    * Creates the world and initializes all components.
@@ -57,7 +55,6 @@ class World {
     SoundManager.register(this.brokenBottle);
     SoundManager.register(this.chickenSound);
     SoundManager.register(this.endbossAlarm);
-
     SoundManager.register(this.backgroundSound);
     this.showBossStatus = false;
     this.renderer = new WorldRenderer(this, this.canvas);
@@ -148,7 +145,6 @@ class World {
   /**
    * Handles bottle throwing when the 'D' key is pressed and cooldown is over.
    */
-
   checkThrowableObjects() {
     const now = new Date().getTime();
     if (this.keyboard.D && this.collectedBottles > 0 && now - this.lastThrowTime > this.throwCooldown) {
@@ -171,7 +167,6 @@ class World {
   /**
    * Checks if any thrown bottles hit the EndBoss.
    */
-
   isBottleColissionBoss() {
     this.throwableObjects.forEach((bottle, index) => {
       let distance = Math.abs(this.endboss.x - this.character.x);
@@ -195,7 +190,6 @@ class World {
    * that is within 300px from the character.
    * Plays splash animation and removes bottle and chicken on hit.
    */
-
   checkBottleHitsChickens() {
     this.throwableObjects.forEach((bottle, bottleIndex) => {
       this.level.enamies.forEach((enemy) => {
@@ -245,7 +239,6 @@ class World {
    * Reduces EndBoss's energy by a given amount.
    * @param {number} amount
    */
-
   reduceBossEnergy(amount) {
     this.endboss.energy -= amount;
     if (this.endboss.energy < 0) {
@@ -256,7 +249,6 @@ class World {
   /**
    * Executes when the EndBoss dies: shows win screen, stops game.
    */
-
   killEndBoss() {
     this.endboss.isDead = true;
     this.gameOver = true;
@@ -265,7 +257,6 @@ class World {
     this.stopAllEnemies();
     SoundManager.play(this.endbossAlarm);
     this.endboss.playAnimation(this.endboss.deadImage);
-
     setTimeout(() => {
       document.getElementById('youWinOverlay').style.display = 'flex';
     }, 2000);
@@ -274,7 +265,6 @@ class World {
   /**
    * Stops all enemies’ movement and logic intervals.
    */
-
   stopAllEnemies() {
     this.level.enamies.forEach((enemy) => {
       if (typeof enemy.stopAllIntervals === 'function') {
@@ -286,7 +276,6 @@ class World {
   /**
    * Checks for collisions between the character and all enemies.
    */
-
   checkCollisions() {
     this.level.enamies.forEach((enemy) => {
       if (!this.character.isColliding(enemy)) return;
@@ -305,7 +294,6 @@ class World {
    * Handles the collision between character and chicken.
    * @param {Enemy} enemy
    */
-
   handleChickenCollision(enemy) {
     if (this.character.isJumpingOnEnemy(enemy)) {
       this.killEnemy(enemy);
@@ -319,7 +307,6 @@ class World {
    * @param {Enemy} enemy
    * @returns {boolean}
    */
-
   isEnemyHitFromAbove(enemy) {
     return this.character.isJumpingOnEnemy(enemy) && this.character.speedY < 0 && !enemy.isDead;
   }
@@ -330,7 +317,6 @@ class World {
    * Kills the enemy and applies bounce effect to the character.
    * @param {Enemy} enemy
    */
-
   killEnemy(enemy) {
     // 1. Einen kurzen Beep starten
     SoundManager.play(this.chickenSound);
@@ -350,7 +336,6 @@ class World {
    * Removes the given enemy after 1 second.
    * @param {Enemy} enemy
    */
-
   removeEnemyAfterDelay(enemy) {
     setTimeout(() => {
       const index = this.level.enamies.indexOf(enemy);
@@ -363,7 +348,6 @@ class World {
   /**
    * Applies damage to the character. Ends game if energy reaches zero.
    */
-
   handleCharacterHit() {
     this.character.hit();
     this.statusbar.updateHealthBar(this.character.energy);
@@ -381,7 +365,6 @@ class World {
   /**
    * Displays game over screen, stops game and sounds.
    */
-
   triggerGameOver() {
     document.querySelector('.hollcontainer').style.display = 'flex';
     document.getElementById('restart-overlayNone').style.display = 'flex';
@@ -396,7 +379,6 @@ class World {
   /**
    * Stops all enemies’ movement and logic intervals.
    */
-
   stopAllEnemies() {
     this.level.enamies.forEach((enemy) => {
       if (typeof enemy.stopAllIntervals === 'function') {
