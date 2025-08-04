@@ -1,9 +1,13 @@
 /**
- * Class representing the bottle status bar in the game.
- * Shows how many bottles the player has collected.
+ * Represents the status bar for collected bottles in the game.
+ * Extends the DrawableObj to visually display the bottle collection progress.
  */
 class Bottles extends DrawableObj {
-  BollteIMAGES = [
+  /**
+   * Array of image paths representing the bottle status bar at different collection percentages.
+   * @type {string[]}
+   */
+  BOTTLE_IMAGES = [
     'img/7_statusbars/1_statusbar/3_statusbar_bottle/blue/0.png',
     'img/7_statusbars/1_statusbar/3_statusbar_bottle/blue/20.png',
     'img/7_statusbars/1_statusbar/3_statusbar_bottle/blue/40.png',
@@ -12,87 +16,75 @@ class Bottles extends DrawableObj {
     'img/7_statusbars/1_statusbar/3_statusbar_bottle/blue/100.png',
   ];
 
+  /**
+   * Percentage of collected bottles (0–100).
+   * @type {number}
+   */
   percentage = 0;
+
+  /**
+   * Current number of collected bottles.
+   * @type {number}
+   */
   collectedBottles = 0;
+
+  /**
+   * Total number of bottles to collect in the level.
+   * @type {number}
+   */
   totalBottles = 10;
 
   /**
-   * Creates an instance of the Bottles class.
-   * Loads images and sets initial position and size.
+   * Creates an instance of the Bottles status bar.
+   * Initializes the bar's position, dimensions, and initial image.
    */
   constructor() {
     super();
-    this.loadImages(this.BollteIMAGES);
+    this.loadImages(this.BOTTLE_IMAGES);
     this.x = 50;
     this.y = 80;
-    this.height = 50;
     this.width = 250;
-
-    this.collectedBottles = 0;
-    this.totalBottles = 10;
+    this.height = 50;
     this.setPercentage(0, this.totalBottles);
   }
 
   /**
-   * Sets the percentage of collected bottles and updates the image.
-   * @param {number} collectedBottles - The number of bottles collected by the player.
-   * @param {number} totalBottles - The total number of bottles available in the level.
+   * Updates the bottle status bar based on the number of collected and total bottles.
+   * @param {number} collected - Number of bottles collected.
+   * @param {number} total - Total number of bottles available.
    */
-  /*   setPercentage(collectedBottles) {
-    this.collectedBottles = collectedBottles;
-    let path = this.BollteIMAGES[this.bottleBar()];
-    this.img = this.imageCache[path];
-  } */
-
-  setPercentage(collectedBottles, totalBottles) {
-    this.collectedBottles = collectedBottles;
-    this.totalBottles = totalBottles;
-
-    let percentage = (collectedBottles / totalBottles) * 100;
-    this.percentage = percentage;
-
-    let index = this.resolveImageIndexFromPercentage(percentage);
-    let path = this.BollteIMAGES[index];
+  setPercentage(collected, total) {
+    this.collectedBottles = collected;
+    this.totalBottles = total;
+    this.percentage = total > 0 ? (collected / total) * 100 : 0;
+    const index = StatusBarUtil.resolveImageIndex(this.percentage);
+    const path = this.BOTTLE_IMAGES[index];
     this.img = DrawableObj.globalImageCache[path];
   }
 
   /**
-   * Determines which image to display based on the current percentage.
-   * @returns {number} Index of the image to show from the IMAGES array.
-   */
-  bottleBar() {
-    return Math.min(5, Math.max(0, this.collectedBottles));
-  }
-  resolveImageIndexFromPercentage(percentage) {
-    if (percentage >= 100) return 5;
-    if (percentage >= 80) return 4;
-    if (percentage >= 60) return 3;
-    if (percentage >= 40) return 2;
-    if (percentage >= 20) return 1;
-    return 0;
-  }
-  /**
-   * Adds bottles to the world.
-   * @param {*} world
+   * Randomly spawns bottle objects on the ground throughout the level.
+   * @param {World} world - The current game world instance.
    */
   addBottles(world) {
     for (let i = 0; i < this.totalBottles; i++) {
-      let x = 500 + Math.random() * 2500;
-      let y = 385;
-      let bottle = new BottleGround();
+      const x = 500 + Math.random() * 2500;
+      const y = 385;
+      const bottle = new BottleGround();
       bottle.x = x;
       bottle.y = y;
-      world.bottles.push(bottle); // ← speichert die Flaschen in world.bottles
+      world.bottles.push(bottle);
     }
   }
+
   /**
-   * Checks for bottle collection and updates the bottle bar.
-   * @param {*} world
-   * @param {*} bottle
+   * Checks if the character collides with any bottles, collects them,
+   * updates the status bar and plays the collection sound.
+   * @param {World} world - The current game world instance.
    */
-  checkCollectBottles(world, bottle) {
+  checkCollectBottles(world) {
     for (let i = world.bottles.length - 1; i >= 0; i--) {
-      let bottle = world.bottles[i];
+      const bottle = world.bottles[i];
       if (world.character.isColliding(bottle)) {
         world.bottles.splice(i, 1);
         world.collectedBottles++;
@@ -101,13 +93,14 @@ class Bottles extends DrawableObj {
       }
     }
   }
+
   /**
-   * Removes a specific bottle from the world.
-   * @param {*} world
-   * @param {*} bottle
+   * Removes a specific bottle from the world and updates the status bar.
+   * @param {World} world - The current game world instance.
+   * @param {BottleGround} bottle - The bottle to be removed.
    */
   removeBottle(world, bottle) {
-    let index = world.bottles.indexOf(bottle);
+    const index = world.bottles.indexOf(bottle);
     if (index > -1) {
       world.bottles.splice(index, 1);
       this.setPercentage(this.collectedBottles, this.totalBottles);
@@ -115,7 +108,8 @@ class Bottles extends DrawableObj {
   }
 
   /**
-   * Draws the collected bottles text on the canvas.
+   * Draws the collected/total bottle count as text next to the bottle bar.
+   * @param {CanvasRenderingContext2D} ctx - The canvas rendering context.
    */
   drawBottleBarText(ctx) {
     ctx.font = '12px Arial';

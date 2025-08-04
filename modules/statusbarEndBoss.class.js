@@ -1,11 +1,10 @@
-/*
- * Represents the Endboss health bar UI element.
- * Inherits from DrawableObj and updates visual state based on Endboss health.
+/**
+ * Represents the health status bar for the End Boss.
+ * Extends DrawableObj to visually display the End Boss's remaining energy.
  */
 class StatusBarEndBos extends DrawableObj {
   /**
-   * Array of image paths representing different health levels of the Endboss.
-   * Index 0 = 0%, index 5 = 100%.
+   * Array of image paths representing the End Boss health bar at different percentages.
    * @type {string[]}
    */
   IMAGES = [
@@ -18,45 +17,27 @@ class StatusBarEndBos extends DrawableObj {
   ];
 
   /**
-   * Current percentage of the Endboss's health.
-   * Range: 0–100
-   * @type {number}
-   */
-  percentage = 100;
-
-  /**
-   * Creates the Endboss health bar and loads its image set.
+   * Creates an instance of the End Boss health bar.
+   * Initializes the position, dimensions, and loads the images.
    */
   constructor() {
     super();
     this.loadImages(this.IMAGES);
     this.x = 500;
     this.y = 0;
-    this.height = 50;
     this.width = 200;
+    this.height = 50;
     this.setPercentage(100);
   }
 
   /**
-   * Updates the displayed image based on the current health percentage.
-   * @param {number} percentages - New health value (0–100)
+   * Sets the health percentage of the End Boss and updates the image accordingly.
+   * @param {number} percent - The End Boss's current health percentage (0–100).
    */
-  setPercentage(percentages) {
-    this.percentage = percentages;
-    const path = this.IMAGES[this.resolveImageIndex()];
+  setPercentage(percent) {
+    this.percentage = percent;
+    const index = StatusBarUtil.resolveImageIndex(percent);
+    const path = this.IMAGES[index];
     this.img = DrawableObj.globalImageCache[path];
-  }
-
-  /**
-   * Determines the image index based on the percentage.
-   * @returns {number} Index of the health image in the IMAGES array
-   */
-  resolveImageIndex() {
-    if (this.percentage === 100) return 5;
-    if (this.percentage > 80) return 4;
-    if (this.percentage > 60) return 3;
-    if (this.percentage > 40) return 2;
-    if (this.percentage > 20) return 1;
-    return 0;
   }
 }

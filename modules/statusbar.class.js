@@ -1,7 +1,3 @@
-/**
- * Displays the character's health status as a visual bar.
- * Inherits from DrawableObj.
- */
 class Statusbar extends DrawableObj {
   /**
    * @type {string[]} Array of health bar image paths (0% to 100%)
@@ -33,20 +29,7 @@ class Statusbar extends DrawableObj {
    * @param {number} energy - The current energy value of the character.
    */
   updateHealthBar(energy) {
-    if (energy > 80) {
-      this.health = 5;
-    } else if (energy > 60) {
-      this.health = 4;
-    } else if (energy > 40) {
-      this.health = 3;
-    } else if (energy > 20) {
-      this.health = 2;
-    } else if (energy > 0) {
-      this.health = 1;
-    } else {
-      this.health = 0;
-    }
-
+    this.health = StatusBarUtil.resolveHealthIndex(energy);
     this.img = this.getCurrentHealthImage();
   }
 

@@ -3,8 +3,15 @@
  * Shows the coin bar with a visual fill level.
  * Inherits from DrawableObj.
  */
+/**
+ * Represents the status bar for collected coins in the game.
+ * Extends DrawableObj to display the progress of coin collection.
+ */
 class Coinbar extends DrawableObj {
-  /** @type {string[]} Image paths for different coin bar fill levels */
+  /**
+   * Array of image paths representing the coin bar at different fill levels.
+   * @type {string[]}
+   */
   IMAGES = [
     'img/7_statusbars/1_statusbar/1_statusbar_coin/orange/0.png',
     'img/7_statusbars/1_statusbar/1_statusbar_coin/orange/20.png',
@@ -14,29 +21,37 @@ class Coinbar extends DrawableObj {
     'img/7_statusbars/1_statusbar/1_statusbar_coin/orange/100.png',
   ];
 
-  /** @type {number} Current fill percentage of the coin bar */
-  percentage = 100;
+  /**
+   * Current fill percentage of the coin bar.
+   * @type {number}
+   */
+  percentage = 0;
+
+  /**
+   * List of coins in the world.
+   * @type {Coin[]}
+   */
   coins = [];
 
   /**
-   * Initializes the coin bar UI element.
+   * Creates an instance of the Coinbar.
+   * Loads the images and sets default position and dimensions.
    */
   constructor() {
     super();
     this.loadImages(this.IMAGES);
     this.x = 50;
     this.y = 40;
-    this.height = 50;
     this.width = 250;
+    this.height = 50;
     this.totalCoins = 10;
     this.collectedCoins = 0;
-    this.setPercentage(0, 10);
-    this.coins = [];
+    this.setPercentage(0, this.totalCoins);
   }
 
   /**
    * Updates the coin bar based on collected coins and total coins.
-   * @param {number} collectedCoins - Number of coins the player has collected.
+   * @param {number} collectedCoins - Number of collected coins.
    * @param {number} totalCoins - Total number of coins available.
    */
   setPercentage(collectedCoins, totalCoins) {
@@ -44,54 +59,34 @@ class Coinbar extends DrawableObj {
     this.totalCoins = totalCoins;
     this.percentage = (this.collectedCoins / this.totalCoins) * 100;
 
-    const path = this.IMAGES[this.coinsBar()];
+    const index = StatusBarUtil.resolveImageIndex(this.percentage);
+    const path = this.IMAGES[index];
     this.img = DrawableObj.globalImageCache[path];
   }
 
   /**
-   * Determines which image to show based on the percentage.
-   * @returns {number} Index of the image in the IMAGES array.
-   */
-  coinsBar() {
-    if (this.percentage == 0) {
-      return 5;
-    } else if (this.percentage <= 20) {
-      return 1;
-    } else if (this.percentage <= 40) {
-      return 2;
-    } else if (this.percentage <= 60) {
-      return 3;
-    } else if (this.percentage <= 80) {
-      return 4;
-    } else if (this.percentage <= 100) {
-      return 5;
-    } else {
-      return 0;
-    }
-  }
-  /**
-   * Adds coins to the world.
-   * @param {*} world
+   * Adds coins to the world at predefined positions.
+   * @param {World} world - The current game world.
    */
   addCoins(world) {
     for (let i = 0; i < this.totalCoins; i++) {
-      let x = 500 + i * 200;
-      let y = 100;
-      let coin = new Coin();
+      const x = 500 + i * 200;
+      const y = 100;
+      const coin = new Coin();
       coin.x = x;
       coin.y = y;
       world.coins.push(coin);
     }
   }
+
   /**
-   * Checks for coin collection and updates the coin bar.
-   * @param {*} world
+   * Checks if the character collects any coins and updates the bar.
+   * @param {World} world - The current game world.
    */
   checkCollectCoins(world) {
     for (let i = world.coins.length - 1; i >= 0; i--) {
-      let coin = world.coins[i];
-
-      let distance = MovableObjects.getDistance(world.character, coin);
+      const coin = world.coins[i];
+      const distance = MovableObjects.getDistance(world.character, coin);
       if (distance < 40) {
         world.coins.splice(i, 1);
         this.collectedCoins++;
@@ -101,20 +96,20 @@ class Coinbar extends DrawableObj {
   }
 
   /**
-   *
-   * Removes a specific coin from the world.
-   * @param {Coin} coin
+   * Removes a specific coin from the internal list and updates percentage.
+   * @param {Coin} coin - The coin to be removed.
    */
   reomvetCoin(coin) {
-    let index = this.coins.indexOf(coin);
+    const index = this.coins.indexOf(coin);
     if (index > -1) {
       this.coins.splice(index, 1);
-      this.coins.setPercentage(5 - this.coins.length, 5);
+      this.setPercentage(this.collectedCoins, this.totalCoins);
     }
   }
+
   /**
-   * Draws the collected coins text on the canvas.
-   * @param {*} ctx
+   * Draws the collected coin count as text on the canvas.
+   * @param {CanvasRenderingContext2D} ctx - The canvas 2D context.
    */
   drawCoinsText(ctx) {
     ctx.font = '12px Arial';

@@ -15,8 +15,4 @@ class Coin extends MovableObjects {
     this.y = 150;
     this.x = 1500 + Math.random() * 900;
   }
-
-  /**
-   * Draws the collected coins text on the canvas.
-   */
 }

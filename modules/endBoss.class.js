@@ -306,7 +306,7 @@ class EndBoss extends MovableObjects {
     character.isDead = true;
     this.stopAllIntervals();
     this.world.stopAllIntervals();
-    this.world.statusbar.setPercentage(0);
+    this.world.statusbar.updateHealthBar(0);
     character.playAnimation(character.walkingDead);
   }
 
@@ -355,14 +355,14 @@ class EndBoss extends MovableObjects {
 
     character.isDead = true;
     character.energy = 0;
-    this.world.statusbar.setPercentage(0);
+    this.world.statusbar.updateHealthBar(0);
     character.playAnimation(character.walkingDead);
 
     setTimeout(() => {
       this.world.gameOver = true;
       document.getElementById('restart-overlayNone').style.display = 'flex';
       document.getElementById('gameOverImg').style.display = 'block';
-    }, 1000); // 1 Sekunde warten
+    }, 1000);
   }
 
   /**

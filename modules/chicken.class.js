@@ -100,10 +100,4 @@ class Chicken extends MovableObjects {
       this.stopAllIntervals();
     }
   }
-
-  /* luck() {
-    setTimeout(() => {
-      SoundManager.play(this.walkingSound);
-    }, 60);
-   */
 }

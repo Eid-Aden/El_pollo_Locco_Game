@@ -56,12 +56,9 @@ class ThrowableObjects extends MovableObjects {
    */
   update() {
     if (this.hasExploded) return;
-
     this.y += this.speedY;
     this.speedY += this.gravity;
-
     this.x += this.otherDirection ? -this.throwSpeed : this.throwSpeed;
-
     if (this.x > 3000 || this.x < -200) {
       this.removeFromWorld();
     }
@@ -92,8 +89,6 @@ class ThrowableObjects extends MovableObjects {
       if (img) {
         this.img = img;
         i++;
-      } else {
-        console.warn('Splash image not loaded:', path);
       }
 
       if (i >= this.image_splashBottle.length) {

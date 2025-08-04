@@ -62,8 +62,6 @@ class SoundManager {
    */
   static play(sound) {
     if (this.isMuted || !(sound instanceof Audio)) return;
-
-    // Restart if already playing, otherwise start fresh
     if (!sound.paused) {
       sound.currentTime = 0;
     } else {

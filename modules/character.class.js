@@ -183,15 +183,19 @@ class Character extends MovableObjects {
     return false;
   }
 
+  /**
+   * Handles right movement and updates last move time.
+   */
   handleRightMovement() {
     if (this.world.keyboard.RIGHT && this.x < this.world.level.levelEnd_x) {
       this.moveRight();
       this.otherDirection = false;
-      /*  SoundManager.play(this.walkingSound); */
       this.lastMoveTime = Date.now();
     }
   }
-
+  /**
+   * Handles left movement and updates last move time.
+   */
   handleLeftMovement() {
     if (this.world.keyboard.LEFT && this.x > 0) {
       this.movLeft();
@@ -199,7 +203,9 @@ class Character extends MovableObjects {
       this.lastMoveTime = Date.now();
     }
   }
-
+  /**
+   * Handles jump movement and updates last move time.
+   */
   handleJump() {
     if (this.world.keyboard.SPACE && !this.isAboveGround()) {
       this.jump();
@@ -208,11 +214,14 @@ class Character extends MovableObjects {
     }
   }
 
+  /**
+   * Updates the camera position based on character's X position.
+   */
   updateCameraPosition() {
     this.world.camara_x = -this.x + 100;
   }
 
-  /**
+  /*
    * Controls which animation to play based on the character's state.
    */
   animateCharacterState() {
@@ -268,7 +277,6 @@ class Character extends MovableObjects {
    */
   handleIdleAnimation() {
     const idleTime = (Date.now() - this.lastMoveTime) / 500;
-
     if (this.world.keyboard.RIGHT || this.world.keyboard.LEFT) {
       this.playAnimation(this.walkingImage);
       this.stopSnore();
@@ -291,7 +299,6 @@ class Character extends MovableObjects {
    * @param {MovableObjects} enemy - The enemy to check collision with.
    * @returns {boolean}
    */
-
   isJumpingOnEnemy(enemy) {
     const characterBottom = this.y + this.height - this.offset.bottom;
     const enemyTop = enemy.y + enemy.offset.top;

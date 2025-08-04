@@ -8,7 +8,6 @@ let world;
 let keyboard = new Keyboard();
 
 const allImages = [
-  // Background
   'img/5_background/layers/air.png',
   'img/5_background/layers/1_first_layer/1.png',
   'img/5_background/layers/1_first_layer/2.png',
@@ -19,24 +18,14 @@ const allImages = [
   'img/5_background/layers/1_first_layer/full.png',
   'img/5_background/layers/2_second_layer/full.png',
   'img/5_background/layers/3_third_layer/full.png',
-
-  // Clouds
   'img/5_background/layers/4_clouds/1.png',
-
-  // Chicken normal
   'img/3_enemies_chicken/chicken_normal/1_walk/1_w.png',
   'img/3_enemies_chicken/chicken_normal/1_walk/2_w.png',
   'img/3_enemies_chicken/chicken_normal/1_walk/3_w.png',
-
-  // Small Chicken
   'img/3_enemies_chicken/chicken_small/1_walk/1_w.png',
   'img/3_enemies_chicken/chicken_small/1_walk/2_w.png',
   'img/3_enemies_chicken/chicken_small/1_walk/3_w.png',
-
-  // Bottle
   'img/6_salsa_bottle/salsa_bottle.png',
-
-  // Coins
   'img/8_coin/coin_1.png',
   'img/8_coin/coin_2.png',
 ];
@@ -64,27 +53,6 @@ function preloadImages(imagePaths) {
  * - Starts background sound
  */
 
-/* async function init() {
-  canvas = document.getElementById('canvas');
-  const ctx = canvas.getContext('2d');
-
-  // Zeige das HTML-Ladebild
-  document.getElementById('loadingScreen').style.display = 'flex';
-
-  // Warte 2 Sekunden
-  await new Promise((resolve) => setTimeout(resolve, 500));
-
-  // Lade Bilder vor
-  await preloadImages(allImages);
-
-  // Initialisiere Spiel
-  initLevel1();
-  world = new World(canvas, keyboard);
-  SoundManager.play(world.backgroundSound);
-  // Verstecke Ladebild
-  document.getElementById('loadingScreen').style.display = 'none';
-} */
-
 async function init() {
   canvas = document.getElementById('canvas');
   const ctx = canvas.getContext('2d');
@@ -95,12 +63,9 @@ async function init() {
 
   initLevel1();
   world = new World(canvas, keyboard);
-
-  // 🎵 Hintergrundmusik nur abspielen, wenn nicht gemutet:
   if (!SoundManager.isMuted) {
     SoundManager.play(world.backgroundSound);
   }
-
   document.getElementById('loadingScreen').style.display = 'none';
 }
 
@@ -125,12 +90,11 @@ function openFullscreen() {
  * Maps arrow keys, space bar, and "D" key to movement and actions.
  */
 window.addEventListener('keydown', (e) => {
-  if (e.keyCode == 39) keyboard.RIGHT = true; // Right arrow
-  if (e.keyCode == 37) keyboard.LEFT = true; // Left arrow
-  if (e.keyCode == 38) keyboard.UP = true; // Up arrow
-  if (e.keyCode == 40) keyboard.DOWN = true; // Down arrow
-  if (e.keyCode == 32) keyboard.SPACE = true; // Space bar
-  if (e.keyCode == 68) keyboard.D = true; // Key D (throw)
+  if (e.keyCode == 39) keyboard.RIGHT = true;
+  if (e.keyCode == 37) keyboard.LEFT = true;
+  if (e.keyCode == 38) keyboard.UP = true;
+  if (e.keyCode == 32) keyboard.SPACE = true;
+  if (e.keyCode == 68) keyboard.D = true;
 });
 
 /**
@@ -154,11 +118,11 @@ window.addEventListener('keyup', (e) => {
 
 function toggleMute() {
   if (SoundManager.isMuted) {
-    SoundManager.unmuteAll(); // <- Hintergrundmusik wird automatisch wieder gestartet
+    SoundManager.unmuteAll();
   } else {
     SoundManager.muteAll();
   }
-  updateMuteIcon(); // Optional: aktualisiert das Lautsprecher-Symbol
+  updateMuteIcon();
 }
 
 function updateMuteIcon() {
@@ -178,15 +142,15 @@ function updateMuteIcon() {
  */
 
 async function startGame() {
-  SoundManager.initFromStorage(); // Mute-Zustand aus localStorage laden
-  updateMuteIcon(); // Icon anpassen (neu hinzufügen, siehe unten)
+  SoundManager.initFromStorage();
+  updateMuteIcon();
 
   MobileControls();
   stopPreviousGameIfRunning();
   resetGameUI();
   showMainGameUI();
 
-  await init(); // Hintergrundmusik wird dort gestartet (aber nur wenn nicht gemutet)
+  await init();
 }
 
 /**
